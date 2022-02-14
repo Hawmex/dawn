@@ -4,21 +4,15 @@ import 'package:dawn/dawn.dart';
 
 void main() => runApp(const App());
 
-class App extends StatelessWidget {
+class App extends StatelessComponent {
   const App() : super();
 
   @override
-  List<Widget> build(final Context context) => const [HomePage()];
+  List<Component> render(final Context context) => [HomePage()];
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage() : super();
-
-  @override
-  State<StatefulWidget> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatefulComponent {
+  late Timer _timer;
   int count = 0;
 
   void increment() => setState(() => count += 1);
@@ -26,12 +20,37 @@ class _HomePageState extends State<HomePage> {
   @override
   void initialize() {
     super.initialize();
-    Timer.periodic(const Duration(seconds: 1), (final timer) => increment());
+
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (final timer) => increment(),
+    );
   }
 
   @override
-  List<Widget> build(final Context context) {
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
+  @override
+  List<Component> render(final Context context) {
     print(count);
-    return const [Column([])];
+
+    if (count % 2 == 0) {
+      return const [Container()];
+    } else {
+      return [];
+    }
+  }
+}
+
+class Container extends StatelessComponent {
+  const Container() : super();
+
+  @override
+  List<Component> render(final Context context) {
+    print('rendered container!');
+    return [];
   }
 }
