@@ -13,9 +13,9 @@ class App extends StatelessComponent {
 
 class HomePage extends StatefulComponent {
   late Timer _timer;
-  int count = 0;
+  int _count = 0;
 
-  void increment() => setState(() => count += 1);
+  void increment() => setState(() => _count += 1);
 
   @override
   void initialize() {
@@ -35,9 +35,9 @@ class HomePage extends StatefulComponent {
 
   @override
   List<Component> render(final Context context) {
-    print(count);
+    print(_count);
 
-    if (count % 2 == 0) {
+    if (_count % 2 == 0) {
       return const [Container()];
     } else {
       return [];
