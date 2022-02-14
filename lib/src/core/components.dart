@@ -10,6 +10,8 @@ mixin Renderable on Component {
   List<Component> render(final Context context);
 }
 
+// TODO: Implement CoreComponent.
+
 abstract class StatelessComponent extends Component with Renderable {
   const StatelessComponent() : super();
 }
