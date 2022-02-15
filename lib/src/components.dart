@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:dawn/src/engine.dart';
 
 abstract class Component {
-  const Component();
+  final String styles;
+
+  const Component({this.styles = ''});
 }
 
 mixin Renderable {
@@ -11,11 +13,11 @@ mixin Renderable {
 }
 
 abstract class StatelessComponent extends Component with Renderable {
-  const StatelessComponent() : super();
+  const StatelessComponent({final String styles = ''}) : super(styles: styles);
 }
 
 abstract class StatefulComponent extends Component {
-  const StatefulComponent() : super();
+  const StatefulComponent({final String styles = ''}) : super(styles: styles);
 
   State<StatefulComponent> createState();
 }
@@ -46,5 +48,5 @@ abstract class State<T extends StatefulComponent> with Renderable {
 class Text extends Component {
   final String value;
 
-  const Text(this.value);
+  const Text(this.value, {final String styles = ''}) : super(styles: styles);
 }

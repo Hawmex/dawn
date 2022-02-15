@@ -25,28 +25,36 @@ class Context {
 
 class Node {
   late final StreamSubscription<void>? _updateStreamSubscription;
-  late final Context _context;
-  late final State<StatefulComponent>? _state;
 
+  final State<StatefulComponent>? _state;
+  final Context _context;
+  final Element _element;
   final Component _component;
 
   final _childNodes = <Node>[];
-  final _element = document.createElement('div');
 
   bool _isActive = false;
 
-  Node(this._component, [final Node? parentNode]) {
+  Node(this._component, [final Node? parentNode])
+      : _context = Context(
+          parentNode == null
+              ? []
+              : [parentNode, ...parentNode._context.sequence],
+        ),
+        _state =
+            _component is StatefulComponent ? _component.createState() : null,
+        _element = _component is Text ? SpanElement() : DivElement() {
     final component = _component;
 
-    _context = Context(
-      parentNode == null ? [] : [parentNode, ...parentNode._context.sequence],
-    );
-
-    _state = component is StatefulComponent ? component.createState() : null
+    _state
       ?..component = component as StatefulComponent
       ..context = _context;
 
-    if (component is Text) _element.text = component.value;
+    _element.setAttribute('style', _component.styles);
+
+    if (_element is SpanElement) {
+      _element.text = (component as Text).value;
+    }
   }
 
   List<Node> _setupChildNodes(final List<Component> renderOutput) {

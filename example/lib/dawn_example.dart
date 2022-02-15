@@ -2,17 +2,35 @@ import 'dart:async';
 
 import 'package:dawn/dawn.dart';
 
-void main() => runApp(const App());
+void main() {
+  runApp(
+    const App(
+      styles: 'user-select: none',
+    ),
+  );
+}
 
 class App extends StatelessComponent {
-  const App() : super();
+  const App({final String styles = ''}) : super(styles: styles);
 
   @override
-  List<Component> render(final Context context) => const [HomePage()];
+  List<Component> render(final Context context) {
+    return const [
+      HomePage(
+        styles: 'display: grid;'
+            'gap: 16px;'
+            'background: #212121;'
+            'color: #ffffff;'
+            'font-family: Jost;'
+            'padding: 16px;'
+            'border-radius: 16px;',
+      )
+    ];
+  }
 }
 
 class HomePage extends StatefulComponent {
-  const HomePage() : super();
+  const HomePage({final String styles = ''}) : super(styles: styles);
 
   @override
   State<StatefulComponent> createState() => _HomePageState();
