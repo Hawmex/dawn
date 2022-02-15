@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:dawn/src/engine.dart';
+import 'package:dawn/src/styles.dart';
 
 abstract class Component {
-  final String styles;
+  final Styles styles;
 
-  const Component({this.styles = ''});
+  const Component({
+    final Styles? styles,
+  }) : styles = styles ?? const Styles([]);
 }
 
 mixin Renderable {
@@ -13,11 +16,11 @@ mixin Renderable {
 }
 
 abstract class StatelessComponent extends Component with Renderable {
-  const StatelessComponent({final String styles = ''}) : super(styles: styles);
+  const StatelessComponent() : super();
 }
 
 abstract class StatefulComponent extends Component {
-  const StatefulComponent({final String styles = ''}) : super(styles: styles);
+  const StatefulComponent() : super();
 
   State<StatefulComponent> createState();
 }
@@ -48,5 +51,17 @@ abstract class State<T extends StatefulComponent> with Renderable {
 class Text extends Component {
   final String value;
 
-  const Text(this.value, {final String styles = ''}) : super(styles: styles);
+  const Text(this.value, {final Styles? styles}) : super(styles: styles);
+}
+
+class Container extends Component with Renderable {
+  final List<Component> children;
+
+  const Container(
+    this.children, {
+    final Styles? styles,
+  }) : super(styles: styles);
+
+  @override
+  List<Component> render(final Context context) => children;
 }

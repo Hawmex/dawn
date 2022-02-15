@@ -5,6 +5,7 @@ import 'package:dawn/src/components.dart';
 
 void runApp(final Component app) {
   final node = Node(app);
+
   document.body!.append(node._element);
   node.initialize();
 }
@@ -50,7 +51,7 @@ class Node {
       ?..component = component as StatefulComponent
       ..context = _context;
 
-    _element.setAttribute('style', _component.styles);
+    _element.setAttribute('style', _component.styles.rules);
 
     if (_element is SpanElement) {
       _element.text = (component as Text).value;
@@ -122,8 +123,10 @@ class Node {
   void _initializeChildNodes() {
     final component = _component;
 
-    if (component is StatelessComponent) {
-      _childNodes.addAll(_setupChildNodes(component.render(_context)));
+    // TODO
+    if (component is Renderable) {
+      _childNodes
+          .addAll(_setupChildNodes((component as Renderable).render(_context)));
     } else if (_state != null) {
       _childNodes.addAll(_setupChildNodes(_state!.render(_context)));
     }
