@@ -6,7 +6,7 @@ abstract class Component {
   const Component();
 }
 
-mixin Renderable on Component {
+mixin Renderable {
   List<Component> render(final Context context);
 }
 
@@ -16,8 +16,18 @@ abstract class StatelessComponent extends Component with Renderable {
   const StatelessComponent() : super();
 }
 
-abstract class StatefulComponent extends Component with Renderable {
+abstract class StatefulComponent extends Component {
+  const StatefulComponent() : super();
+
+  State<StatefulComponent> createState();
+}
+
+abstract class State<T extends StatefulComponent> with Renderable {
+  late final T component;
+  late final Context context;
+
   final _updateController = StreamController<void>.broadcast();
+
   bool _isMounted = false;
 
   Stream<void> get updateStream => _updateController.stream;

@@ -8,11 +8,19 @@ class App extends StatelessComponent {
   const App() : super();
 
   @override
-  List<Component> render(final Context context) => [HomePage()];
+  List<Component> render(final Context context) => const [HomePage()];
 }
 
 class HomePage extends StatefulComponent {
+  const HomePage() : super();
+
+  @override
+  State<StatefulComponent> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   late Timer _timer;
+
   int _count = 0;
 
   void increment() => setState(() => _count += 1);
@@ -22,7 +30,7 @@ class HomePage extends StatefulComponent {
     super.initialize();
 
     _timer = Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(seconds: 2),
       (final timer) => increment(),
     );
   }
@@ -37,7 +45,7 @@ class HomePage extends StatefulComponent {
   List<Component> render(final Context context) {
     print(_count);
 
-    if (_count % 2 == 0) {
+    if (_count % 5 != 0) {
       return const [Container()];
     } else {
       return [];
@@ -45,12 +53,26 @@ class HomePage extends StatefulComponent {
   }
 }
 
-class Container extends StatelessComponent {
+class Container extends StatefulComponent {
   const Container() : super();
 
   @override
-  List<Component> render(final Context context) {
-    print('rendered container!');
-    return [];
+  State<StatefulComponent> createState() => _ContainerState();
+}
+
+class _ContainerState extends State<Container> {
+  @override
+  void initialize() {
+    super.initialize();
+    print('initialized container');
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print('disposed container');
+  }
+
+  @override
+  List<Component> render(final Context context) => [];
 }

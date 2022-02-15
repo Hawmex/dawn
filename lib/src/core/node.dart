@@ -4,51 +4,59 @@ import 'package:dawn/src/core/components.dart';
 import 'package:dawn/src/core/context.dart';
 
 class Node {
+  late final StreamSubscription<void>? _updateSubscription;
+
   final Component _component;
-  final Node? _parentNode;
+  final Context _context;
+  final State<StatefulComponent>? _state;
+
   final _childNodes = <Node>[];
-  StreamSubscription<void>? _updateSubscription;
 
-  Node(this._component, [this._parentNode]);
-
-  Context get context {
-    if (_parentNode == null) {
-      return const Context([]);
-    } else {
-      return Context([
-        _parentNode!._component,
-        ..._parentNode!.context.sequence,
-      ]);
-    }
+  Node(this._component, [final Node? parentNode])
+      : _context = Context(
+          parentNode == null
+              ? []
+              : [parentNode._component, ...parentNode._context.sequence],
+        ),
+        _state =
+            _component is StatefulComponent ? _component.createState() : null {
+    _state
+      ?..component = _component as StatefulComponent
+      ..context = _context;
   }
 
-  void _initializeComponent() {
-    final component = _component;
-    if (component is StatefulComponent) component.initialize();
+  void _initializeState() {
+    _state?.initialize();
+
+    _updateSubscription =
+        _state?.updateStream.listen((final _) => _stateDidUpdate());
   }
 
-  void _disposeComponent() {
-    final component = _component;
-    if (component is StatefulComponent) component.dispose();
+  void _stateDidMount() => _state?.didMount();
+
+  // TODO: Implement this function properly (with diffing).
+  void _stateDidUpdate() {
+    _disposeChildNodes();
+    _initializeChildNodes();
   }
 
-  void _addAllChildNodes() {
-    final component = _component;
+  void _stateWillUnmount() => _state?.willUnmount();
 
-    if (component is Renderable) {
-      final childComponents = component.render(context);
-
-      final childNodes = childComponents.map(
-        (final childComponent) => Node(childComponent, this),
-      );
-
-      _childNodes.addAll(childNodes);
-    }
+  void _disposeState() {
+    _state?.dispose();
+    _updateSubscription?.cancel();
   }
-
-  void _clearChildNodes() => _childNodes.clear();
 
   void _initializeChildNodes() {
+    final childComponents =
+        (_state ?? _component as StatelessComponent).render(_context);
+
+    final childNodes = childComponents
+        .map((final childComponent) => Node(childComponent, this))
+        .toList();
+
+    _childNodes.addAll(childNodes);
+
     for (final childNode in _childNodes) {
       childNode.initialize();
     }
@@ -58,44 +66,19 @@ class Node {
     for (final childNode in _childNodes) {
       childNode.dispose();
     }
-  }
 
-  void _componentDidMount() {
-    final component = _component;
-
-    if (component is StatefulComponent) {
-      final stream = component.updateStream;
-      _updateSubscription = stream.listen((final _) => _componentDidUpdate());
-      component.didMount();
-    }
-  }
-
-  void _componentWillUnmount() {
-    final component = _component;
-
-    if (component is StatefulComponent) {
-      component.willUnmount();
-      if (_updateSubscription != null) _updateSubscription!.cancel();
-    }
-  }
-
-  // TODO: Implement this function properly (with diffing).
-  void _componentDidUpdate() {
-    dispose();
-    initialize();
+    _childNodes.clear();
   }
 
   void initialize() {
-    _initializeComponent();
-    _addAllChildNodes();
+    _initializeState();
     _initializeChildNodes();
-    _componentDidMount();
+    _stateDidMount();
   }
 
   void dispose() {
-    _componentWillUnmount();
+    _stateWillUnmount();
     _disposeChildNodes();
-    _clearChildNodes();
-    _disposeComponent();
+    _disposeState();
   }
 }
