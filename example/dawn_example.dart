@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     super.initialize();
 
     _timer = Timer.periodic(
-      const Duration(seconds: 2),
+      const Duration(milliseconds: 500),
       (final timer) => increment(),
     );
   }
