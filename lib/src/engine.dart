@@ -1,30 +1,52 @@
 import 'dart:async';
+import 'dart:html';
 
-import 'package:dawn/src/core/components.dart';
-import 'package:dawn/src/core/context.dart';
+import 'package:dawn/src/components.dart';
+
+void runApp(final Component app) {
+  final node = Node(app);
+  document.body!.append(node._element);
+  node.initialize();
+}
+
+class Context {
+  final List<Node> _sequence;
+
+  const Context(this._sequence);
+
+  List<Node> get sequence => List.unmodifiable(_sequence);
+
+  T getParentOfExactType<T extends Component>() {
+    return sequence.firstWhere(
+      (final contextEntry) => contextEntry._component.runtimeType == T,
+    ) as T;
+  }
+}
 
 class Node {
   late final StreamSubscription<void>? _updateStreamSubscription;
+  late final Context _context;
+  late final State<StatefulComponent>? _state;
 
   final Component _component;
-  final Context _context;
-  final State<StatefulComponent>? _state;
 
   final _childNodes = <Node>[];
+  final _element = document.createElement('div');
 
   bool _isActive = false;
 
-  Node(this._component, [final Node? parentNode])
-      : _context = Context(
-          parentNode == null
-              ? []
-              : [parentNode._component, ...parentNode._context.sequence],
-        ),
-        _state =
-            _component is StatefulComponent ? _component.createState() : null {
-    _state
-      ?..component = _component as StatefulComponent
+  Node(this._component, [final Node? parentNode]) {
+    final component = _component;
+
+    _context = Context(
+      parentNode == null ? [] : [parentNode, ...parentNode._context.sequence],
+    );
+
+    _state = component is StatefulComponent ? component.createState() : null
+      ?..component = component as StatefulComponent
       ..context = _context;
+
+    if (component is Text) _element.text = component.value;
   }
 
   List<Node> _setupChildNodes(final List<Component> renderOutput) {
@@ -57,6 +79,7 @@ class Node {
 
       if (index < 0) {
         oldChildNode.dispose();
+        oldChildNode._element.remove();
       } else {
         searchIndex = index + 1;
         newChildNodes[index] = oldChildNode;
@@ -67,7 +90,17 @@ class Node {
     _childNodes.addAll(newChildNodes);
 
     for (final childNode in _childNodes) {
-      if (!childNode._isActive) childNode.initialize();
+      if (!childNode._isActive) {
+        final index = _childNodes.indexOf(childNode);
+
+        if (_element.children.length <= index) {
+          _element.append(childNode._element);
+        } else {
+          _element.insertBefore(childNode._element, _element.children[index]);
+        }
+
+        childNode.initialize();
+      }
     }
   }
 
@@ -79,13 +112,16 @@ class Node {
   }
 
   void _initializeChildNodes() {
-    final childNodes = _setupChildNodes(
-      (_state ?? _component as StatelessComponent).render(_context),
-    );
+    final component = _component;
 
-    _childNodes.addAll(childNodes);
+    if (component is StatelessComponent) {
+      _childNodes.addAll(_setupChildNodes(component.render(_context)));
+    } else if (_state != null) {
+      _childNodes.addAll(_setupChildNodes(_state!.render(_context)));
+    }
 
     for (final childNode in _childNodes) {
+      _element.append(childNode._element);
       childNode.initialize();
     }
   }
@@ -93,6 +129,7 @@ class Node {
   void _disposeChildNodes() {
     for (final childNode in _childNodes) {
       childNode.dispose();
+      childNode._element.remove();
     }
 
     _childNodes.clear();

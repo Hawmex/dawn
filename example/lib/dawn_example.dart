@@ -43,36 +43,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   List<Component> render(final Context context) {
-    print(_count);
-
-    if (_count % 5 != 0) {
-      return const [Container()];
-    } else {
-      return [];
-    }
+    return [
+      Text('Count: $_count'),
+      if (_count % 5 != 0) const Text('Hello World!'),
+      const Text('By Hawmex.'),
+    ];
   }
-}
-
-class Container extends StatefulComponent {
-  const Container() : super();
-
-  @override
-  State<StatefulComponent> createState() => _ContainerState();
-}
-
-class _ContainerState extends State<Container> {
-  @override
-  void initialize() {
-    super.initialize();
-    print('initialized container');
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print('disposed container');
-  }
-
-  @override
-  List<Component> render(final Context context) => [];
 }

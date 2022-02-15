@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dawn/src/core/context.dart';
+import 'package:dawn/src/engine.dart';
 
 abstract class Component {
   const Component();
@@ -9,8 +9,6 @@ abstract class Component {
 mixin Renderable {
   List<Component> render(final Context context);
 }
-
-// TODO: Implement CoreComponent.
 
 abstract class StatelessComponent extends Component with Renderable {
   const StatelessComponent() : super();
@@ -43,4 +41,10 @@ abstract class State<T extends StatefulComponent> with Renderable {
   void didUpdate() => _updateController.add(null);
   void willUnmount() {}
   void dispose() => _isMounted = false;
+}
+
+class Text extends Component {
+  final String value;
+
+  const Text(this.value);
 }

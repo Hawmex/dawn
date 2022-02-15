@@ -1,5 +1,4 @@
 library dawn;
 
-export 'src/core/app_runner.dart';
-export 'src/core/components.dart';
-export 'src/core/context.dart';
+export 'src/components.dart';
+export 'src/engine.dart' show Context, runApp;
