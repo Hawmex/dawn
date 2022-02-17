@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:dawn/dawn.dart';
 
-class Counter extends StatefulComponent {
+class Counter extends StatefulWidget {
   const Counter() : super();
 
   @override
-  State<StatefulComponent> createState() => _CounterState();
+  State<StatefulWidget> createState() => _CounterState();
 }
 
 class _CounterState extends State<Counter> {
@@ -31,5 +31,5 @@ class _CounterState extends State<Counter> {
   }
 
   @override
-  List<Component> render(final Context context) => [Text(count.toString())];
+  Widget build(final Context context) => Text(count.toString());
 }

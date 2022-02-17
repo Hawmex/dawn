@@ -3,11 +3,9 @@ class Styles {
 
   const Styles(this._rules);
 
-  String get rules {
-    if (_rules.isEmpty) {
-      return '';
-    } else {
-      return _rules.reduce((final sum, final rule) => '$sum; $rule');
-    }
-  }
+  const Styles.empty() : _rules = const [];
+
+  String get rules => _rules.isEmpty
+      ? ''
+      : _rules.reduce((final sum, final rule) => '$sum; $rule');
 }
