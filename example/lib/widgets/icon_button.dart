@@ -12,19 +12,10 @@ class IconButton extends StatefulWidget {
 }
 
 class _IconButtonState extends State<IconButton> {
-  String backgroundColorStyle = '';
+  bool isShowingHoverStyles = false;
 
-  void highlightBackground() {
-    setState(() {
-      backgroundColorStyle = 'background-color: rgba(255, 255, 255, 0.08)';
-    });
-  }
-
-  void removeBackground() {
-    setState(() {
-      backgroundColorStyle = '';
-    });
-  }
+  void showHoverStyles() => setState(() => isShowingHoverStyles = true);
+  void hideHoverStyles() => setState(() => isShowingHoverStyles = false);
 
   @override
   Widget build(final Context context) {
@@ -35,10 +26,14 @@ class _IconButtonState extends State<IconButton> {
         'padding: 8px',
         'border-radius: 50%',
         'cursor: pointer',
-        backgroundColorStyle,
+        'transition: all 200ms',
+        if (isShowingHoverStyles) ...[
+          'background-color: rgba(255, 255, 255, 0.08)',
+          'transition: all 250ms'
+        ],
       ]),
-      onPointerEnter: (final event) => highlightBackground(),
-      onPointerLeave: (final event) => removeBackground(),
+      onPointerEnter: [(final event) => showHoverStyles()],
+      onPointerLeave: [(final event) => hideHoverStyles()],
     );
   }
 }

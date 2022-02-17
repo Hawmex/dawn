@@ -50,11 +50,11 @@ abstract class State<T extends StatefulWidget> with Buildable {
 abstract class FrameworkWidget extends Widget {
   final Styles styles;
 
-  final EventListener? onPointerDown;
-  final EventListener? onPointerUp;
-  final EventListener? onPointerEnter;
-  final EventListener? onPointerLeave;
-  final EventListener? onPress;
+  final List<EventListener>? onPointerDown;
+  final List<EventListener>? onPointerUp;
+  final List<EventListener>? onPointerEnter;
+  final List<EventListener>? onPointerLeave;
+  final List<EventListener>? onPress;
 
   const FrameworkWidget({
     final Styles? styles,
@@ -72,11 +72,11 @@ class Text extends FrameworkWidget {
   const Text(
     this.value, {
     final Styles? styles,
-    final EventListener? onPointerDown,
-    final EventListener? onPointerUp,
-    final EventListener? onPointerEnter,
-    final EventListener? onPointerLeave,
-    final EventListener? onPress,
+    final List<EventListener>? onPointerDown,
+    final List<EventListener>? onPointerUp,
+    final List<EventListener>? onPointerEnter,
+    final List<EventListener>? onPointerLeave,
+    final List<EventListener>? onPress,
   }) : super(
           styles: styles,
           onPointerDown: onPointerDown,
@@ -93,11 +93,11 @@ class Container extends FrameworkWidget {
   const Container(
     this.children, {
     final Styles? styles,
-    final EventListener? onPointerDown,
-    final EventListener? onPointerUp,
-    final EventListener? onPointerEnter,
-    final EventListener? onPointerLeave,
-    final EventListener? onPress,
+    final List<EventListener>? onPointerDown,
+    final List<EventListener>? onPointerUp,
+    final List<EventListener>? onPointerEnter,
+    final List<EventListener>? onPointerLeave,
+    final List<EventListener>? onPress,
   }) : super(
           styles: styles,
           onPointerDown: onPointerDown,

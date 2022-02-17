@@ -30,31 +30,58 @@ class Node {
             : widget is Container
                 ? DivElement()
                 : null {
+    _setupState();
+    _setupElement();
+  }
+
+  void _setupState() {
     _state
       ?..widget = widget as StatefulWidget
       ..context = context;
+  }
 
+  void _setupElement() {
     _element
       ?..setAttribute('style', (widget as FrameworkWidget).styles.rules)
       ..addEventListener(
         'pointerdown',
-        (widget as FrameworkWidget).onPointerDown,
+        (final event) {
+          (widget as FrameworkWidget)
+              .onPointerDown
+              ?.forEach((final handler) => handler(event));
+        },
       )
       ..addEventListener(
         'pointerup',
-        (widget as FrameworkWidget).onPointerUp,
+        (final event) {
+          (widget as FrameworkWidget)
+              .onPointerUp
+              ?.forEach((final handler) => handler(event));
+        },
       )
       ..addEventListener(
         'pointerenter',
-        (widget as FrameworkWidget).onPointerEnter,
+        (final event) {
+          (widget as FrameworkWidget)
+              .onPointerEnter
+              ?.forEach((final handler) => handler(event));
+        },
       )
       ..addEventListener(
         'pointerleave',
-        (widget as FrameworkWidget).onPointerLeave,
+        (final event) {
+          (widget as FrameworkWidget)
+              .onPointerLeave
+              ?.forEach((final handler) => handler(event));
+        },
       )
       ..addEventListener(
         'click',
-        (widget as FrameworkWidget).onPress,
+        (final event) {
+          (widget as FrameworkWidget)
+              .onPress
+              ?.forEach((final handler) => handler(event));
+        },
       );
 
     if (_element is SpanElement) {
