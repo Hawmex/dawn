@@ -38,16 +38,16 @@ class _AppState extends State<App> {
   Widget build(final Context context) {
     return Container(
       [
-        TopBar(
+        const TopBar(
           leadingIcon: 'menu',
           title: 'اپ داون',
-          trailingBuilder: (final context) => const [IconButton('search')],
+          trailing: [IconButton('search')],
         ),
         Container(
           [
             const Text('ثانیه گذشته:'),
             const Counter(),
-            if (count % 5 == 0) const Text('مضرب پنج!'),
+            if (count % 5 == 0) ...const [Text('مضرب پنج!')],
           ],
           styles: const Styles([
             'margin: auto',

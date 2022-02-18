@@ -5,12 +5,12 @@ import 'icon_button.dart';
 class TopBar extends StatelessWidget {
   final String leadingIcon;
   final String title;
-  final List<Widget> Function(Context context)? trailingBuilder;
+  final List<Widget>? trailing;
 
   const TopBar({
     required this.leadingIcon,
     required this.title,
-    this.trailingBuilder,
+    this.trailing,
   }) : super();
 
   @override
@@ -36,7 +36,7 @@ class TopBar extends StatelessWidget {
           ]),
         ),
         Container(
-          trailingBuilder != null ? trailingBuilder!(context) : [],
+          trailing ?? [],
           styles: const Styles([
             'display: flex',
             'flex-flow: row',

@@ -7,23 +7,26 @@ import 'package:dawn/src/widgets.dart';
 class Node {
   late final StreamSubscription<void>? _updateListener;
 
-  final Widget widget;
   final Context context;
   final State<StatefulWidget>? _state;
   final Element? _element;
 
   final List<Node> _childNodes = [];
 
+  Widget _widget;
+
   bool _isActive = false;
 
   Node({
-    required this.widget,
+    required final Widget widget,
     final Node? parentNode,
-  })  : context = Context(
-          parentNode == null
-              ? []
-              : [parentNode, ...parentNode.context.sequence],
-        ),
+  })  : _widget = widget,
+        context = Context([
+          if (parentNode != null) ...[
+            parentNode,
+            ...parentNode.context.sequence
+          ]
+        ]),
         _state = widget is StatefulWidget ? widget.createState() : null,
         _element = widget is Text
             ? SpanElement()
@@ -34,19 +37,21 @@ class Node {
     _setupElement();
   }
 
+  Widget get widget => _widget;
+
   void _setupState() {
     _state
-      ?..widget = widget as StatefulWidget
+      ?..widget = _widget as StatefulWidget
       ..context = context;
   }
 
   void _setupElement() {
     _element
-      ?..setAttribute('style', (widget as FrameworkWidget).styles.rules)
+      ?..setAttribute('style', (_widget as FrameworkWidget).styles.rules)
       ..addEventListener(
         'pointerdown',
         (final event) {
-          (widget as FrameworkWidget)
+          (_widget as FrameworkWidget)
               .onPointerDown
               ?.forEach((final handler) => handler(event));
         },
@@ -54,7 +59,7 @@ class Node {
       ..addEventListener(
         'pointerup',
         (final event) {
-          (widget as FrameworkWidget)
+          (_widget as FrameworkWidget)
               .onPointerUp
               ?.forEach((final handler) => handler(event));
         },
@@ -62,7 +67,7 @@ class Node {
       ..addEventListener(
         'pointerenter',
         (final event) {
-          (widget as FrameworkWidget)
+          (_widget as FrameworkWidget)
               .onPointerEnter
               ?.forEach((final handler) => handler(event));
         },
@@ -70,7 +75,7 @@ class Node {
       ..addEventListener(
         'pointerleave',
         (final event) {
-          (widget as FrameworkWidget)
+          (_widget as FrameworkWidget)
               .onPointerLeave
               ?.forEach((final handler) => handler(event));
         },
@@ -78,14 +83,14 @@ class Node {
       ..addEventListener(
         'click',
         (final event) {
-          (widget as FrameworkWidget)
+          (_widget as FrameworkWidget)
               .onPress
               ?.forEach((final handler) => handler(event));
         },
       );
 
     if (_element is SpanElement) {
-      _element!.text = (widget as Text).value;
+      _element!.text = (_widget as Text).value;
     }
   }
 
@@ -93,9 +98,9 @@ class Node {
     if (childNode._element != null) {
       final contextWithSelf = [this, ...context.sequence];
 
-      if (contextWithSelf.any((final node) => node.widget is Container)) {
+      if (contextWithSelf.any((final node) => node._widget is Container)) {
         contextWithSelf
-            .firstWhere((final node) => node.widget is Container)
+            .firstWhere((final node) => node._widget is Container)
             ._element!
             .append(childNode._element!);
       } else {
@@ -108,12 +113,14 @@ class Node {
     required final Node oldNode,
     required final Node newNode,
   }) {
+    oldNode._widget = newNode._widget;
+
     oldNode._element!.setAttribute(
       'style',
-      (newNode.widget as Text).styles.rules,
+      (newNode._widget as Text).styles.rules,
     );
 
-    oldNode._element!.text = (newNode.widget as Text).value;
+    oldNode._element!.text = (newNode._widget as Text).value;
   }
 
   void _updateContainer({
@@ -122,7 +129,7 @@ class Node {
   }) {
     final oldChildNodes = oldNode._childNodes;
 
-    final newChildNodes = (newNode.widget as Container)
+    final newChildNodes = (newNode._widget as Container)
         .children
         .map((final child) => Node(widget: child, parentNode: newNode))
         .toList();
@@ -131,13 +138,14 @@ class Node {
 
     oldNode._element!.setAttribute(
       'style',
-      (newNode.widget as Container).styles.rules,
+      (newNode._widget as Container).styles.rules,
     );
 
     for (final oldChildNode in oldChildNodes) {
       final index = newChildNodes.indexWhere(
         (final newChildNode) =>
-            newChildNode.widget.runtimeType == oldChildNode.widget.runtimeType,
+            newChildNode._widget.runtimeType ==
+            oldChildNode._widget.runtimeType,
         searchIndex,
       );
 
@@ -149,18 +157,19 @@ class Node {
 
         searchIndex = index + 1;
 
-        if (oldChildNode.widget is Container ||
-            oldChildNode.widget is Text ||
-            newChildNode.widget == oldChildNode.widget) {
-          if (oldChildNode.widget is Container) {
+        if (oldChildNode._widget is Container ||
+            oldChildNode._widget is Text ||
+            newChildNode._widget == oldChildNode._widget) {
+          if (oldChildNode._widget is Container) {
             _updateContainer(
               oldNode: oldChildNode,
               newNode: newChildNodes[index],
             );
-          } else if (oldChildNode.widget is Text) {
+          } else if (oldChildNode._widget is Text) {
             _updateText(oldNode: oldChildNode, newNode: newChildNodes[index]);
           }
 
+          oldChildNode._widget = newChildNode._widget;
           newChildNodes[index] = oldChildNode;
         }
       }
@@ -193,11 +202,12 @@ class Node {
     final oldChildNode = _childNodes.single;
     final newChildNode = Node(widget: _state!.build(context), parentNode: this);
 
-    if (newChildNode.widget is Container && oldChildNode.widget is Container) {
+    if (newChildNode._widget is Container &&
+        oldChildNode._widget is Container) {
       _updateContainer(oldNode: oldChildNode, newNode: newChildNode);
-    } else if (newChildNode.widget is Text && oldChildNode.widget is Text) {
+    } else if (newChildNode._widget is Text && oldChildNode._widget is Text) {
       _updateText(oldNode: oldChildNode, newNode: newChildNode);
-    } else if (newChildNode.widget != oldChildNode.widget) {
+    } else if (newChildNode._widget != oldChildNode._widget) {
       oldChildNode.dispose();
       oldChildNode._element?.remove();
       _childNodes[0] = newChildNode;
@@ -207,17 +217,17 @@ class Node {
   }
 
   void _initializeChildNodes() {
-    if (widget is StatelessWidget) {
+    if (_widget is StatelessWidget) {
       _childNodes.add(
         Node(
-          widget: (widget as StatelessWidget).build(context),
+          widget: (_widget as StatelessWidget).build(context),
           parentNode: this,
         ),
       );
     } else if (_state != null) {
       _childNodes.add(Node(widget: _state!.build(context), parentNode: this));
-    } else if (widget is Container) {
-      _childNodes.addAll((widget as Container)
+    } else if (_widget is Container) {
+      _childNodes.addAll((_widget as Container)
           .children
           .map((final child) => Node(widget: child, parentNode: this)));
     }
