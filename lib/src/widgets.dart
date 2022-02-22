@@ -5,7 +5,6 @@ import 'package:dawn/src/context.dart';
 import 'package:dawn/src/styles.dart';
 
 typedef EventListener = void Function(Event event);
-typedef EventListeners = List<EventListener>;
 
 abstract class Widget {
   const Widget();
@@ -51,11 +50,11 @@ abstract class State<T extends StatefulWidget> with Buildable {
 abstract class FrameworkWidget extends Widget {
   final Styles styles;
 
-  final EventListeners? onPointerDown;
-  final EventListeners? onPointerUp;
-  final EventListeners? onPointerEnter;
-  final EventListeners? onPointerLeave;
-  final EventListeners? onPress;
+  final EventListener? onPointerDown;
+  final EventListener? onPointerUp;
+  final EventListener? onPointerEnter;
+  final EventListener? onPointerLeave;
+  final EventListener? onPress;
 
   const FrameworkWidget({
     final Styles? styles,
@@ -73,11 +72,11 @@ class Text extends FrameworkWidget {
   const Text(
     this.value, {
     final Styles? styles,
-    final EventListeners? onPointerDown,
-    final EventListeners? onPointerUp,
-    final EventListeners? onPointerEnter,
-    final EventListeners? onPointerLeave,
-    final EventListeners? onPress,
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
   }) : super(
           styles: styles,
           onPointerDown: onPointerDown,
@@ -94,11 +93,11 @@ class Container extends FrameworkWidget {
   const Container(
     this.children, {
     final Styles? styles,
-    final EventListeners? onPointerDown,
-    final EventListeners? onPointerUp,
-    final EventListeners? onPointerEnter,
-    final EventListeners? onPointerLeave,
-    final EventListeners? onPress,
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
   }) : super(
           styles: styles,
           onPointerDown: onPointerDown,

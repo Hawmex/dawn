@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:dawn/dawn.dart';
 
-import 'counter.dart';
-import 'icon_button.dart';
-import 'top_bar.dart';
+import 'widgets/icon_button.dart';
+import 'widgets/top_bar.dart';
+
+void main() => runApp(const App());
 
 class App extends StatefulWidget {
   const App() : super();
@@ -14,40 +13,24 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  late final Timer timer;
-
   int count = 0;
 
-  @override
-  void initialize() {
-    super.initialize();
-
-    timer = Timer.periodic(
-      const Duration(seconds: 1),
-      (final timer) => setState(() => count += 1),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
-  }
+  void increment() => setState(() => count += 1);
 
   @override
   Widget build(final Context context) {
     return Container(
       [
-        const TopBar(
+        TopBar(
           leadingIcon: 'menu',
           title: 'اپ داون',
-          trailing: [IconButton('search')],
+          trailing: [IconButton('add', onPress: (final event) => increment())],
         ),
         Container(
           [
-            const Text('ثانیه گذشته:'),
-            const Counter(),
-            if (count % 5 == 0) ...const [Text('مضرب پنج!')],
+            const Text('تعداد ضربات:'),
+            Text(count.toString()),
+            if (count > 0 && count % 5 == 0) ...const [Text('هوپ!')],
           ],
           styles: const Styles([
             'margin: auto',

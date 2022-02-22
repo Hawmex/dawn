@@ -4,8 +4,9 @@ import 'icon.dart';
 
 class IconButton extends StatefulWidget {
   final String icon;
+  final EventListener? onPress;
 
-  const IconButton(this.icon) : super();
+  const IconButton(this.icon, {this.onPress}) : super();
 
   @override
   State<StatefulWidget> createState() => _IconButtonState();
@@ -32,8 +33,9 @@ class _IconButtonState extends State<IconButton> {
           'transition: all 250ms'
         ],
       ]),
-      onPointerEnter: [(final event) => showHoverStyles()],
-      onPointerLeave: [(final event) => hideHoverStyles()],
+      onPointerEnter: (final event) => showHoverStyles(),
+      onPointerLeave: (final event) => hideHoverStyles(),
+      onPress: widget.onPress,
     );
   }
 }

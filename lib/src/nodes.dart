@@ -139,48 +139,20 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     }
   }
 
-  void initializeElement() {
-    _element.setAttribute('style', widget.styles.rules);
+  void initializeElement() => _element
+    ..setAttribute('style', widget.styles.rules)
+    ..addEventListener('pointerdown', widget.onPointerDown)
+    ..addEventListener('pointerup', widget.onPointerUp)
+    ..addEventListener('pointerenter', widget.onPointerEnter)
+    ..addEventListener('pointerleave', widget.onPointerLeave)
+    ..addEventListener('click', widget.onPress);
 
-    widget
-      ..onPointerDown?.forEach(
-        (final listener) => _element.addEventListener('pointerdown', listener),
-      )
-      ..onPointerUp?.forEach(
-        (final listener) => _element.addEventListener('pointerup', listener),
-      )
-      ..onPointerEnter?.forEach(
-        (final listener) => _element.addEventListener('pointerenter', listener),
-      )
-      ..onPointerLeave?.forEach(
-        (final listener) => _element.addEventListener('pointerleave', listener),
-      )
-      ..onPress?.forEach(
-        (final listener) => _element.addEventListener('click', listener),
-      );
-  }
-
-  void disposeElement() {
-    widget
-      ..onPointerDown?.forEach(
-        (final listener) =>
-            _element.removeEventListener('pointerdown', listener),
-      )
-      ..onPointerUp?.forEach(
-        (final listener) => _element.removeEventListener('pointerup', listener),
-      )
-      ..onPointerEnter?.forEach(
-        (final listener) =>
-            _element.removeEventListener('pointerenter', listener),
-      )
-      ..onPointerLeave?.forEach(
-        (final listener) =>
-            _element.removeEventListener('pointerleave', listener),
-      )
-      ..onPress?.forEach(
-        (final listener) => _element.removeEventListener('click', listener),
-      );
-  }
+  void disposeElement() => _element
+    ..removeEventListener('pointerdown', widget.onPointerDown)
+    ..removeEventListener('pointerup', widget.onPointerUp)
+    ..removeEventListener('pointerenter', widget.onPointerEnter)
+    ..removeEventListener('pointerleave', widget.onPointerLeave)
+    ..removeEventListener('click', widget.onPress);
 
   void willWidgetChange() => disposeElement();
   void onWidgetChange() => initializeElement();
@@ -276,11 +248,9 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
         if (newChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
             oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement>) {
           oldChildNode.setWidget(newChildNode.widget);
-
-          newChildNodes[index] = oldChildNode;
-        } else if (newChildNode.widget == oldChildNode.widget) {
-          newChildNodes[index] = oldChildNode;
         }
+
+        newChildNodes[index] = oldChildNode;
       }
     }
 
