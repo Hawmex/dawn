@@ -35,7 +35,7 @@ class AppState extends State<App> {
             Container(
               [
                 Text('تعداد ضربات: $count'),
-                if (count > 0 && count % 5 == 0) ...const [Text('هوپ!')],
+                if (count > 0 && count % 5 == 0) const Text('هوپ!'),
               ],
               styles: const Styles([
                 'display: flex',

@@ -4,7 +4,9 @@ class Styles {
   const Styles(this._rules);
   const Styles.empty() : _rules = const [];
 
-  String get rules => _rules.isEmpty
+  List<String> get rules => List.unmodifiable(_rules);
+
+  String get rulesString => rules.isEmpty
       ? ''
-      : _rules.reduce((final sum, final rule) => '$sum; $rule');
+      : rules.reduce((final sum, final rule) => '$sum; $rule');
 }

@@ -142,7 +142,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
   }
 
   void initializeElement() => _element
-    ..setAttribute('style', widget.styles.rules)
+    ..setAttribute('style', widget.styles.rulesString)
     ..addEventListener('pointerdown', widget.onPointerDown)
     ..addEventListener('pointerup', widget.onPointerUp)
     ..addEventListener('pointerenter', widget.onPointerEnter)
@@ -256,14 +256,19 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
       } else {
         final newChildNode = newChildNodes[index];
 
-        searchIndex = index + 1;
-
-        if (newChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
+        if (newChildNode.widget == oldChildNode.widget) {
+          newChildNodes[index] = oldChildNode;
+          searchIndex = index + 1;
+        } else if (newChildNode
+                is FrameworkNode<FrameworkWidget, HtmlElement> &&
             oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement>) {
           oldChildNode.setWidget(newChildNode.widget);
-        }
 
-        newChildNodes[index] = oldChildNode;
+          newChildNodes[index] = oldChildNode;
+          searchIndex = index + 1;
+        } else {
+          oldChildNode.dispose();
+        }
       }
     }
 

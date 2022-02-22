@@ -22,6 +22,9 @@ class _IconButtonState extends State<IconButton> {
   Widget build(final Context context) {
     return Container(
       [Icon(widget.icon)],
+      onPress: widget.onPress,
+      onPointerEnter: (final event) => showHoverStyles(),
+      onPointerLeave: (final event) => hideHoverStyles(),
       styles: Styles([
         'display: flex',
         'padding: 8px',
@@ -34,9 +37,6 @@ class _IconButtonState extends State<IconButton> {
           'transition: all 250ms'
         ],
       ]),
-      onPointerEnter: (final event) => showHoverStyles(),
-      onPointerLeave: (final event) => hideHoverStyles(),
-      onPress: widget.onPress,
     );
   }
 }
