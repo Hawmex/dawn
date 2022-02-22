@@ -5,6 +5,7 @@ import 'package:dawn/src/context.dart';
 import 'package:dawn/src/styles.dart';
 
 typedef EventListener = void Function(Event event);
+typedef EventListeners = List<EventListener>;
 
 abstract class Widget {
   const Widget();
@@ -25,12 +26,12 @@ abstract class StatefulWidget extends Widget {
 }
 
 abstract class State<T extends StatefulWidget> with Buildable {
-  late final T widget;
-  late final Context context;
-
   final _updateController = StreamController<void>.broadcast();
 
   bool _isMounted = false;
+
+  late final T widget;
+  late final Context context;
 
   Stream<void> get updateStream => _updateController.stream;
   bool get isMounted => _isMounted;
@@ -50,11 +51,11 @@ abstract class State<T extends StatefulWidget> with Buildable {
 abstract class FrameworkWidget extends Widget {
   final Styles styles;
 
-  final List<EventListener>? onPointerDown;
-  final List<EventListener>? onPointerUp;
-  final List<EventListener>? onPointerEnter;
-  final List<EventListener>? onPointerLeave;
-  final List<EventListener>? onPress;
+  final EventListeners? onPointerDown;
+  final EventListeners? onPointerUp;
+  final EventListeners? onPointerEnter;
+  final EventListeners? onPointerLeave;
+  final EventListeners? onPress;
 
   const FrameworkWidget({
     final Styles? styles,
@@ -72,11 +73,11 @@ class Text extends FrameworkWidget {
   const Text(
     this.value, {
     final Styles? styles,
-    final List<EventListener>? onPointerDown,
-    final List<EventListener>? onPointerUp,
-    final List<EventListener>? onPointerEnter,
-    final List<EventListener>? onPointerLeave,
-    final List<EventListener>? onPress,
+    final EventListeners? onPointerDown,
+    final EventListeners? onPointerUp,
+    final EventListeners? onPointerEnter,
+    final EventListeners? onPointerLeave,
+    final EventListeners? onPress,
   }) : super(
           styles: styles,
           onPointerDown: onPointerDown,
@@ -93,11 +94,11 @@ class Container extends FrameworkWidget {
   const Container(
     this.children, {
     final Styles? styles,
-    final List<EventListener>? onPointerDown,
-    final List<EventListener>? onPointerUp,
-    final List<EventListener>? onPointerEnter,
-    final List<EventListener>? onPointerLeave,
-    final List<EventListener>? onPress,
+    final EventListeners? onPointerDown,
+    final EventListeners? onPointerUp,
+    final EventListeners? onPointerEnter,
+    final EventListeners? onPointerLeave,
+    final EventListeners? onPress,
   }) : super(
           styles: styles,
           onPointerDown: onPointerDown,
