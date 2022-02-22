@@ -28,6 +28,7 @@ class _IconButtonState extends State<IconButton> {
         'border-radius: 50%',
         'cursor: pointer',
         'transition: all 200ms',
+        '-webkit-tap-highlight-color: transparent',
         if (isShowingHoverStyles) ...[
           'background-color: rgba(255, 255, 255, 0.08)',
           'transition: all 250ms'

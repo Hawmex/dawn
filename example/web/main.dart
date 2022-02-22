@@ -9,10 +9,10 @@ class App extends StatefulWidget {
   const App() : super();
 
   @override
-  State<StatefulWidget> createState() => _AppState();
+  State<StatefulWidget> createState() => AppState();
 }
 
-class _AppState extends State<App> {
+class AppState extends State<App> {
   int count = 0;
 
   void increment() => setState(() => count += 1);
@@ -29,13 +29,12 @@ class _AppState extends State<App> {
         Container(
           [
             Image(
-              'https://picsum.photos/id/$count/800/450',
-              styles: const Styles(['border-radius: 16px']),
+              'https://picsum.photos/id/${count ~/ 5}/800/450',
+              styles: const Styles(['border-radius: 16px', 'max-width: 100%']),
             ),
             Container(
               [
-                const Text('تعداد ضربات:'),
-                Text(count.toString()),
+                Text('تعداد ضربات: $count'),
                 if (count > 0 && count % 5 == 0) ...const [Text('هوپ!')],
               ],
               styles: const Styles([
@@ -51,6 +50,7 @@ class _AppState extends State<App> {
             'flex-flow: column',
             'align-items: center',
             'gap: 16px',
+            'padding: 16px'
           ]),
         ),
       ],
