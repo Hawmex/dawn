@@ -13,6 +13,8 @@ Node<Widget> createNode(final Widget widget, {final Node<Widget>? parentNode}) {
     return StatefulNode(widget, parentNode: parentNode);
   } else if (widget is Text) {
     return TextNode(widget, parentNode: parentNode);
+  } else if (widget is Image) {
+    return ImageNode(widget, parentNode: parentNode);
   } else if (widget is Container) {
     return ContainerNode(widget, parentNode: parentNode);
   } else {
@@ -206,6 +208,17 @@ class TextNode extends FrameworkNode<Text, SpanElement> {
   void initializeElement() {
     super.initializeElement();
     _element.text = widget.value;
+  }
+}
+
+class ImageNode extends FrameworkNode<Image, ImageElement> {
+  ImageNode(final Image widget, {final Node<Widget>? parentNode})
+      : super(widget, element: ImageElement(), parentNode: parentNode);
+
+  @override
+  void initializeElement() {
+    super.initializeElement();
+    _element.src = widget.source;
   }
 }
 

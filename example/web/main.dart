@@ -28,15 +28,29 @@ class _AppState extends State<App> {
         ),
         Container(
           [
-            const Text('تعداد ضربات:'),
-            Text(count.toString()),
-            if (count > 0 && count % 5 == 0) ...const [Text('هوپ!')],
+            Image(
+              'https://picsum.photos/id/$count/800/450',
+              styles: const Styles(['border-radius: 16px']),
+            ),
+            Container(
+              [
+                const Text('تعداد ضربات:'),
+                Text(count.toString()),
+                if (count > 0 && count % 5 == 0) ...const [Text('هوپ!')],
+              ],
+              styles: const Styles([
+                'display: flex',
+                'flex-flow: column',
+                'align-items: center',
+              ]),
+            )
           ],
           styles: const Styles([
             'margin: auto',
             'display: flex',
             'flex-flow: column',
-            'align-items: center'
+            'align-items: center',
+            'gap: 16px',
           ]),
         ),
       ],

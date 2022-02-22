@@ -1,6 +1,5 @@
 library dawn;
 
-// TODO: Add an image framework widget.
 // TODO: Add an input framework widget.
 
 export 'src/app_runner.dart';

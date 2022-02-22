@@ -107,3 +107,24 @@ class Container extends FrameworkWidget {
           onPress: onPress,
         );
 }
+
+class Image extends FrameworkWidget {
+  final String source;
+
+  const Image(
+    this.source, {
+    final Styles? styles,
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+  }) : super(
+          styles: styles,
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+        );
+}
