@@ -1,6 +1,5 @@
 library dawn;
 
-// TODO: Refactor the entire project.
 // TODO: Add an image framework widget.
 // TODO: Add an input framework widget.
 
