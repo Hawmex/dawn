@@ -12,6 +12,6 @@ class Context {
   Sequence get sequence => List.unmodifiable(_sequence);
 
   T getParentWidgetOfExactType<T extends Widget>() =>
-      _sequence.firstWhere((final node) => node.widget.runtimeType == T).widget
+      sequence.firstWhere((final node) => node.widget.runtimeType == T).widget
           as T;
 }

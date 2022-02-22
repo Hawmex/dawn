@@ -4,6 +4,8 @@ import 'dart:html';
 import 'package:dawn/src/context.dart';
 import 'package:dawn/src/widgets.dart';
 
+typedef ChildNodes = List<Node<Widget>>;
+
 Node<Widget> createNode(final Widget widget, {final Node<Widget>? parentNode}) {
   if (widget is StatelessWidget) {
     return StatelessNode(widget, parentNode: parentNode);
@@ -23,15 +25,17 @@ abstract class Node<T extends Widget> {
 
   final Context context;
 
-  bool isInitialized = false;
+  bool _isInitialized = false;
 
   Node({final Node<Widget>? parentNode})
       : context = parentNode != null
             ? Context([parentNode, ...parentNode.context.sequence])
             : const Context.empty();
 
-  void initialize() => isInitialized = true;
-  void dispose() => isInitialized = false;
+  bool get isInitialized => _isInitialized;
+
+  void initialize() => _isInitialized = true;
+  void dispose() => _isInitialized = false;
 }
 
 class StatelessNode extends Node<StatelessWidget> {
@@ -60,21 +64,23 @@ class StatefulNode extends Node<StatefulWidget> {
   @override
   final StatefulWidget widget;
 
-  late final StreamSubscription<void> updateStreamSubscription;
+  late final StreamSubscription<void> _updateStreamSubscription;
 
-  late final State<StatefulWidget> state = widget.createState()
+  late final State<StatefulWidget> _state = widget.createState()
     ..widget = widget
     ..context = context;
 
-  late Node<Widget> childNode =
-      createNode(state.build(context), parentNode: this);
+  late Node<Widget> _childNode =
+      createNode(_state.build(context), parentNode: this);
 
   StatefulNode(this.widget, {final Node<Widget>? parentNode})
       : super(parentNode: parentNode);
 
+  Node<Widget> get childNode => _childNode;
+
   void stateDidUpdate() {
     final oldChildNode = childNode;
-    final newChildNode = createNode(state.build(context), parentNode: this);
+    final newChildNode = createNode(_state.build(context), parentNode: this);
 
     if (newChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
         oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
@@ -82,71 +88,75 @@ class StatefulNode extends Node<StatefulWidget> {
       oldChildNode.setWidget(newChildNode.widget);
     } else if (newChildNode.widget != oldChildNode.widget) {
       oldChildNode.dispose();
-      childNode = newChildNode..initialize();
+      _childNode = newChildNode..initialize();
     }
   }
 
   @override
   void initialize() {
     super.initialize();
-    state.initialize();
+    _state.initialize();
     childNode.initialize();
 
-    updateStreamSubscription =
-        state.updateStream.listen((final event) => stateDidUpdate());
+    _updateStreamSubscription =
+        _state.updateStream.listen((final event) => stateDidUpdate());
 
-    state.didMount();
+    _state.didMount();
   }
 
   @override
   void dispose() {
-    state.willUnmount();
-    updateStreamSubscription.cancel();
+    _state.willUnmount();
+    _updateStreamSubscription.cancel();
     childNode.dispose();
-    state.dispose();
+    _state.dispose();
     super.dispose();
   }
 }
 
 abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     extends Node<T> {
-  @override
-  T widget;
+  final U _element;
 
-  U element;
+  T _widget;
 
   FrameworkNode(
-    this.widget, {
-    required this.element,
+    final T widget, {
+    required final U element,
     final Node<Widget>? parentNode,
-  }) : super(parentNode: parentNode);
+  })  : _widget = widget,
+        _element = element,
+        super(parentNode: parentNode);
+
+  @override
+  T get widget => _widget;
 
   void setWidget(final T newWidget) {
     if (widget != newWidget) {
       willWidgetChange();
-      widget = newWidget;
+      _widget = newWidget;
       onWidgetChange();
     }
   }
 
   void initializeElement() {
-    element.setAttribute('style', widget.styles.rules);
+    _element.setAttribute('style', widget.styles.rules);
 
     widget
       ..onPointerDown?.forEach(
-        (final listener) => element.addEventListener('pointerdown', listener),
+        (final listener) => _element.addEventListener('pointerdown', listener),
       )
       ..onPointerUp?.forEach(
-        (final listener) => element.addEventListener('pointerup', listener),
+        (final listener) => _element.addEventListener('pointerup', listener),
       )
       ..onPointerEnter?.forEach(
-        (final listener) => element.addEventListener('pointerenter', listener),
+        (final listener) => _element.addEventListener('pointerenter', listener),
       )
       ..onPointerLeave?.forEach(
-        (final listener) => element.addEventListener('pointerleave', listener),
+        (final listener) => _element.addEventListener('pointerleave', listener),
       )
       ..onPress?.forEach(
-        (final listener) => element.addEventListener('click', listener),
+        (final listener) => _element.addEventListener('click', listener),
       );
   }
 
@@ -154,21 +164,21 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     widget
       ..onPointerDown?.forEach(
         (final listener) =>
-            element.removeEventListener('pointerdown', listener),
+            _element.removeEventListener('pointerdown', listener),
       )
       ..onPointerUp?.forEach(
-        (final listener) => element.removeEventListener('pointerup', listener),
+        (final listener) => _element.removeEventListener('pointerup', listener),
       )
       ..onPointerEnter?.forEach(
         (final listener) =>
-            element.removeEventListener('pointerenter', listener),
+            _element.removeEventListener('pointerenter', listener),
       )
       ..onPointerLeave?.forEach(
         (final listener) =>
-            element.removeEventListener('pointerleave', listener),
+            _element.removeEventListener('pointerleave', listener),
       )
       ..onPress?.forEach(
-        (final listener) => element.removeEventListener('click', listener),
+        (final listener) => _element.removeEventListener('click', listener),
       );
   }
 
@@ -183,7 +193,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
 
     final parentElement = parentContainerNodes.isEmpty
         ? document.body!
-        : parentContainerNodes.first.element;
+        : parentContainerNodes.first._element;
 
     late final int index;
 
@@ -200,9 +210,9 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     }
 
     if (parentElement.children.length <= index) {
-      parentElement.append(element);
+      parentElement.append(_element);
     } else {
-      parentElement.insertBefore(element, parentElement.children[index]);
+      parentElement.insertBefore(_element, parentElement.children[index]);
     }
 
     initializeElement();
@@ -211,7 +221,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
   @override
   void dispose() {
     disposeElement();
-    element.remove();
+    _element.remove();
     super.dispose();
   }
 }
@@ -223,17 +233,19 @@ class TextNode extends FrameworkNode<Text, SpanElement> {
   @override
   void initializeElement() {
     super.initializeElement();
-    element.text = widget.value;
+    _element.text = widget.value;
   }
 }
 
 class ContainerNode extends FrameworkNode<Container, DivElement> {
-  late List<Node<Widget>> childNodes = widget.children
+  late ChildNodes _childNodes = widget.children
       .map((final child) => createNode(child, parentNode: this))
       .toList();
 
   ContainerNode(final Container widget, {final Node<Widget>? parentNode})
       : super(widget, element: DivElement(), parentNode: parentNode);
+
+  ChildNodes get childNodes => List.unmodifiable(_childNodes);
 
   @override
   void onWidgetChange() {
@@ -272,7 +284,7 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
       }
     }
 
-    childNodes = newChildNodes;
+    _childNodes = newChildNodes;
 
     for (final childNode in childNodes) {
       if (!childNode.isInitialized) childNode.initialize();
