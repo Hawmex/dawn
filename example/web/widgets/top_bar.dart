@@ -7,11 +7,8 @@ class TopBar extends StatelessWidget {
   final String title;
   final List<Widget>? trailing;
 
-  const TopBar({
-    required this.leadingIcon,
-    required this.title,
-    this.trailing,
-  }) : super();
+  const TopBar({required this.leadingIcon, required this.title, this.trailing})
+      : super();
 
   @override
   Widget build(final Context context) {
