@@ -9,10 +9,10 @@ class IconButton extends StatefulWidget {
   const IconButton(this.icon, {this.onPress}) : super();
 
   @override
-  State<StatefulWidget> createState() => _IconButtonState();
+  State<StatefulWidget> createState() => IconButtonState();
 }
 
-class _IconButtonState extends State<IconButton> {
+class IconButtonState extends State<IconButton> {
   bool isShowingHoverStyles = false;
 
   void showHoverStyles() => setState(() => isShowingHoverStyles = true);
