@@ -22,7 +22,7 @@ class AppState extends State<App> {
     return Container(
       [
         TopBar(
-          leadingIcon: 'menu',
+          leading: const IconButton('menu'),
           title: 'اپ داون',
           trailing: [IconButton('add', onPress: (final event) => increment())],
         ),
@@ -45,12 +45,12 @@ class AppState extends State<App> {
             )
           ],
           styles: const Styles([
-            'margin: auto',
             'display: flex',
             'flex-flow: column',
             'align-items: center',
             'gap: 16px',
-            'padding: 16px'
+            'padding: 16px',
+            'justify-content: center',
           ]),
         ),
       ],
@@ -59,8 +59,8 @@ class AppState extends State<App> {
         'font-family: Dana',
         'direction: rtl',
         'height: 100vh',
-        'display: flex',
-        'flex-flow: column',
+        'display: grid',
+        'grid-template-rows: max-content 1fr',
       ]),
     );
   }

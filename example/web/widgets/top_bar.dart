@@ -1,14 +1,24 @@
+import 'dart:html';
+
 import 'package:dawn/dawn.dart';
 
 import 'icon_button.dart';
 
 class TopBar extends StatelessWidget {
-  final String leadingIcon;
+  final Widget leading;
   final String title;
   final List<Widget>? trailing;
 
-  const TopBar({required this.leadingIcon, required this.title, this.trailing})
-      : super();
+  TopBar({
+    final Widget? leading,
+    required this.title,
+    this.trailing,
+  })  : leading = leading ??
+            IconButton(
+              'arrow_forward',
+              onPress: (final event) => window.history.back(),
+            ),
+        super();
 
   @override
   Widget build(final Context context) {
@@ -16,7 +26,7 @@ class TopBar extends StatelessWidget {
       [
         Container(
           [
-            IconButton(leadingIcon),
+            leading,
             Text(
               title,
               styles: const Styles([
@@ -46,7 +56,7 @@ class TopBar extends StatelessWidget {
         'flex-flow: row',
         'padding: 8px',
         'gap: 8px',
-        'background: #212121',
+        'background: #121212',
         'color: #ffffff',
         'justify-content: space-between',
       ]),
