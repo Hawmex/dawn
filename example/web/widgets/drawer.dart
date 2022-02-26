@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:dawn/dawn.dart';
 
-import 'icon.dart';
+import 'theme.dart';
 
 final _drawerState = DrawerState();
 
@@ -31,6 +31,8 @@ class DrawerState extends State<Drawer> {
 
   @override
   Widget build(final Context context) {
+    final theme = Theme.of(context);
+
     return Container(
       [
         Container(
@@ -43,12 +45,11 @@ class DrawerState extends State<Drawer> {
             'height: 100%',
             'left: 0px',
             'top: 0px',
-            'background-color: #000000',
-            'opacity: 0',
+            'background-color: ${theme.onBackground.copyWith(alpha: 0).hexString}',
             'visibility: hidden',
             'transition: all 200ms',
             if (isOpen) ...[
-              'opacity: 0.16',
+              'background: ${theme.onBackground.copyWith(alpha: 40).hexString}',
               'visibility: visible',
               'transition: all 250ms',
             ]
@@ -91,7 +92,8 @@ class DrawerState extends State<Drawer> {
               'width: 256px',
             'display: flex',
             'flex-flow: column',
-            'background-color: #ffffff',
+            'color: ${theme.onSurface.hexString}',
+            'background-color: ${theme.surface.hexString}',
             'pointer-events: all',
             'transform: translateX(100%)',
             'transition: transform 200ms',
@@ -109,53 +111,6 @@ class DrawerState extends State<Drawer> {
         'width: 100vw',
         'height: 100vh',
         'pointer-events: none',
-      ]),
-    );
-  }
-}
-
-class DrawerButton extends StatefulWidget {
-  final String icon;
-  final String text;
-  final EventListener? onPress;
-
-  const DrawerButton({required this.icon, required this.text, this.onPress})
-      : super();
-
-  @override
-  State<StatefulWidget> createState() => DrawerButtonState();
-}
-
-class DrawerButtonState extends State<DrawerButton> {
-  bool isShowingHoverStyles = false;
-
-  void showHoverStyles() => setState(() => isShowingHoverStyles = true);
-  void hideHoverStyles() => setState(() => isShowingHoverStyles = false);
-
-  @override
-  Widget build(final Context context) {
-    return Container(
-      [
-        Icon(widget.icon),
-        Text(
-          widget.text,
-          styles: const Styles(['font-weight: 500']),
-        )
-      ],
-      onPress: widget.onPress,
-      onPointerEnter: (final event) => showHoverStyles(),
-      onPointerLeave: (final event) => hideHoverStyles(),
-      styles: Styles([
-        'display: flex',
-        'padding: 8px',
-        'gap: 24px',
-        'border-radius: 8px',
-        'cursor: pointer',
-        'transition: background-color 200ms',
-        if (isShowingHoverStyles) ...[
-          'background-color: rgba(0, 0, 0, 0.08)',
-          'transition: background-color 250ms',
-        ],
       ]),
     );
   }

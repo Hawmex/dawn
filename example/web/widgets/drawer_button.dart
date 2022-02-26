@@ -3,17 +3,19 @@ import 'package:dawn/dawn.dart';
 import 'icon.dart';
 import 'theme.dart';
 
-class IconButton extends StatefulWidget {
+class DrawerButton extends StatefulWidget {
   final String icon;
+  final String text;
   final EventListener? onPress;
 
-  const IconButton(this.icon, {this.onPress}) : super();
+  const DrawerButton({required this.icon, required this.text, this.onPress})
+      : super();
 
   @override
-  State<StatefulWidget> createState() => IconButtonState();
+  State<StatefulWidget> createState() => DrawerButtonState();
 }
 
-class IconButtonState extends State<IconButton> {
+class DrawerButtonState extends State<DrawerButton> {
   bool isShowingHoverStyles = false;
 
   void showHoverStyles() => setState(() => isShowingHoverStyles = true);
@@ -24,19 +26,23 @@ class IconButtonState extends State<IconButton> {
     final theme = Theme.of(context);
 
     return Container(
-      [Icon(widget.icon)],
+      [
+        Icon(widget.icon),
+        Text(widget.text, styles: const Styles(['font-weight: 500']))
+      ],
       onPress: widget.onPress,
       onPointerEnter: (final event) => showHoverStyles(),
       onPointerLeave: (final event) => hideHoverStyles(),
       styles: Styles([
         'display: flex',
         'padding: 8px',
-        'border-radius: 50%',
+        'gap: 24px',
+        'border-radius: 8px',
         'cursor: pointer',
-        'color: ${theme.primary.hexString}',
+        'color: ${theme.onSurface.hexString}',
         'transition: background-color 200ms',
         if (isShowingHoverStyles) ...[
-          'background-color: ${theme.primary.copyWith(alpha: 20).hexString}',
+          'background-color: ${theme.onSurface.copyWith(alpha: 20).hexString}',
           'transition: background-color 250ms',
         ],
       ]),
