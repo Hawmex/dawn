@@ -6,7 +6,20 @@ import 'package:dawn/src/widgets.dart';
 
 typedef ChildNodes = List<Node<Widget>>;
 
-Node<Widget> createNode(final Widget widget, {final Node<Widget>? parentNode}) {
+void runApp(final Widget app) {
+  if (app is StatelessWidget) {
+    StatelessNode(app)._initialize();
+  } else if (app is StatefulWidget) {
+    StatefulNode(app)._initialize();
+  } else {
+    throw TypeError();
+  }
+}
+
+Node<Widget> _createNode(
+  final Widget widget, {
+  final Node<Widget>? parentNode,
+}) {
   if (widget is StatelessWidget) {
     return StatelessNode(widget, parentNode: parentNode);
   } else if (widget is StatefulWidget) {
@@ -36,29 +49,29 @@ abstract class Node<T extends Widget> {
 
   bool get isInitialized => _isInitialized;
 
-  void initialize() => _isInitialized = true;
-  void dispose() => _isInitialized = false;
+  void _initialize() => _isInitialized = true;
+  void _dispose() => _isInitialized = false;
 }
 
 class StatelessNode extends Node<StatelessWidget> {
   @override
   final StatelessWidget widget;
 
-  late final childNode = createNode(widget.build(context), parentNode: this);
+  late final childNode = _createNode(widget.build(context), parentNode: this);
 
   StatelessNode(this.widget, {final Node<Widget>? parentNode})
       : super(parentNode: parentNode);
 
   @override
-  void initialize() {
-    super.initialize();
-    childNode.initialize();
+  void _initialize() {
+    super._initialize();
+    childNode._initialize();
   }
 
   @override
-  void dispose() {
-    childNode.dispose();
-    super.dispose();
+  void _dispose() {
+    childNode._dispose();
+    super._dispose();
   }
 }
 
@@ -73,46 +86,46 @@ class StatefulNode extends Node<StatefulWidget> {
     ..context = context;
 
   late Node<Widget> _childNode =
-      createNode(_state.build(context), parentNode: this);
+      _createNode(_state.build(context), parentNode: this);
 
   StatefulNode(this.widget, {final Node<Widget>? parentNode})
       : super(parentNode: parentNode);
 
   Node<Widget> get childNode => _childNode;
 
-  void stateDidUpdate() {
+  void _stateDidUpdate() {
     final oldChildNode = childNode;
-    final newChildNode = createNode(_state.build(context), parentNode: this);
+    final newChildNode = _createNode(_state.build(context), parentNode: this);
 
     if (newChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
         oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
         newChildNode.runtimeType == oldChildNode.runtimeType) {
-      oldChildNode.setWidget(newChildNode.widget);
+      oldChildNode._setWidget(newChildNode.widget);
     } else if (newChildNode.widget != oldChildNode.widget) {
-      oldChildNode.dispose();
-      _childNode = newChildNode..initialize();
+      oldChildNode._dispose();
+      _childNode = newChildNode.._initialize();
     }
   }
 
   @override
-  void initialize() {
-    super.initialize();
+  void _initialize() {
+    super._initialize();
     _state.initialize();
-    childNode.initialize();
+    childNode._initialize();
 
     _updateStreamSubscription =
-        _state.updateStream.listen((final event) => stateDidUpdate());
+        _state.updateStream.listen((final event) => _stateDidUpdate());
 
     _state.didMount();
   }
 
   @override
-  void dispose() {
+  void _dispose() {
     _state.willUnmount();
     _updateStreamSubscription.cancel();
-    childNode.dispose();
+    childNode._dispose();
     _state.dispose();
-    super.dispose();
+    super._dispose();
   }
 }
 
@@ -133,15 +146,15 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
   @override
   T get widget => _widget;
 
-  void setWidget(final T newWidget) {
+  void _setWidget(final T newWidget) {
     if (widget != newWidget) {
-      willWidgetChange();
+      _willWidgetChange();
       _widget = newWidget;
-      onWidgetChange();
+      _onWidgetChange();
     }
   }
 
-  void initializeElement() => _element
+  void _initializeElement() => _element
     ..setAttribute('style', widget.styles.rulesString)
     ..addEventListener('pointerdown', widget.onPointerDown)
     ..addEventListener('pointerup', widget.onPointerUp)
@@ -149,19 +162,19 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     ..addEventListener('pointerleave', widget.onPointerLeave)
     ..addEventListener('click', widget.onPress);
 
-  void disposeElement() => _element
+  void _disposeElement() => _element
     ..removeEventListener('pointerdown', widget.onPointerDown)
     ..removeEventListener('pointerup', widget.onPointerUp)
     ..removeEventListener('pointerenter', widget.onPointerEnter)
     ..removeEventListener('pointerleave', widget.onPointerLeave)
     ..removeEventListener('click', widget.onPress);
 
-  void willWidgetChange() => disposeElement();
-  void onWidgetChange() => initializeElement();
+  void _willWidgetChange() => _disposeElement();
+  void _onWidgetChange() => _initializeElement();
 
   @override
-  void initialize() {
-    super.initialize();
+  void _initialize() {
+    super._initialize();
 
     final parentContainerNodes = context.sequence.whereType<ContainerNode>();
 
@@ -189,14 +202,14 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
       parentElement.insertBefore(_element, parentElement.children[index]);
     }
 
-    initializeElement();
+    _initializeElement();
   }
 
   @override
-  void dispose() {
-    disposeElement();
+  void _dispose() {
+    _disposeElement();
     _element.remove();
-    super.dispose();
+    super._dispose();
   }
 }
 
@@ -205,8 +218,8 @@ class TextNode extends FrameworkNode<Text, SpanElement> {
       : super(widget, element: SpanElement(), parentNode: parentNode);
 
   @override
-  void initializeElement() {
-    super.initializeElement();
+  void _initializeElement() {
+    super._initializeElement();
     _element.text = widget.value;
   }
 }
@@ -216,15 +229,15 @@ class ImageNode extends FrameworkNode<Image, ImageElement> {
       : super(widget, element: ImageElement(), parentNode: parentNode);
 
   @override
-  void initializeElement() {
-    super.initializeElement();
+  void _initializeElement() {
+    super._initializeElement();
     _element.src = widget.source;
   }
 }
 
 class ContainerNode extends FrameworkNode<Container, DivElement> {
   late ChildNodes _childNodes = widget.children
-      .map((final child) => createNode(child, parentNode: this))
+      .map((final child) => _createNode(child, parentNode: this))
       .toList();
 
   ContainerNode(final Container widget, {final Node<Widget>? parentNode})
@@ -233,13 +246,13 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
   ChildNodes get childNodes => List.unmodifiable(_childNodes);
 
   @override
-  void onWidgetChange() {
-    super.onWidgetChange();
+  void _onWidgetChange() {
+    super._onWidgetChange();
 
     final oldChildNodes = childNodes;
 
     final newChildNodes = widget.children
-        .map((final child) => createNode(child, parentNode: this))
+        .map((final child) => _createNode(child, parentNode: this))
         .toList();
 
     int searchIndex = 0;
@@ -252,7 +265,7 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
       );
 
       if (index < 0) {
-        oldChildNode.dispose();
+        oldChildNode._dispose();
       } else {
         final newChildNode = newChildNodes[index];
 
@@ -262,12 +275,12 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
         } else if (newChildNode
                 is FrameworkNode<FrameworkWidget, HtmlElement> &&
             oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement>) {
-          oldChildNode.setWidget(newChildNode.widget);
+          oldChildNode._setWidget(newChildNode.widget);
 
           newChildNodes[index] = oldChildNode;
           searchIndex = index + 1;
         } else {
-          oldChildNode.dispose();
+          oldChildNode._dispose();
         }
       }
     }
@@ -275,25 +288,25 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
     _childNodes = newChildNodes;
 
     for (final childNode in childNodes) {
-      if (!childNode.isInitialized) childNode.initialize();
+      if (!childNode.isInitialized) childNode._initialize();
     }
   }
 
   @override
-  void initialize() {
-    super.initialize();
+  void _initialize() {
+    super._initialize();
 
     for (final childNode in childNodes) {
-      childNode.initialize();
+      childNode._initialize();
     }
   }
 
   @override
-  void dispose() {
+  void _dispose() {
     for (final childNode in childNodes) {
-      childNode.dispose();
+      childNode._dispose();
     }
 
-    super.dispose();
+    super._dispose();
   }
 }

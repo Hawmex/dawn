@@ -1,5 +1,6 @@
 import 'package:dawn/dawn.dart';
 
+import 'widgets/drawer.dart';
 import 'widgets/icon_button.dart';
 import 'widgets/top_bar.dart';
 
@@ -21,8 +22,9 @@ class AppState extends State<App> {
   Widget build(final Context context) {
     return Container(
       [
+        const Drawer(title: 'داون', subtitle: 'اپ داون', content: []),
         TopBar(
-          leading: const IconButton('menu'),
+          leading: IconButton('menu', onPress: (final event) => openDrawer()),
           title: 'اپ داون',
           trailing: [IconButton('add', onPress: (final event) => increment())],
         ),
@@ -50,17 +52,17 @@ class AppState extends State<App> {
             'align-items: center',
             'gap: 16px',
             'padding: 16px',
-            'justify-content: center',
+            'overflow-y: auto',
           ]),
         ),
       ],
       styles: const Styles([
-        'user-select: none',
         'font-family: Dana',
         'direction: rtl',
         'height: 100vh',
         'display: grid',
         'grid-template-rows: max-content 1fr',
+        'overflow: hidden',
       ]),
     );
   }

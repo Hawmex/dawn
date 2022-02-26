@@ -2,15 +2,14 @@ import 'package:dawn/dawn.dart';
 
 class Icon extends StatelessWidget {
   final String value;
-  final Styles? styles;
 
-  const Icon(this.value, {this.styles}) : super();
+  const Icon(this.value) : super();
 
   @override
   Widget build(final Context context) {
     return Text(
       value,
-      styles: Styles([
+      styles: const Styles([
         'font-family: Material Icons',
         'font-weight: normal',
         'font-style: normal',
@@ -25,7 +24,6 @@ class Icon extends StatelessWidget {
         'pointer-events: none',
         '-webkit-font-feature-settings: liga',
         '-webkit-font-smoothing: antialiased',
-        if (styles != null) ...styles!.rules
       ]),
     );
   }

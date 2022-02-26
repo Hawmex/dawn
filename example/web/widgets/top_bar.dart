@@ -56,8 +56,9 @@ class TopBar extends StatelessWidget {
         'flex-flow: row',
         'padding: 8px',
         'gap: 8px',
-        'background: #121212',
-        'color: #ffffff',
+        'background: #ffffff',
+        'color: #000000',
+        'border-bottom: 1px solid rgba(0, 0, 0, 0.08)',
         'justify-content: space-between',
       ]),
     );
