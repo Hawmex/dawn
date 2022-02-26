@@ -1,4 +1,8 @@
+import 'dart:html';
+
 import 'package:dawn/dawn.dart';
+
+import 'icon.dart';
 
 final _drawerState = DrawerState();
 
@@ -31,6 +35,7 @@ class DrawerState extends State<Drawer> {
       [
         Container(
           [],
+          onPointerDown: (final event) => close(),
           styles: Styles([
             'position: absolute',
             'pointer-events: all',
@@ -48,7 +53,6 @@ class DrawerState extends State<Drawer> {
               'transition: all 250ms',
             ]
           ]),
-          onPointerDown: (final event) => close(),
         ),
         Container(
           [
@@ -81,11 +85,14 @@ class DrawerState extends State<Drawer> {
             'right: 0px',
             'top: 0px',
             'height: 100%',
-            'width: 256px',
+            if (window.innerWidth! <= 640)
+              'width: calc(100% - 56px)'
+            else
+              'width: 256px',
             'display: flex',
             'flex-flow: column',
             'background-color: #ffffff',
-            'gap: 16px',
+            'pointer-events: all',
             'transform: translateX(100%)',
             'transition: transform 200ms',
             if (isOpen) ...[
@@ -102,6 +109,53 @@ class DrawerState extends State<Drawer> {
         'width: 100vw',
         'height: 100vh',
         'pointer-events: none',
+      ]),
+    );
+  }
+}
+
+class DrawerButton extends StatefulWidget {
+  final String icon;
+  final String text;
+  final EventListener? onPress;
+
+  const DrawerButton({required this.icon, required this.text, this.onPress})
+      : super();
+
+  @override
+  State<StatefulWidget> createState() => DrawerButtonState();
+}
+
+class DrawerButtonState extends State<DrawerButton> {
+  bool isShowingHoverStyles = false;
+
+  void showHoverStyles() => setState(() => isShowingHoverStyles = true);
+  void hideHoverStyles() => setState(() => isShowingHoverStyles = false);
+
+  @override
+  Widget build(final Context context) {
+    return Container(
+      [
+        Icon(widget.icon),
+        Text(
+          widget.text,
+          styles: const Styles(['font-weight: 500']),
+        )
+      ],
+      onPress: widget.onPress,
+      onPointerEnter: (final event) => showHoverStyles(),
+      onPointerLeave: (final event) => hideHoverStyles(),
+      styles: Styles([
+        'display: flex',
+        'padding: 8px',
+        'gap: 24px',
+        'border-radius: 8px',
+        'cursor: pointer',
+        'transition: background-color 200ms',
+        if (isShowingHoverStyles) ...[
+          'background-color: rgba(0, 0, 0, 0.08)',
+          'transition: background-color 250ms',
+        ],
       ]),
     );
   }

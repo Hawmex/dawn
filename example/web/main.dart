@@ -22,7 +22,10 @@ class AppState extends State<App> {
   Widget build(final Context context) {
     return Container(
       [
-        const Drawer(title: 'داون', subtitle: 'اپ داون', content: []),
+        const Drawer(
+            title: 'داون',
+            subtitle: 'اپ داون',
+            content: [DrawerButton(icon: 'info', text: 'درباره ما')]),
         TopBar(
           leading: IconButton('menu', onPress: (final event) => openDrawer()),
           title: 'اپ داون',
