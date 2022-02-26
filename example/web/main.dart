@@ -23,9 +23,10 @@ class AppState extends State<App> {
     return Container(
       [
         const Drawer(
-            title: 'داون',
-            subtitle: 'اپ داون',
-            content: [DrawerButton(icon: 'info', text: 'درباره ما')]),
+          title: 'داون',
+          subtitle: 'اپ داون',
+          content: [DrawerButton(icon: 'info', text: 'درباره ما')],
+        ),
         TopBar(
           leading: IconButton('menu', onPress: (final event) => openDrawer()),
           title: 'اپ داون',
