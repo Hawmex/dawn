@@ -10,13 +10,11 @@ abstract class Store {
 
   void setState(final void Function() callback) {
     callback();
-    _updateDebouncer.enqueue(didUpdate);
+    _updateDebouncer.enqueue(() => _updateController.add(null));
   }
 
   StreamSubscription<void> listen(final void Function() onData) =>
       _updateController.stream.listen((final event) => onData());
-
-  void didUpdate() => _updateController.add(null);
 }
 
 abstract class State<T extends StatefulWidget> with Buildable implements Store {
@@ -26,15 +24,6 @@ abstract class State<T extends StatefulWidget> with Buildable implements Store {
   bool _isMounted = false;
 
   bool get isMounted => _isMounted;
-
-  @override
-  void setState(final void Function() callback) {
-    callback();
-
-    _updateDebouncer.enqueue(() {
-      if (isMounted) didUpdate();
-    });
-  }
 
   void initialize() {}
   void didMount() => _isMounted = true;

@@ -40,7 +40,8 @@ abstract class FrameworkWidget extends Widget {
     this.onPointerEnter,
     this.onPointerLeave,
     this.onPress,
-  }) : style = style ?? const Style.empty();
+  })  : style = style ?? const Style.empty(),
+        super();
 }
 
 class Text extends FrameworkWidget {
