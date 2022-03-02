@@ -13,8 +13,8 @@ abstract class Store {
     _updateDebouncer.enqueue(() => _updateController.add(null));
   }
 
-  StreamSubscription<void> listen(final void Function() onData) =>
-      _updateController.stream.listen((final event) => onData());
+  StreamSubscription<void> onUpdate(final void Function() callback) =>
+      _updateController.stream.listen((final event) => callback());
 }
 
 abstract class State<T extends StatefulWidget> with Buildable implements Store {

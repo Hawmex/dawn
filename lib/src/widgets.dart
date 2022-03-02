@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:dawn/src/context.dart';
+import 'package:dawn/src/nodes.dart';
 import 'package:dawn/src/state.dart';
 import 'package:dawn/src/style.dart';
 
@@ -25,21 +26,21 @@ abstract class StatefulWidget extends Widget {
 }
 
 abstract class FrameworkWidget extends Widget {
-  final Style style;
-
   final EventListener? onPointerDown;
   final EventListener? onPointerUp;
   final EventListener? onPointerEnter;
   final EventListener? onPointerLeave;
   final EventListener? onPress;
 
+  final Style style;
+
   const FrameworkWidget({
-    final Style? style,
     this.onPointerDown,
     this.onPointerUp,
     this.onPointerEnter,
     this.onPointerLeave,
     this.onPress,
+    final Style? style,
   })  : style = style ?? const Style.empty(),
         super();
 }
@@ -49,19 +50,61 @@ class Text extends FrameworkWidget {
 
   const Text(
     this.value, {
-    final Style? style,
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
     final EventListener? onPointerLeave,
     final EventListener? onPress,
+    final Style? style,
   }) : super(
-          style: style,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,
           onPointerLeave: onPointerLeave,
           onPress: onPress,
+          style: style,
+        );
+}
+
+class Image extends FrameworkWidget {
+  final String source;
+
+  const Image(
+    this.source, {
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+    final Style? style,
+  }) : super(
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+          style: style,
+        );
+}
+
+class Input extends FrameworkWidget {
+  final InputController controller;
+
+  const Input({
+    required this.controller,
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+    final Style? style,
+  }) : super(
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+          style: style,
         );
 }
 
@@ -70,42 +113,21 @@ class Container extends FrameworkWidget {
 
   const Container(
     final List<Widget> children, {
-    final Style? style,
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
     final EventListener? onPointerLeave,
     final EventListener? onPress,
+    final Style? style,
   })  : _children = children,
         super(
-          style: style,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,
           onPointerLeave: onPointerLeave,
           onPress: onPress,
+          style: style,
         );
 
   List<Widget> get children => List.unmodifiable(_children);
-}
-
-class Image extends FrameworkWidget {
-  final String source;
-
-  const Image(
-    this.source, {
-    final Style? style,
-    final EventListener? onPointerDown,
-    final EventListener? onPointerUp,
-    final EventListener? onPointerEnter,
-    final EventListener? onPointerLeave,
-    final EventListener? onPress,
-  }) : super(
-          style: style,
-          onPointerDown: onPointerDown,
-          onPointerUp: onPointerUp,
-          onPointerEnter: onPointerEnter,
-          onPointerLeave: onPointerLeave,
-          onPress: onPress,
-        );
 }

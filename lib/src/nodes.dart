@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:dawn/src/context.dart';
+import 'package:dawn/src/debouncer.dart';
 import 'package:dawn/src/state.dart';
 import 'package:dawn/src/widgets.dart';
 
@@ -29,6 +30,8 @@ Node<Widget> _createNode(
     return TextNode(widget, parentNode: parentNode);
   } else if (widget is Image) {
     return ImageNode(widget, parentNode: parentNode);
+  } else if (widget is Input) {
+    return InputNode(widget, parentNode: parentNode);
   } else if (widget is Container) {
     return ContainerNode(widget, parentNode: parentNode);
   } else {
@@ -113,7 +116,7 @@ class StatefulNode extends Node<StatefulWidget> {
     super._initialize();
     _state.initialize();
     childNode._initialize();
-    _updateStreamSubscription = _state.listen(_stateDidUpdate);
+    _updateStreamSubscription = _state.onUpdate(_stateDidUpdate);
     _state.didMount();
   }
 
@@ -230,6 +233,55 @@ class ImageNode extends FrameworkNode<Image, ImageElement> {
   void _initializeElement() {
     super._initializeElement();
     _element.src = widget.source;
+  }
+}
+
+class InputController {
+  final _changeController = StreamController<void>.broadcast();
+  final _inputController = StreamController<void>.broadcast();
+
+  String _value = '';
+
+  String get value => _value;
+
+  StreamSubscription<void> onChange(final void Function() callback) =>
+      _changeController.stream.listen((final event) => callback());
+
+  StreamSubscription<void> onInput(final void Function() callback) =>
+      _inputController.stream.listen((final event) => callback());
+}
+
+class InputNode extends FrameworkNode<Input, InputElement> {
+  final _inputDebouncer = Debouncer();
+
+  late final StreamSubscription<Event> _changeSubscription;
+  late final StreamSubscription<Event> _inputSubscription;
+
+  InputNode(final Input widget, {final Node<Widget>? parentNode})
+      : super(widget, element: InputElement(), parentNode: parentNode);
+
+  @override
+  void _initialize() {
+    super._initialize();
+
+    _changeSubscription = _element.onChange.listen((final event) {
+      widget.controller._value = _element.value!;
+      widget.controller._changeController.add(null);
+    });
+
+    _inputSubscription = _element.onInput.listen((final event) {
+      widget.controller._value = _element.value!;
+
+      _inputDebouncer
+          .enqueue(() => widget.controller._inputController.add(null));
+    });
+  }
+
+  @override
+  void _dispose() {
+    _inputSubscription.cancel();
+    _changeSubscription.cancel();
+    super._dispose();
   }
 }
 
