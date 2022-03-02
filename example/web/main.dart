@@ -10,7 +10,7 @@ class App extends StatelessWidget {
     return const Container(
       [
         Text(
-          'Dawn App Running!',
+          'Dawn app running!',
           styles: Styles(['font-size: 24px', 'font-weight: 700']),
         )
       ],
