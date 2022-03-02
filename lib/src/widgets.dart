@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:dawn/src/context.dart';
+import 'package:dawn/src/debouncer.dart';
 import 'package:dawn/src/styles.dart';
 
 typedef EventListener = void Function(Event event);
@@ -26,6 +27,7 @@ abstract class StatefulWidget extends Widget {
 
 abstract class State<T extends StatefulWidget> with Buildable {
   final _updateController = StreamController<void>.broadcast();
+  final _updateDebouncer = Debouncer();
 
   bool _isMounted = false;
 
@@ -37,7 +39,10 @@ abstract class State<T extends StatefulWidget> with Buildable {
 
   void setState(final void Function() callback) {
     callback();
-    if (isMounted) didUpdate();
+
+    _updateDebouncer.enqueue(() {
+      if (isMounted) didUpdate();
+    });
   }
 
   void initialize() {}
