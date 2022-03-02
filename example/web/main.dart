@@ -11,10 +11,10 @@ class App extends StatelessWidget {
       [
         Text(
           'Dawn app running!',
-          styles: Styles(['font-size: 24px', 'font-weight: 700']),
+          style: Style(['font-size: 24px', 'font-weight: 700']),
         )
       ],
-      styles: Styles([
+      style: Style([
         'display: flex',
         'width: 100vw',
         'height: 100vh',

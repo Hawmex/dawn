@@ -1,8 +1,8 @@
-class Styles {
+class Style {
   final List<String> _rules;
 
-  const Styles(this._rules);
-  const Styles.empty() : _rules = const [];
+  const Style(this._rules);
+  const Style.empty() : _rules = const [];
 
   List<String> get rules => List.unmodifiable(_rules);
 

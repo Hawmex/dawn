@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:dawn/src/context.dart';
+import 'package:dawn/src/state.dart';
 import 'package:dawn/src/widgets.dart';
 
 typedef ChildNodes = List<Node<Widget>>;
@@ -112,10 +113,7 @@ class StatefulNode extends Node<StatefulWidget> {
     super._initialize();
     _state.initialize();
     childNode._initialize();
-
-    _updateStreamSubscription =
-        _state.updateStream.listen((final event) => _stateDidUpdate());
-
+    _updateStreamSubscription = _state.listen(_stateDidUpdate);
     _state.didMount();
   }
 
@@ -155,7 +153,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
   }
 
   void _initializeElement() => _element
-    ..setAttribute('style', widget.styles.rulesString)
+    ..setAttribute('style', widget.style.rulesString)
     ..addEventListener('pointerdown', widget.onPointerDown)
     ..addEventListener('pointerup', widget.onPointerUp)
     ..addEventListener('pointerenter', widget.onPointerEnter)
