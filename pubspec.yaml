@@ -1,6 +1,6 @@
 name: dawn
 description: A Dart Web framework inspired by Flutter.
-publish: none
+publish_to: none
 environment:
   sdk: ">=2.15.1 <3.0.0"
 dev_dependencies:
