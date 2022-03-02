@@ -1,5 +1,5 @@
 name: example
-description: An absolute bare-bones web app.
+description: A Dawn App
 environment:
   sdk: ">=2.15.1 <3.0.0"
 dependencies:

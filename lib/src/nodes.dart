@@ -150,7 +150,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     if (widget != newWidget) {
       _willWidgetChange();
       _widget = newWidget;
-      _onWidgetChange();
+      _didWidgetChange();
     }
   }
 
@@ -170,7 +170,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
     ..removeEventListener('click', widget.onPress);
 
   void _willWidgetChange() => _disposeElement();
-  void _onWidgetChange() => _initializeElement();
+  void _didWidgetChange() => _initializeElement();
 
   @override
   void _initialize() {
@@ -246,8 +246,8 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
   ChildNodes get childNodes => List.unmodifiable(_childNodes);
 
   @override
-  void _onWidgetChange() {
-    super._onWidgetChange();
+  void _didWidgetChange() {
+    super._didWidgetChange();
 
     final oldChildNodes = childNodes;
 
