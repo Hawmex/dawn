@@ -87,10 +87,10 @@ class Image extends FrameworkWidget {
         );
 }
 
-class Input extends FrameworkWidget {
-  final InputController controller;
+abstract class UserInputWidget extends FrameworkWidget {
+  final UserInputController controller;
 
-  const Input({
+  const UserInputWidget({
     required this.controller,
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
@@ -99,6 +99,46 @@ class Input extends FrameworkWidget {
     final EventListener? onPress,
     final Style? style,
   }) : super(
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+          style: style,
+        );
+}
+
+class Input extends UserInputWidget {
+  const Input({
+    required final UserInputController controller,
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+    final Style? style,
+  }) : super(
+          controller: controller,
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+          style: style,
+        );
+}
+
+class TextBox extends UserInputWidget {
+  const TextBox({
+    required final UserInputController controller,
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+    final Style? style,
+  }) : super(
+          controller: controller,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,

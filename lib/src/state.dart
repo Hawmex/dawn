@@ -17,7 +17,7 @@ abstract class Store {
       _updateController.stream.listen((final event) => callback());
 }
 
-abstract class State<T extends StatefulWidget> with Buildable implements Store {
+abstract class State<T extends StatefulWidget> extends Store with Buildable {
   late final T widget;
   late final Context context;
 

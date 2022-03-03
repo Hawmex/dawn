@@ -32,6 +32,8 @@ Node<Widget> _createNode(
     return ImageNode(widget, parentNode: parentNode);
   } else if (widget is Input) {
     return InputNode(widget, parentNode: parentNode);
+  } else if (widget is TextBox) {
+    return TextBoxNode(widget, parentNode: parentNode);
   } else if (widget is Container) {
     return ContainerNode(widget, parentNode: parentNode);
   } else {
@@ -101,8 +103,8 @@ class StatefulNode extends Node<StatefulWidget> {
     final oldChildNode = childNode;
     final newChildNode = _createNode(_state.build(context), parentNode: this);
 
-    if (newChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
-        oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement> &&
+    if (newChildNode is FrameworkNode<FrameworkWidget, Element> &&
+        oldChildNode is FrameworkNode<FrameworkWidget, Element> &&
         newChildNode.runtimeType == oldChildNode.runtimeType) {
       oldChildNode._setWidget(newChildNode.widget);
     } else if (newChildNode.widget != oldChildNode.widget) {
@@ -130,7 +132,7 @@ class StatefulNode extends Node<StatefulWidget> {
   }
 }
 
-abstract class FrameworkNode<T extends FrameworkWidget, U extends HtmlElement>
+abstract class FrameworkNode<T extends FrameworkWidget, U extends Element>
     extends Node<T> {
   final U _element;
 
@@ -236,29 +238,39 @@ class ImageNode extends FrameworkNode<Image, ImageElement> {
   }
 }
 
-class InputController {
-  final _changeController = StreamController<void>.broadcast();
-  final _inputController = StreamController<void>.broadcast();
+class UserInputController {
+  final _changeController = StreamController<String>.broadcast();
+  final _inputController = StreamController<String>.broadcast();
 
   String _value = '';
 
   String get value => _value;
 
-  StreamSubscription<void> onChange(final void Function() callback) =>
-      _changeController.stream.listen((final event) => callback());
+  StreamSubscription<String> onChange(
+    final void Function(String value) callback,
+  ) =>
+      _changeController.stream.listen(callback);
 
-  StreamSubscription<void> onInput(final void Function() callback) =>
-      _inputController.stream.listen((final event) => callback());
+  StreamSubscription<String> onInput(
+    final void Function(String value) callback,
+  ) =>
+      _inputController.stream.listen(callback);
 }
 
-class InputNode extends FrameworkNode<Input, InputElement> {
+class InputNode extends FrameworkNode<Input, TextInputElement> {
   final _inputDebouncer = Debouncer();
 
   late final StreamSubscription<Event> _changeSubscription;
   late final StreamSubscription<Event> _inputSubscription;
 
   InputNode(final Input widget, {final Node<Widget>? parentNode})
-      : super(widget, element: InputElement(), parentNode: parentNode);
+      : super(widget, element: TextInputElement(), parentNode: parentNode);
+
+  @override
+  void _initializeElement() {
+    super._initializeElement();
+    _element.value = widget.controller.value;
+  }
 
   @override
   void _initialize() {
@@ -266,14 +278,56 @@ class InputNode extends FrameworkNode<Input, InputElement> {
 
     _changeSubscription = _element.onChange.listen((final event) {
       widget.controller._value = _element.value!;
-      widget.controller._changeController.add(null);
+      widget.controller._changeController.add(widget.controller.value);
     });
 
     _inputSubscription = _element.onInput.listen((final event) {
       widget.controller._value = _element.value!;
 
-      _inputDebouncer
-          .enqueue(() => widget.controller._inputController.add(null));
+      _inputDebouncer.enqueue(
+        () => widget.controller._inputController.add(widget.controller.value),
+      );
+    });
+  }
+
+  @override
+  void _dispose() {
+    _inputSubscription.cancel();
+    _changeSubscription.cancel();
+    super._dispose();
+  }
+}
+
+class TextBoxNode extends FrameworkNode<TextBox, TextAreaElement> {
+  final _inputDebouncer = Debouncer();
+
+  late final StreamSubscription<Event> _changeSubscription;
+  late final StreamSubscription<Event> _inputSubscription;
+
+  TextBoxNode(final TextBox widget, {final Node<Widget>? parentNode})
+      : super(widget, element: TextAreaElement(), parentNode: parentNode);
+
+  @override
+  void _initializeElement() {
+    super._initializeElement();
+    _element.value = widget.controller.value;
+  }
+
+  @override
+  void _initialize() {
+    super._initialize();
+
+    _changeSubscription = _element.onChange.listen((final event) {
+      widget.controller._value = _element.value!;
+      widget.controller._changeController.add(widget.controller.value);
+    });
+
+    _inputSubscription = _element.onInput.listen((final event) {
+      widget.controller._value = _element.value!;
+
+      _inputDebouncer.enqueue(
+        () => widget.controller._inputController.add(widget.controller.value),
+      );
     });
   }
 
@@ -322,9 +376,8 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
         if (newChildNode.widget == oldChildNode.widget) {
           newChildNodes[index] = oldChildNode;
           searchIndex = index + 1;
-        } else if (newChildNode
-                is FrameworkNode<FrameworkWidget, HtmlElement> &&
-            oldChildNode is FrameworkNode<FrameworkWidget, HtmlElement>) {
+        } else if (newChildNode is FrameworkNode<FrameworkWidget, Element> &&
+            oldChildNode is FrameworkNode<FrameworkWidget, Element>) {
           oldChildNode._setWidget(newChildNode.widget);
 
           newChildNodes[index] = oldChildNode;
