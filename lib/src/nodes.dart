@@ -63,7 +63,7 @@ class StatelessNode extends Node<StatelessWidget> {
   @override
   final StatelessWidget widget;
 
-  late final childNode = _createNode(widget.build(context), parentNode: this);
+  late final _childNode = _createNode(widget.build(context), parentNode: this);
 
   StatelessNode(this.widget, {final Node<Widget>? parentNode})
       : super(parentNode: parentNode);
@@ -71,12 +71,12 @@ class StatelessNode extends Node<StatelessWidget> {
   @override
   void _initialize() {
     super._initialize();
-    childNode._initialize();
+    _childNode._initialize();
   }
 
   @override
   void _dispose() {
-    childNode._dispose();
+    _childNode._dispose();
     super._dispose();
   }
 }
@@ -97,10 +97,8 @@ class StatefulNode extends Node<StatefulWidget> {
   StatefulNode(this.widget, {final Node<Widget>? parentNode})
       : super(parentNode: parentNode);
 
-  Node<Widget> get childNode => _childNode;
-
   void _stateDidUpdate() {
-    final oldChildNode = childNode;
+    final oldChildNode = _childNode;
     final newChildNode = _createNode(_state.build(context), parentNode: this);
 
     if (newChildNode is FrameworkNode<FrameworkWidget, Element> &&
@@ -117,7 +115,7 @@ class StatefulNode extends Node<StatefulWidget> {
   void _initialize() {
     super._initialize();
     _state.initialize();
-    childNode._initialize();
+    _childNode._initialize();
     _updateStreamSubscription = _state.onUpdate(_stateDidUpdate);
     _state.didMount();
   }
@@ -126,7 +124,7 @@ class StatefulNode extends Node<StatefulWidget> {
   void _dispose() {
     _state.willUnmount();
     _updateStreamSubscription.cancel();
-    childNode._dispose();
+    _childNode._dispose();
     _state.dispose();
     super._dispose();
   }
@@ -195,7 +193,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends Element>
       final immediateChildOfParentContainerIndex =
           sequenceWithSelf.indexOf(parentContainerNodes.first) - 1;
 
-      index = parentContainerNodes.first.childNodes
+      index = parentContainerNodes.first._childNodes
           .indexOf(sequenceWithSelf[immediateChildOfParentContainerIndex]);
     }
 
@@ -347,13 +345,11 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
   ContainerNode(final Container widget, {final Node<Widget>? parentNode})
       : super(widget, element: DivElement(), parentNode: parentNode);
 
-  ChildNodes get childNodes => List.unmodifiable(_childNodes);
-
   @override
   void _didWidgetChange() {
     super._didWidgetChange();
 
-    final oldChildNodes = childNodes;
+    final oldChildNodes = _childNodes;
 
     final newChildNodes = widget.children
         .map((final child) => _createNode(child, parentNode: this))
@@ -390,7 +386,7 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
 
     _childNodes = newChildNodes;
 
-    for (final childNode in childNodes) {
+    for (final childNode in _childNodes) {
       if (!childNode.isInitialized) childNode._initialize();
     }
   }
@@ -399,14 +395,14 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
   void _initialize() {
     super._initialize();
 
-    for (final childNode in childNodes) {
+    for (final childNode in _childNodes) {
       childNode._initialize();
     }
   }
 
   @override
   void _dispose() {
-    for (final childNode in childNodes) {
+    for (final childNode in _childNodes) {
       childNode._dispose();
     }
 

@@ -1,1 +1,1 @@
-nodemon -e dart,yaml --ignore build --exec "dart compile js web/main.dart -o build/main.dart.js && cp web/index.html build/index.html"
+nodemon -e dart,yaml,html --ignore build --exec "cp web/index.html build/index.html && cp -a web/assets/. build/assets/ && dart compile js web/main.dart -o build/main.dart.js"

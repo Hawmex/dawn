@@ -16,11 +16,11 @@ mixin Buildable {
 }
 
 abstract class StatelessWidget extends Widget with Buildable {
-  const StatelessWidget() : super();
+  const StatelessWidget();
 }
 
 abstract class StatefulWidget extends Widget {
-  const StatefulWidget() : super();
+  const StatefulWidget();
 
   State<StatefulWidget> createState();
 }
@@ -41,8 +41,7 @@ abstract class FrameworkWidget extends Widget {
     this.onPointerLeave,
     this.onPress,
     final Style? style,
-  })  : style = style ?? const Style.empty(),
-        super();
+  }) : style = style ?? const Style.empty();
 }
 
 class Text extends FrameworkWidget {
