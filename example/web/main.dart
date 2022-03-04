@@ -15,10 +15,7 @@ class App extends StatelessWidget {
         ),
         Text(
           'Welcome to Dawn',
-          style: Style([
-            'font-size: 24px',
-            'font-weight: bold',
-          ]),
+          style: Style(['font-size: 24px', 'font-weight: bold']),
         ),
         Container([
           Text('To get started, edit '),
