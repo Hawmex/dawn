@@ -86,6 +86,30 @@ class Image extends FrameworkWidget {
         );
 }
 
+class Container extends FrameworkWidget {
+  final List<Widget> _children;
+
+  const Container(
+    final List<Widget> children, {
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+    final Style? style,
+  })  : _children = children,
+        super(
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+          style: style,
+        );
+
+  List<Widget> get children => List.unmodifiable(_children);
+}
+
 abstract class UserInputWidget extends FrameworkWidget {
   final UserInputController controller;
 
@@ -145,28 +169,4 @@ class TextBox extends UserInputWidget {
           onPress: onPress,
           style: style,
         );
-}
-
-class Container extends FrameworkWidget {
-  final List<Widget> _children;
-
-  const Container(
-    final List<Widget> children, {
-    final EventListener? onPointerDown,
-    final EventListener? onPointerUp,
-    final EventListener? onPointerEnter,
-    final EventListener? onPointerLeave,
-    final EventListener? onPress,
-    final Style? style,
-  })  : _children = children,
-        super(
-          onPointerDown: onPointerDown,
-          onPointerUp: onPointerUp,
-          onPointerEnter: onPointerEnter,
-          onPointerLeave: onPointerLeave,
-          onPress: onPress,
-          style: style,
-        );
-
-  List<Widget> get children => List.unmodifiable(_children);
 }

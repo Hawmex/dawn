@@ -1,12 +1,14 @@
 class Style {
-  final List<String> _rules;
+  final Map<String, String> _rules;
 
   const Style(this._rules);
-  const Style.empty() : _rules = const [];
+  const Style.empty() : _rules = const {};
 
-  List<String> get rules => List.unmodifiable(_rules);
+  Map<String, String> get rules => Map.unmodifiable(_rules);
 
   String get rulesString => rules.isEmpty
       ? ''
-      : rules.reduce((final sum, final rule) => '$sum; $rule');
+      : rules.entries
+          .map((final ruleEntry) => '${ruleEntry.key} : ${ruleEntry.value}')
+          .reduce((final sum, final ruleString) => '$sum; $ruleString');
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:dawn/src/context.dart';
-import 'package:dawn/src/debouncer.dart';
 import 'package:dawn/src/state.dart';
 import 'package:dawn/src/widgets.dart';
 
@@ -236,107 +235,6 @@ class ImageNode extends FrameworkNode<Image, ImageElement> {
   }
 }
 
-class UserInputController {
-  final _changeController = StreamController<String>.broadcast();
-  final _inputController = StreamController<String>.broadcast();
-
-  String _value = '';
-
-  String get value => _value;
-
-  StreamSubscription<String> onChange(
-    final void Function(String value) callback,
-  ) =>
-      _changeController.stream.listen(callback);
-
-  StreamSubscription<String> onInput(
-    final void Function(String value) callback,
-  ) =>
-      _inputController.stream.listen(callback);
-}
-
-class InputNode extends FrameworkNode<Input, TextInputElement> {
-  final _inputDebouncer = Debouncer();
-
-  late final StreamSubscription<Event> _changeSubscription;
-  late final StreamSubscription<Event> _inputSubscription;
-
-  InputNode(final Input widget, {final Node<Widget>? parentNode})
-      : super(widget, element: TextInputElement(), parentNode: parentNode);
-
-  @override
-  void _initializeElement() {
-    super._initializeElement();
-    _element.value = widget.controller.value;
-  }
-
-  @override
-  void _initialize() {
-    super._initialize();
-
-    _changeSubscription = _element.onChange.listen((final event) {
-      widget.controller._value = _element.value!;
-      widget.controller._changeController.add(widget.controller.value);
-    });
-
-    _inputSubscription = _element.onInput.listen((final event) {
-      widget.controller._value = _element.value!;
-
-      _inputDebouncer.enqueue(
-        () => widget.controller._inputController.add(widget.controller.value),
-      );
-    });
-  }
-
-  @override
-  void _dispose() {
-    _inputSubscription.cancel();
-    _changeSubscription.cancel();
-    super._dispose();
-  }
-}
-
-class TextBoxNode extends FrameworkNode<TextBox, TextAreaElement> {
-  final _inputDebouncer = Debouncer();
-
-  late final StreamSubscription<Event> _changeSubscription;
-  late final StreamSubscription<Event> _inputSubscription;
-
-  TextBoxNode(final TextBox widget, {final Node<Widget>? parentNode})
-      : super(widget, element: TextAreaElement(), parentNode: parentNode);
-
-  @override
-  void _initializeElement() {
-    super._initializeElement();
-    _element.value = widget.controller.value;
-  }
-
-  @override
-  void _initialize() {
-    super._initialize();
-
-    _changeSubscription = _element.onChange.listen((final event) {
-      widget.controller._value = _element.value!;
-      widget.controller._changeController.add(widget.controller.value);
-    });
-
-    _inputSubscription = _element.onInput.listen((final event) {
-      widget.controller._value = _element.value!;
-
-      _inputDebouncer.enqueue(
-        () => widget.controller._inputController.add(widget.controller.value),
-      );
-    });
-  }
-
-  @override
-  void _dispose() {
-    _inputSubscription.cancel();
-    _changeSubscription.cancel();
-    super._dispose();
-  }
-}
-
 class ContainerNode extends FrameworkNode<Container, DivElement> {
   late ChildNodes _childNodes = widget.children
       .map((final child) => _createNode(child, parentNode: this))
@@ -408,4 +306,91 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
 
     super._dispose();
   }
+}
+
+class UserInputController {
+  final _changeController = StreamController<String>.broadcast();
+  final _inputController = StreamController<String>.broadcast();
+
+  late final Element _element;
+
+  late final StreamSubscription<Event> _changeSubscription;
+  late final StreamSubscription<Event> _inputSubscription;
+
+  String _value = '';
+
+  UserInputController([final String? value]) : _value = value ?? '';
+
+  String get value => _value;
+
+  set value(final String newValue) {
+    _value = newValue;
+    (_element as dynamic).value = newValue;
+  }
+
+  StreamSubscription<String> onChange(
+    final void Function(String value) callback,
+  ) =>
+      _changeController.stream.listen(callback);
+
+  StreamSubscription<String> onInput(
+    final void Function(String value) callback,
+  ) =>
+      _inputController.stream.listen(callback);
+
+  void initialize() {
+    _changeSubscription = _element.onChange.listen((final event) {
+      _value = (_element as dynamic).value!;
+      _changeController.add(value);
+    });
+
+    _inputSubscription = _element.onInput.listen((final event) {
+      _value = (_element as dynamic).value!;
+      _inputController.add(value);
+    });
+  }
+
+  void dispose() {
+    _inputSubscription.cancel();
+    _changeSubscription.cancel();
+  }
+}
+
+class UserInputNode<T extends UserInputWidget, U extends Element>
+    extends FrameworkNode<T, U> {
+  UserInputNode(
+    final T widget, {
+    required final U element,
+    final Node<Widget>? parentNode,
+  }) : super(widget, element: element, parentNode: parentNode);
+
+  @override
+  void _initializeElement() {
+    super._initializeElement();
+    (_element as dynamic).value = widget.controller.value;
+  }
+
+  @override
+  void _initialize() {
+    super._initialize();
+    widget.controller
+      .._element = _element
+      ..initialize();
+  }
+
+  @override
+  void _dispose() {
+    widget.controller.dispose();
+    super._dispose();
+  }
+}
+
+class InputNode extends UserInputNode<Input, TextInputElement> {
+  InputNode(final Input widget, {final Node<Widget>? parentNode})
+      : super(widget, element: TextInputElement(), parentNode: parentNode);
+}
+
+class TextBoxNode extends UserInputNode<TextBox, TextAreaElement> {
+  TextBoxNode(final TextBox widget, {final Node<Widget>? parentNode})
+      : super(widget, element: TextAreaElement(), parentNode: parentNode);
 }
