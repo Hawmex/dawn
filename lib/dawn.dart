@@ -3,6 +3,8 @@ library dawn;
 import 'dart:async';
 import 'dart:html';
 
+// TODO: Implement AnimationController and add animations.
+
 part 'src/controllers.dart';
 part 'src/nodes.dart';
 part 'src/utils/app_runner.dart';
