@@ -1,18 +1,7 @@
-import 'dart:html';
-
-import 'package:dawn/src/context.dart';
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/state.dart';
-import 'package:dawn/src/style.dart';
-
-typedef EventListener = void Function(Event event);
+part of dawn;
 
 abstract class Widget {
   const Widget();
-}
-
-mixin Buildable {
-  Widget build(final Context context);
 }
 
 abstract class StatelessWidget extends Widget with Buildable {
@@ -24,6 +13,8 @@ abstract class StatefulWidget extends Widget {
 
   State<StatefulWidget> createState();
 }
+
+typedef EventListener = void Function(Event event);
 
 abstract class FrameworkWidget extends Widget {
   final EventListener? onPointerDown;

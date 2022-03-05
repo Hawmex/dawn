@@ -1,4 +1,4 @@
-import 'dart:async';
+part of dawn;
 
 class Debouncer {
   Timer? _timer;

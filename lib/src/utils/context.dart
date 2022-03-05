@@ -1,5 +1,4 @@
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+part of dawn;
 
 typedef Sequence = List<Node<Widget>>;
 

@@ -1,21 +1,4 @@
-import 'dart:async';
-import 'dart:html';
-
-import 'package:dawn/src/context.dart';
-import 'package:dawn/src/state.dart';
-import 'package:dawn/src/widgets.dart';
-
-typedef ChildNodes = List<Node<Widget>>;
-
-void runApp(final Widget app) {
-  if (app is StatelessWidget) {
-    StatelessNode(app)._initialize();
-  } else if (app is StatefulWidget) {
-    StatefulNode(app)._initialize();
-  } else {
-    throw TypeError();
-  }
-}
+part of dawn;
 
 Node<Widget> _createNode(
   final Widget widget, {
@@ -155,7 +138,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends Element>
   }
 
   void _initializeElement() => _element
-    ..setAttribute('style', widget.style.rulesString)
+    ..setAttribute('style', widget.style.toString())
     ..addEventListener('pointerdown', widget.onPointerDown)
     ..addEventListener('pointerup', widget.onPointerUp)
     ..addEventListener('pointerenter', widget.onPointerEnter)
@@ -235,6 +218,8 @@ class ImageNode extends FrameworkNode<Image, ImageElement> {
   }
 }
 
+typedef ChildNodes = List<Node<Widget>>;
+
 class ContainerNode extends FrameworkNode<Container, DivElement> {
   late ChildNodes _childNodes = widget.children
       .map((final child) => _createNode(child, parentNode: this))
@@ -308,54 +293,6 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
   }
 }
 
-class UserInputController {
-  final _changeController = StreamController<String>.broadcast();
-  final _inputController = StreamController<String>.broadcast();
-
-  late final Element _element;
-
-  late final StreamSubscription<Event> _changeSubscription;
-  late final StreamSubscription<Event> _inputSubscription;
-
-  String _value = '';
-
-  UserInputController([final String? value]) : _value = value ?? '';
-
-  String get value => _value;
-
-  set value(final String newValue) {
-    _value = newValue;
-    (_element as dynamic).value = newValue;
-  }
-
-  StreamSubscription<String> onChange(
-    final void Function(String value) callback,
-  ) =>
-      _changeController.stream.listen(callback);
-
-  StreamSubscription<String> onInput(
-    final void Function(String value) callback,
-  ) =>
-      _inputController.stream.listen(callback);
-
-  void initialize() {
-    _changeSubscription = _element.onChange.listen((final event) {
-      _value = (_element as dynamic).value!;
-      _changeController.add(value);
-    });
-
-    _inputSubscription = _element.onInput.listen((final event) {
-      _value = (_element as dynamic).value!;
-      _inputController.add(value);
-    });
-  }
-
-  void dispose() {
-    _inputSubscription.cancel();
-    _changeSubscription.cancel();
-  }
-}
-
 class UserInputNode<T extends UserInputWidget, U extends Element>
     extends FrameworkNode<T, U> {
   UserInputNode(
@@ -375,12 +312,12 @@ class UserInputNode<T extends UserInputWidget, U extends Element>
     super._initialize();
     widget.controller
       .._element = _element
-      ..initialize();
+      .._initialize();
   }
 
   @override
   void _dispose() {
-    widget.controller.dispose();
+    widget.controller._dispose();
     super._dispose();
   }
 }
