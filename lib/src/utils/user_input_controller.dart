@@ -9,7 +9,7 @@ class UserInputController {
   late final StreamSubscription<html.Event> _changeSubscription;
   late final StreamSubscription<html.Event> _inputSubscription;
 
-  String _value = '';
+  String _value;
 
   late html.Element _element;
 
@@ -29,6 +29,8 @@ class UserInputController {
       _inputController.stream.listen(callback);
 
   void _initialize() {
+    (_element as dynamic).value = value;
+
     _changeSubscription = _element.onChange.listen((final event) {
       _value = (_element as dynamic).value;
       _changeController.add(value);
@@ -43,5 +45,6 @@ class UserInputController {
   void _dispose() {
     _inputSubscription.cancel();
     _changeSubscription.cancel();
+    (_element as dynamic).value = '';
   }
 }
