@@ -14,7 +14,7 @@ abstract class StatefulWidget extends Widget {
   State<StatefulWidget> createState();
 }
 
-typedef EventListener = void Function(Event event);
+typedef EventListener = void Function(html.Event event);
 
 abstract class FrameworkWidget extends Widget {
   final EventListener? onPointerDown;
@@ -22,8 +22,8 @@ abstract class FrameworkWidget extends Widget {
   final EventListener? onPointerEnter;
   final EventListener? onPointerLeave;
   final EventListener? onPress;
-
-  final Style style;
+  final Style? style;
+  final Animation? animation;
 
   const FrameworkWidget({
     this.onPointerDown,
@@ -31,8 +31,9 @@ abstract class FrameworkWidget extends Widget {
     this.onPointerEnter,
     this.onPointerLeave,
     this.onPress,
-    final Style? style,
-  }) : style = style ?? const Style.empty();
+    this.style,
+    this.animation,
+  });
 }
 
 class Text extends FrameworkWidget {
@@ -46,6 +47,7 @@ class Text extends FrameworkWidget {
     final EventListener? onPointerLeave,
     final EventListener? onPress,
     final Style? style,
+    final Animation? animation,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -53,6 +55,7 @@ class Text extends FrameworkWidget {
           onPointerLeave: onPointerLeave,
           onPress: onPress,
           style: style,
+          animation: animation,
         );
 }
 
@@ -67,6 +70,7 @@ class Image extends FrameworkWidget {
     final EventListener? onPointerLeave,
     final EventListener? onPress,
     final Style? style,
+    final Animation? animation,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -74,44 +78,22 @@ class Image extends FrameworkWidget {
           onPointerLeave: onPointerLeave,
           onPress: onPress,
           style: style,
+          animation: animation,
         );
 }
 
 class Container extends FrameworkWidget {
-  final List<Widget> _children;
+  final List<Widget> children;
 
   const Container(
-    final List<Widget> children, {
+    this.children, {
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
     final EventListener? onPointerLeave,
     final EventListener? onPress,
     final Style? style,
-  })  : _children = children,
-        super(
-          onPointerDown: onPointerDown,
-          onPointerUp: onPointerUp,
-          onPointerEnter: onPointerEnter,
-          onPointerLeave: onPointerLeave,
-          onPress: onPress,
-          style: style,
-        );
-
-  List<Widget> get children => List.unmodifiable(_children);
-}
-
-abstract class UserInputWidget extends FrameworkWidget {
-  final UserInputController controller;
-
-  const UserInputWidget({
-    required this.controller,
-    final EventListener? onPointerDown,
-    final EventListener? onPointerUp,
-    final EventListener? onPointerEnter,
-    final EventListener? onPointerLeave,
-    final EventListener? onPress,
-    final Style? style,
+    final Animation? animation,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -119,45 +101,73 @@ abstract class UserInputWidget extends FrameworkWidget {
           onPointerLeave: onPointerLeave,
           onPress: onPress,
           style: style,
+          animation: animation,
+        );
+}
+
+abstract class UserInputWidget extends FrameworkWidget {
+  final UserInputController userInputController;
+
+  const UserInputWidget(
+    this.userInputController, {
+    final EventListener? onPointerDown,
+    final EventListener? onPointerUp,
+    final EventListener? onPointerEnter,
+    final EventListener? onPointerLeave,
+    final EventListener? onPress,
+    final Style? style,
+    final Animation? animation,
+  }) : super(
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          onPointerEnter: onPointerEnter,
+          onPointerLeave: onPointerLeave,
+          onPress: onPress,
+          style: style,
+          animation: animation,
         );
 }
 
 class Input extends UserInputWidget {
-  const Input({
-    required final UserInputController controller,
+  const Input(
+    final UserInputController userInputController, {
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
     final EventListener? onPointerLeave,
     final EventListener? onPress,
     final Style? style,
+    final Animation? animation,
   }) : super(
-          controller: controller,
+          userInputController,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,
           onPointerLeave: onPointerLeave,
           onPress: onPress,
           style: style,
+          animation: animation,
         );
 }
 
 class TextBox extends UserInputWidget {
-  const TextBox({
-    required final UserInputController controller,
+  const TextBox(
+    final UserInputController userInputController, {
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
     final EventListener? onPointerLeave,
     final EventListener? onPress,
     final Style? style,
+    final Animation? animation,
   }) : super(
-          controller: controller,
+          userInputController,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,
           onPointerLeave: onPointerLeave,
           onPress: onPress,
           style: style,
+          animation: animation,
         );
 }

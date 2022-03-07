@@ -28,17 +28,13 @@ abstract class Node<T extends Widget> {
 
   final Context context;
 
-  bool _isInitialized = false;
-
   Node({final Node<Widget>? parentNode})
       : context = parentNode != null
             ? Context([parentNode, ...parentNode.context.sequence])
             : const Context.empty();
 
-  bool get isInitialized => _isInitialized;
-
-  void _initialize() => _isInitialized = true;
-  void _dispose() => _isInitialized = false;
+  void _initialize();
+  void _dispose();
 }
 
 class StatelessNode extends Node<StatelessWidget> {
@@ -52,14 +48,12 @@ class StatelessNode extends Node<StatelessWidget> {
 
   @override
   void _initialize() {
-    super._initialize();
     _childNode._initialize();
   }
 
   @override
   void _dispose() {
     _childNode._dispose();
-    super._dispose();
   }
 }
 
@@ -83,8 +77,8 @@ class StatefulNode extends Node<StatefulWidget> {
     final oldChildNode = _childNode;
     final newChildNode = _createNode(_state.build(context), parentNode: this);
 
-    if (newChildNode is FrameworkNode<FrameworkWidget, Element> &&
-        oldChildNode is FrameworkNode<FrameworkWidget, Element> &&
+    if (newChildNode is FrameworkNode<FrameworkWidget, html.Element> &&
+        oldChildNode is FrameworkNode<FrameworkWidget, html.Element> &&
         newChildNode.runtimeType == oldChildNode.runtimeType) {
       oldChildNode._setWidget(newChildNode.widget);
     } else if (newChildNode.widget != oldChildNode.widget) {
@@ -95,7 +89,6 @@ class StatefulNode extends Node<StatefulWidget> {
 
   @override
   void _initialize() {
-    super._initialize();
     _state.initialize();
     _childNode._initialize();
     _updateStreamSubscription = _state.onUpdate(_stateDidUpdate);
@@ -108,15 +101,16 @@ class StatefulNode extends Node<StatefulWidget> {
     _updateStreamSubscription.cancel();
     _childNode._dispose();
     _state.dispose();
-    super._dispose();
   }
 }
 
-abstract class FrameworkNode<T extends FrameworkWidget, U extends Element>
+abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     extends Node<T> {
   final U _element;
 
   T _widget;
+
+  html.Animation? _animation;
 
   FrameworkNode(
     final T widget, {
@@ -137,32 +131,49 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends Element>
     }
   }
 
-  void _initializeElement() => _element
-    ..setAttribute('style', widget.style.toString())
-    ..addEventListener('pointerdown', widget.onPointerDown)
-    ..addEventListener('pointerup', widget.onPointerUp)
-    ..addEventListener('pointerenter', widget.onPointerEnter)
-    ..addEventListener('pointerleave', widget.onPointerLeave)
-    ..addEventListener('click', widget.onPress);
+  void _initializeElement() {
+    _element
+      ..addEventListener('pointerdown', widget.onPointerDown)
+      ..addEventListener('pointerup', widget.onPointerUp)
+      ..addEventListener('pointerenter', widget.onPointerEnter)
+      ..addEventListener('pointerleave', widget.onPointerLeave)
+      ..addEventListener('click', widget.onPress);
 
-  void _disposeElement() => _element
-    ..removeEventListener('pointerdown', widget.onPointerDown)
-    ..removeEventListener('pointerup', widget.onPointerUp)
-    ..removeEventListener('pointerenter', widget.onPointerEnter)
-    ..removeEventListener('pointerleave', widget.onPointerLeave)
-    ..removeEventListener('click', widget.onPress);
+    if (widget.style != null) {
+      _element.setAttribute('style', widget.style!.toString());
+    }
+
+    if (widget.animation != null) {
+      _animation = _element.animate(
+        widget.animation!.keyframes,
+        widget.animation!.options,
+      );
+    } else {
+      _animation = null;
+    }
+  }
+
+  void _disposeElement() {
+    _animation?.cancel();
+
+    _element
+      ..removeAttribute('style')
+      ..removeEventListener('pointerdown', widget.onPointerDown)
+      ..removeEventListener('pointerup', widget.onPointerUp)
+      ..removeEventListener('pointerenter', widget.onPointerEnter)
+      ..removeEventListener('pointerleave', widget.onPointerLeave)
+      ..removeEventListener('click', widget.onPress);
+  }
 
   void _willWidgetChange() => _disposeElement();
   void _didWidgetChange() => _initializeElement();
 
   @override
   void _initialize() {
-    super._initialize();
-
     final parentContainerNodes = context.sequence.whereType<ContainerNode>();
 
     final parentElement = parentContainerNodes.isEmpty
-        ? document.body!
+        ? html.document.body!
         : parentContainerNodes.first._element;
 
     late final int index;
@@ -192,41 +203,52 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends Element>
   void _dispose() {
     _disposeElement();
     _element.remove();
-    super._dispose();
   }
 }
 
-class TextNode extends FrameworkNode<Text, SpanElement> {
+class TextNode extends FrameworkNode<Text, html.SpanElement> {
   TextNode(final Text widget, {final Node<Widget>? parentNode})
-      : super(widget, element: SpanElement(), parentNode: parentNode);
+      : super(widget, element: html.SpanElement(), parentNode: parentNode);
 
   @override
   void _initializeElement() {
     super._initializeElement();
     _element.text = widget.value;
   }
+
+  @override
+  void _disposeElement() {
+    _element.text = '';
+    super._disposeElement();
+  }
 }
 
-class ImageNode extends FrameworkNode<Image, ImageElement> {
+class ImageNode extends FrameworkNode<Image, html.ImageElement> {
   ImageNode(final Image widget, {final Node<Widget>? parentNode})
-      : super(widget, element: ImageElement(), parentNode: parentNode);
+      : super(widget, element: html.ImageElement(), parentNode: parentNode);
 
   @override
   void _initializeElement() {
     super._initializeElement();
     _element.src = widget.source;
   }
+
+  @override
+  void _disposeElement() {
+    _element.src = '';
+    super._disposeElement();
+  }
 }
 
 typedef ChildNodes = List<Node<Widget>>;
 
-class ContainerNode extends FrameworkNode<Container, DivElement> {
+class ContainerNode extends FrameworkNode<Container, html.DivElement> {
   late ChildNodes _childNodes = widget.children
       .map((final child) => _createNode(child, parentNode: this))
       .toList();
 
   ContainerNode(final Container widget, {final Node<Widget>? parentNode})
-      : super(widget, element: DivElement(), parentNode: parentNode);
+      : super(widget, element: html.DivElement(), parentNode: parentNode);
 
   @override
   void _didWidgetChange() {
@@ -238,39 +260,52 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
         .map((final child) => _createNode(child, parentNode: this))
         .toList();
 
-    int searchIndex = 0;
+    int exactSearchStartIndex = 0;
+    int sameTypeSearchStartIndex = 0;
 
     for (final oldChildNode in oldChildNodes) {
       final index = newChildNodes.indexWhere(
-        (final newChildNode) =>
-            newChildNode.runtimeType == oldChildNode.runtimeType,
-        searchIndex,
+        (final newChildNode) => newChildNode.widget == oldChildNode.widget,
+        exactSearchStartIndex,
       );
 
-      if (index < 0) {
-        oldChildNode._dispose();
-      } else {
-        final newChildNode = newChildNodes[index];
+      if (index > -1) {
+        newChildNodes[index] = oldChildNode;
+        exactSearchStartIndex = index + 1;
+      }
+    }
 
-        if (newChildNode.widget == oldChildNode.widget) {
-          newChildNodes[index] = oldChildNode;
-          searchIndex = index + 1;
-        } else if (newChildNode is FrameworkNode<FrameworkWidget, Element> &&
-            oldChildNode is FrameworkNode<FrameworkWidget, Element>) {
-          oldChildNode._setWidget(newChildNode.widget);
+    for (final oldChildNode in oldChildNodes) {
+      if (!newChildNodes.contains(oldChildNode)) {
+        final index = newChildNodes.indexWhere(
+          (final newChildNode) =>
+              oldChildNode is FrameworkNode<FrameworkWidget, html.Element> &&
+              newChildNode.runtimeType == oldChildNode.runtimeType,
+          sameTypeSearchStartIndex,
+        );
 
-          newChildNodes[index] = oldChildNode;
-          searchIndex = index + 1;
-        } else {
-          oldChildNode._dispose();
+        if (index > -1) {
+          final newChildNode = newChildNodes[index];
+
+          if (!oldChildNodes.contains(newChildNode) &&
+              oldChildNode is FrameworkNode<FrameworkWidget, html.Element> &&
+              newChildNode is FrameworkNode<FrameworkWidget, html.Element>) {
+            oldChildNode._setWidget(newChildNode.widget);
+            newChildNodes[index] = oldChildNode;
+            sameTypeSearchStartIndex = index + 1;
+          }
         }
       }
+    }
+
+    for (final childNode in _childNodes) {
+      if (!newChildNodes.contains(childNode)) childNode._dispose();
     }
 
     _childNodes = newChildNodes;
 
     for (final childNode in _childNodes) {
-      if (!childNode.isInitialized) childNode._initialize();
+      if (!oldChildNodes.contains(childNode)) childNode._initialize();
     }
   }
 
@@ -293,7 +328,7 @@ class ContainerNode extends FrameworkNode<Container, DivElement> {
   }
 }
 
-class UserInputNode<T extends UserInputWidget, U extends Element>
+class UserInputNode<T extends UserInputWidget, U extends html.Element>
     extends FrameworkNode<T, U> {
   UserInputNode(
     final T widget, {
@@ -304,30 +339,28 @@ class UserInputNode<T extends UserInputWidget, U extends Element>
   @override
   void _initializeElement() {
     super._initializeElement();
-    (_element as dynamic).value = widget.controller.value;
-  }
 
-  @override
-  void _initialize() {
-    super._initialize();
-    widget.controller
+    widget.userInputController
       .._element = _element
       .._initialize();
   }
 
   @override
-  void _dispose() {
-    widget.controller._dispose();
-    super._dispose();
+  void _disposeElement() {
+    widget.userInputController
+      .._element = _element
+      .._dispose();
+
+    super._disposeElement();
   }
 }
 
-class InputNode extends UserInputNode<Input, TextInputElement> {
+class InputNode extends UserInputNode<Input, html.TextInputElement> {
   InputNode(final Input widget, {final Node<Widget>? parentNode})
-      : super(widget, element: TextInputElement(), parentNode: parentNode);
+      : super(widget, element: html.TextInputElement(), parentNode: parentNode);
 }
 
-class TextBoxNode extends UserInputNode<TextBox, TextAreaElement> {
+class TextBoxNode extends UserInputNode<TextBox, html.TextAreaElement> {
   TextBoxNode(final TextBox widget, {final Node<Widget>? parentNode})
-      : super(widget, element: TextAreaElement(), parentNode: parentNode);
+      : super(widget, element: html.TextAreaElement(), parentNode: parentNode);
 }

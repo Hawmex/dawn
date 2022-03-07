@@ -3,12 +3,10 @@ part of dawn;
 typedef Sequence = List<Node<Widget>>;
 
 class Context {
-  final Sequence _sequence;
+  final Sequence sequence;
 
-  const Context(this._sequence);
-  const Context.empty() : _sequence = const [];
-
-  Sequence get sequence => List.unmodifiable(_sequence);
+  const Context(this.sequence);
+  const Context.empty() : sequence = const [];
 
   T getParentWidgetOfExactType<T extends Widget>() =>
       sequence.firstWhere((final node) => node.widget.runtimeType == T).widget

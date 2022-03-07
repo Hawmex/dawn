@@ -12,6 +12,18 @@ class App extends StatelessWidget {
         Image(
           '/assets/logo.svg',
           style: Style({'width': '128px', 'height': '128px'}),
+          animation: Animation(
+            keyframes: [
+              {'transform': 'scale(0.8)'},
+              {'transform': 'scale(1.0)'}
+            ],
+            options: {
+              'duration': 1000,
+              'iterations': double.infinity,
+              'direction': 'alternate',
+              'easing': 'cubic-bezier(0.2, 0.0, 0.4, 1)',
+            },
+          ),
         ),
         Text(
           'Welcome to Dawn',
