@@ -47,14 +47,10 @@ class StatelessNode extends Node<StatelessWidget> {
       : super(parentNode: parentNode);
 
   @override
-  void _initialize() {
-    _childNode._initialize();
-  }
+  void _initialize() => _childNode._initialize();
 
   @override
-  void _dispose() {
-    _childNode._dispose();
-  }
+  void _dispose() => _childNode._dispose();
 }
 
 class StatefulNode extends Node<StatefulWidget> {
@@ -62,13 +58,9 @@ class StatefulNode extends Node<StatefulWidget> {
   final StatefulWidget widget;
 
   late final StreamSubscription<void> _updateStreamSubscription;
+  late final State<StatefulWidget> _state;
 
-  late final State<StatefulWidget> _state = widget.createState()
-    ..widget = widget
-    ..context = context;
-
-  late Node<Widget> _childNode =
-      _createNode(_state.build(context), parentNode: this);
+  late Node<Widget> _childNode;
 
   StatefulNode(this.widget, {final Node<Widget>? parentNode})
       : super(parentNode: parentNode);
@@ -89,9 +81,16 @@ class StatefulNode extends Node<StatefulWidget> {
 
   @override
   void _initialize() {
-    _state.initialize();
-    _childNode._initialize();
+    _state = widget.createState()
+      ..widget = widget
+      ..context = context
+      ..initialize();
+
+    _childNode = _createNode(_state.build(context), parentNode: this)
+      .._initialize();
+
     _updateStreamSubscription = _state.onUpdate(_stateDidUpdate);
+
     _state.didMount();
   }
 
@@ -347,10 +346,7 @@ class UserInputNode<T extends UserInputWidget, U extends html.Element>
 
   @override
   void _disposeElement() {
-    widget.userInputController
-      .._element = _element
-      .._dispose();
-
+    widget.userInputController._dispose();
     super._disposeElement();
   }
 }
