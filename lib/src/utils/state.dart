@@ -1,11 +1,13 @@
 part of dawn;
 
 abstract class State<T extends StatefulWidget> extends Store with Buildable {
-  late final T widget;
   late final Context context;
+
+  late T _widget;
 
   bool _isMounted = false;
 
+  T get widget => _widget;
   bool get isMounted => _isMounted;
 
   void initialize() {}

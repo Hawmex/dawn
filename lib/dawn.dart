@@ -12,5 +12,4 @@ part 'src/utils/debouncer.dart';
 part 'src/utils/state.dart';
 part 'src/utils/store.dart';
 part 'src/utils/style.dart';
-part 'src/utils/user_input_controller.dart';
 part 'src/widgets.dart';
