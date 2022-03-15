@@ -1,24 +1,5 @@
 part of dawn;
 
-Node<Widget> _createNode(
-  final Widget widget, {
-  final Node<Widget>? parentNode,
-}) {
-  if (widget is StatelessWidget) {
-    return StatelessNode(widget, parentNode: parentNode);
-  } else if (widget is StatefulWidget) {
-    return StatefulNode(widget, parentNode: parentNode);
-  } else if (widget is Text) {
-    return TextNode(widget, parentNode: parentNode);
-  } else if (widget is Image) {
-    return ImageNode(widget, parentNode: parentNode);
-  } else if (widget is Container) {
-    return ContainerNode(widget, parentNode: parentNode);
-  } else {
-    throw TypeError();
-  }
-}
-
 abstract class Node<T extends Widget> {
   final Context context;
 
@@ -30,6 +11,25 @@ abstract class Node<T extends Widget> {
             : const Context.empty();
 
   T get widget => _widget;
+
+  static Node<Widget> _createNode(
+    final Widget widget, {
+    final Node<Widget>? parentNode,
+  }) {
+    if (widget is StatelessWidget) {
+      return StatelessNode(widget, parentNode: parentNode);
+    } else if (widget is StatefulWidget) {
+      return StatefulNode(widget, parentNode: parentNode);
+    } else if (widget is Text) {
+      return TextNode(widget, parentNode: parentNode);
+    } else if (widget is Image) {
+      return ImageNode(widget, parentNode: parentNode);
+    } else if (widget is Container) {
+      return ContainerNode(widget, parentNode: parentNode);
+    } else {
+      throw TypeError();
+    }
+  }
 
   void _setWidget(final T newWidget) {
     if (widget != newWidget) {
@@ -59,7 +59,7 @@ class StatelessNode extends Node<StatelessWidget> {
   void _initialize() {
     super._initialize();
 
-    _childNode = _createNode(
+    _childNode = Node._createNode(
       widget.build(context),
       parentNode: this,
     ).._initialize();
@@ -75,7 +75,7 @@ class StatelessNode extends Node<StatelessWidget> {
       _childNode._setWidget(newChildWidget);
     } else {
       _childNode._dispose();
-      _childNode = _createNode(newChildWidget, parentNode: this);
+      _childNode = Node._createNode(newChildWidget, parentNode: this);
     }
   }
 
@@ -105,7 +105,7 @@ class StatefulNode extends Node<StatefulWidget> {
       ..context = context
       ..initialize();
 
-    _childNode = _createNode(
+    _childNode = Node._createNode(
       _state.build(context),
       parentNode: this,
     ).._initialize();
@@ -122,7 +122,11 @@ class StatefulNode extends Node<StatefulWidget> {
       _childNode._setWidget(newChildWidget);
     } else {
       _childNode._dispose();
-      _childNode = _createNode(newChildWidget, parentNode: this).._initialize();
+
+      _childNode = Node._createNode(
+        newChildWidget,
+        parentNode: this,
+      ).._initialize();
     }
   }
 
@@ -172,7 +176,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
 
     if (widget.animation != null) {
       _animation = _element.animate(
-        widget.animation!.keyframes,
+        widget.animation!.keyframesForJsAnimation,
         widget.animation!.options,
       );
     } else {
@@ -270,10 +274,8 @@ class ImageNode extends FrameworkNode<Image, html.ImageElement> {
   }
 }
 
-typedef ChildNodes = List<Node<Widget>>;
-
 class ContainerNode extends FrameworkNode<Container, html.DivElement> {
-  late ChildNodes _childNodes;
+  late List<Node<Widget>> _childNodes;
 
   ContainerNode(
     final Container widget, {
@@ -285,7 +287,7 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
     super._initialize();
 
     _childNodes = widget.children
-        .map((final child) => _createNode(child, parentNode: this))
+        .map((final child) => Node._createNode(child, parentNode: this))
         .toList();
 
     for (final childNode in _childNodes) {
@@ -300,7 +302,7 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
     final oldChildNodes = _childNodes;
 
     final newChildNodes = widget.children
-        .map((final child) => _createNode(child, parentNode: this))
+        .map((final child) => Node._createNode(child, parentNode: this))
         .toList();
 
     int exactSearchStartIndex = 0;
