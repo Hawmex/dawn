@@ -164,7 +164,9 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
       ..addEventListener('pointerleave', widget.onPointerLeave)
       ..addEventListener('click', widget.onPress);
 
-    if (widget.style != null) {
+    if (widget.style == null) {
+      _element.removeAttribute('style');
+    } else {
       _element.setAttribute('style', widget.style!.toString());
     }
 
@@ -182,24 +184,11 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     _animation?.cancel();
 
     _element
-      ..removeAttribute('style')
       ..removeEventListener('pointerdown', widget.onPointerDown)
       ..removeEventListener('pointerup', widget.onPointerUp)
       ..removeEventListener('pointerenter', widget.onPointerEnter)
       ..removeEventListener('pointerleave', widget.onPointerLeave)
       ..removeEventListener('click', widget.onPress);
-  }
-
-  @override
-  void _willWidgetUpdate(final T newWidget) {
-    _disposeElement();
-    super._willWidgetUpdate(newWidget);
-  }
-
-  @override
-  void _didWidgetUpdate(final T oldWidget) {
-    super._didWidgetUpdate(oldWidget);
-    _initializeElement();
   }
 
   @override
@@ -236,6 +225,18 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
   }
 
   @override
+  void _willWidgetUpdate(final T newWidget) {
+    _disposeElement();
+    super._willWidgetUpdate(newWidget);
+  }
+
+  @override
+  void _didWidgetUpdate(final T oldWidget) {
+    super._didWidgetUpdate(oldWidget);
+    _initializeElement();
+  }
+
+  @override
   void _dispose() {
     _disposeElement();
     _element.remove();
@@ -254,12 +255,6 @@ class TextNode extends FrameworkNode<Text, html.SpanElement> {
     super._initializeElement();
     _element.text = widget.value;
   }
-
-  @override
-  void _disposeElement() {
-    _element.text = '';
-    super._disposeElement();
-  }
 }
 
 class ImageNode extends FrameworkNode<Image, html.ImageElement> {
@@ -273,12 +268,6 @@ class ImageNode extends FrameworkNode<Image, html.ImageElement> {
     super._initializeElement();
     _element.src = widget.source;
   }
-
-  @override
-  void _disposeElement() {
-    _element.src = '';
-    super._disposeElement();
-  }
 }
 
 typedef ChildNodes = List<Node<Widget>>;
@@ -290,6 +279,19 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
     final Container widget, {
     final Node<Widget>? parentNode,
   }) : super(widget, element: html.DivElement(), parentNode: parentNode);
+
+  @override
+  void _initialize() {
+    super._initialize();
+
+    _childNodes = widget.children
+        .map((final child) => _createNode(child, parentNode: this))
+        .toList();
+
+    for (final childNode in _childNodes) {
+      childNode._initialize();
+    }
+  }
 
   @override
   void _didWidgetUpdate(final Container oldWidget) {
@@ -320,7 +322,8 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
       if (!newChildNodes.contains(oldChildNode)) {
         final index = newChildNodes.indexWhere(
           (final newChildNode) =>
-              newChildNode.runtimeType == oldChildNode.runtimeType,
+              newChildNode.widget.runtimeType ==
+              oldChildNode.widget.runtimeType,
           sameTypeSearchStartIndex,
         );
 
@@ -344,19 +347,6 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
 
     for (final childNode in _childNodes) {
       if (!oldChildNodes.contains(childNode)) childNode._initialize();
-    }
-  }
-
-  @override
-  void _initialize() {
-    super._initialize();
-
-    _childNodes = widget.children
-        .map((final child) => _createNode(child, parentNode: this))
-        .toList();
-
-    for (final childNode in _childNodes) {
-      childNode._initialize();
     }
   }
 
