@@ -26,6 +26,10 @@ abstract class Node<T extends Widget> {
       return ImageNode(widget, parentNode: parentNode);
     } else if (widget is Container) {
       return ContainerNode(widget, parentNode: parentNode);
+    } else if (widget is Input) {
+      return InputNode(widget, parentNode: parentNode);
+    } else if (widget is TextBox) {
+      return TextBoxNode(widget, parentNode: parentNode);
     } else {
       throw TypeError();
     }
@@ -102,7 +106,7 @@ class StatefulNode extends Node<StatefulWidget> {
 
     _state = widget.createState()
       .._widget = widget
-      ..context = context
+      .._context = context
       ..initialize();
 
     _childNode = Node._createNode(
@@ -360,4 +364,38 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
 
     super._dispose();
   }
+}
+
+class UserInputNode<T extends UserInputWidget, U extends html.Element>
+    extends FrameworkNode<T, U> {
+  UserInputNode(
+    final T widget, {
+    required final U element,
+    final Node<Widget>? parentNode,
+  }) : super(widget, element: element, parentNode: parentNode);
+
+  @override
+  void _initializeElement() {
+    super._initializeElement();
+
+    widget.userInputController
+      .._element = _element
+      .._initialize();
+  }
+
+  @override
+  void _disposeElement() {
+    widget.userInputController._dispose();
+    super._disposeElement();
+  }
+}
+
+class InputNode extends UserInputNode<Input, html.TextInputElement> {
+  InputNode(final Input widget, {final Node<Widget>? parentNode})
+      : super(widget, element: html.TextInputElement(), parentNode: parentNode);
+}
+
+class TextBoxNode extends UserInputNode<TextBox, html.TextAreaElement> {
+  TextBoxNode(final TextBox widget, {final Node<Widget>? parentNode})
+      : super(widget, element: html.TextAreaElement(), parentNode: parentNode);
 }
