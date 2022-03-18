@@ -1,10 +1,14 @@
 part of dawn;
 
 class Debouncer {
-  Timer? _timer;
+  int? _animationFrame;
 
   void enqueue(final void Function() task) {
-    _timer?.cancel();
-    _timer = Timer(Duration.zero, task);
+    if (_animationFrame != null) {
+      html.window.cancelAnimationFrame(_animationFrame!);
+    }
+
+    _animationFrame =
+        html.window.requestAnimationFrame((final highResTime) => task());
   }
 }
