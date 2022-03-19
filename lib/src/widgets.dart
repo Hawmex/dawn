@@ -1,15 +1,17 @@
 part of dawn;
 
 abstract class Widget {
-  const Widget();
+  final String? key;
+
+  const Widget({this.key});
 }
 
 abstract class StatelessWidget extends Widget with Buildable {
-  const StatelessWidget();
+  const StatelessWidget({final String? key}) : super(key: key);
 }
 
 abstract class StatefulWidget extends Widget {
-  const StatefulWidget();
+  const StatefulWidget({final String? key}) : super(key: key);
 
   State<StatefulWidget> createState();
 }
@@ -33,7 +35,8 @@ abstract class FrameworkWidget extends Widget {
     this.onPress,
     this.style,
     this.animation,
-  });
+    final String? key,
+  }) : super(key: key);
 }
 
 class Text extends FrameworkWidget {
@@ -48,6 +51,7 @@ class Text extends FrameworkWidget {
     final EventListener? onPress,
     final Style? style,
     final Animation? animation,
+    final String? key,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -56,6 +60,7 @@ class Text extends FrameworkWidget {
           onPress: onPress,
           style: style,
           animation: animation,
+          key: key,
         );
 }
 
@@ -71,6 +76,7 @@ class Image extends FrameworkWidget {
     final EventListener? onPress,
     final Style? style,
     final Animation? animation,
+    final String? key,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -79,6 +85,7 @@ class Image extends FrameworkWidget {
           onPress: onPress,
           style: style,
           animation: animation,
+          key: key,
         );
 }
 
@@ -94,6 +101,7 @@ class Container extends FrameworkWidget {
     final EventListener? onPress,
     final Style? style,
     final Animation? animation,
+    final String? key,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -102,6 +110,7 @@ class Container extends FrameworkWidget {
           onPress: onPress,
           style: style,
           animation: animation,
+          key: key,
         );
 }
 
@@ -117,6 +126,7 @@ abstract class UserInputWidget extends FrameworkWidget {
     final EventListener? onPress,
     final Style? style,
     final Animation? animation,
+    final String? key,
   }) : super(
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
@@ -125,6 +135,7 @@ abstract class UserInputWidget extends FrameworkWidget {
           onPress: onPress,
           style: style,
           animation: animation,
+          key: key,
         );
 }
 
@@ -138,6 +149,7 @@ class Input extends UserInputWidget {
     final EventListener? onPress,
     final Style? style,
     final Animation? animation,
+    final String? key,
   }) : super(
           userInputController,
           onPointerDown: onPointerDown,
@@ -147,6 +159,7 @@ class Input extends UserInputWidget {
           onPress: onPress,
           style: style,
           animation: animation,
+          key: key,
         );
 }
 
@@ -160,6 +173,7 @@ class TextBox extends UserInputWidget {
     final EventListener? onPress,
     final Style? style,
     final Animation? animation,
+    final String? key,
   }) : super(
           userInputController,
           onPointerDown: onPointerDown,
@@ -169,5 +183,6 @@ class TextBox extends UserInputWidget {
           onPress: onPress,
           style: style,
           animation: animation,
+          key: key,
         );
 }

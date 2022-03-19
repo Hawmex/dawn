@@ -45,6 +45,5 @@ class UserInputController {
   void _dispose() {
     _inputSubscription.cancel();
     _changeSubscription.cancel();
-    (_element as dynamic).value = '';
   }
 }

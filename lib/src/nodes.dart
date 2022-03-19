@@ -75,7 +75,8 @@ class StatelessNode extends Node<StatelessWidget> {
 
     final newChildWidget = widget.build(context);
 
-    if (_childNode.widget.runtimeType == newChildWidget.runtimeType) {
+    if (_childNode.widget.runtimeType == newChildWidget.runtimeType &&
+        _childNode.widget.key == newChildWidget.key) {
       _childNode._setWidget(newChildWidget);
     } else {
       _childNode._dispose();
@@ -122,7 +123,8 @@ class StatefulNode extends Node<StatefulWidget> {
   void _stateDidUpdate() {
     final newChildWidget = _state.build(context);
 
-    if (_childNode.widget.runtimeType == newChildWidget.runtimeType) {
+    if (_childNode.widget.runtimeType == newChildWidget.runtimeType &&
+        _childNode.widget.key == newChildWidget.key) {
       _childNode._setWidget(newChildWidget);
     } else {
       _childNode._dispose();
@@ -177,27 +179,14 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     } else {
       _element.setAttribute('style', widget.style!.toString());
     }
-
-    if (widget.animation != null) {
-      _animation = _element.animate(
-        widget.animation!.keyframesForJsAnimation,
-        widget.animation!.options,
-      );
-    } else {
-      _animation = null;
-    }
   }
 
-  void _disposeElement() {
-    _animation?.cancel();
-
-    _element
-      ..removeEventListener('pointerdown', widget.onPointerDown)
-      ..removeEventListener('pointerup', widget.onPointerUp)
-      ..removeEventListener('pointerenter', widget.onPointerEnter)
-      ..removeEventListener('pointerleave', widget.onPointerLeave)
-      ..removeEventListener('click', widget.onPress);
-  }
+  void _disposeElement() => _element
+    ..removeEventListener('pointerdown', widget.onPointerDown)
+    ..removeEventListener('pointerup', widget.onPointerUp)
+    ..removeEventListener('pointerenter', widget.onPointerEnter)
+    ..removeEventListener('pointerleave', widget.onPointerLeave)
+    ..removeEventListener('click', widget.onPress);
 
   @override
   void _initialize() {
@@ -230,6 +219,15 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     }
 
     _initializeElement();
+
+    if (widget.animation != null) {
+      _animation = _element.animate(
+        widget.animation!.keyframesForJsAnimation,
+        widget.animation!.options,
+      );
+    } else {
+      _animation = null;
+    }
   }
 
   @override
@@ -246,6 +244,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
 
   @override
   void _dispose() {
+    _animation?.cancel();
     _disposeElement();
     _element.remove();
     super._dispose();
@@ -328,19 +327,19 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
       if (!newChildNodes.contains(oldChildNode)) {
         final index = newChildNodes.indexWhere(
           (final newChildNode) =>
+              !oldChildNodes.contains(newChildNode) &&
               newChildNode.widget.runtimeType ==
-              oldChildNode.widget.runtimeType,
+                  oldChildNode.widget.runtimeType &&
+              newChildNode.widget.key == oldChildNode.widget.key,
           sameTypeSearchStartIndex,
         );
 
         if (index > -1) {
           final newChildNode = newChildNodes[index];
 
-          if (!oldChildNodes.contains(newChildNode)) {
-            oldChildNode._setWidget(newChildNode.widget);
-            newChildNodes[index] = oldChildNode;
-            sameTypeSearchStartIndex = index + 1;
-          }
+          oldChildNode._setWidget(newChildNode.widget);
+          newChildNodes[index] = oldChildNode;
+          sameTypeSearchStartIndex = index + 1;
         }
       }
     }
