@@ -1,6 +1,6 @@
 part of dawn;
 
-class Controller<T extends html.Element> {
+abstract class Controller<T extends html.Element> {
   late T _element;
 
   void _initializeElement() {}

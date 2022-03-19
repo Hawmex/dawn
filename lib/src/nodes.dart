@@ -365,7 +365,7 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
   }
 }
 
-class UserInputNode<T extends UserInputWidget, U extends html.Element>
+abstract class UserInputNode<T extends UserInputWidget, U extends html.Element>
     extends FrameworkNode<T, U> {
   UserInputNode(
     final T widget, {
