@@ -377,14 +377,21 @@ class UserInputNode<T extends UserInputWidget, U extends html.Element>
   void _initializeElement() {
     super._initializeElement();
 
-    widget.userInputController
+    (_element as dynamic).value = widget.userInputController
       .._element = _element
-      .._initialize();
+      ..value;
+
+    _element
+      ..addEventListener('change', widget.onChange)
+      ..addEventListener('input', widget.onInput);
   }
 
   @override
   void _disposeElement() {
-    widget.userInputController._dispose();
+    _element
+      ..removeEventListener('change', widget.onChange)
+      ..removeEventListener('input', widget.onInput);
+
     super._disposeElement();
   }
 }

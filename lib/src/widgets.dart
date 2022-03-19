@@ -116,9 +116,13 @@ class Container extends FrameworkWidget {
 
 abstract class UserInputWidget extends FrameworkWidget {
   final UserInputController userInputController;
+  final EventListener? onChange;
+  final EventListener? onInput;
 
   const UserInputWidget(
     this.userInputController, {
+    this.onChange,
+    this.onInput,
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
@@ -142,6 +146,8 @@ abstract class UserInputWidget extends FrameworkWidget {
 class Input extends UserInputWidget {
   const Input(
     final UserInputController userInputController, {
+    final EventListener? onChange,
+    final EventListener? onInput,
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
@@ -152,6 +158,8 @@ class Input extends UserInputWidget {
     final String? key,
   }) : super(
           userInputController,
+          onChange: onChange,
+          onInput: onInput,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,
@@ -166,6 +174,8 @@ class Input extends UserInputWidget {
 class TextBox extends UserInputWidget {
   const TextBox(
     final UserInputController userInputController, {
+    final EventListener? onChange,
+    final EventListener? onInput,
     final EventListener? onPointerDown,
     final EventListener? onPointerUp,
     final EventListener? onPointerEnter,
@@ -176,6 +186,8 @@ class TextBox extends UserInputWidget {
     final String? key,
   }) : super(
           userInputController,
+          onChange: onChange,
+          onInput: onInput,
           onPointerDown: onPointerDown,
           onPointerUp: onPointerUp,
           onPointerEnter: onPointerEnter,

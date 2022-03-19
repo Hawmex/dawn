@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Fixed a bug with `UserInputWidget`s.
+
 ## 1.0.1
 
 - Added `key` parameter.
