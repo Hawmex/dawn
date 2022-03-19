@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Fixed a bug with `UserInputController`.
+
 ## 1.0.2
 
 - Fixed a bug with `UserInputWidget`s.

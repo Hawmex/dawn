@@ -1,6 +1,6 @@
 name: dawn
 description: A Dart Web framework inspired by Flutter.
-version: 1.0.2
+version: 1.1.0
 homepage: https://github.com/Hawmex/dawn
 repository: https://github.com/Hawmex/dawn
 environment:
