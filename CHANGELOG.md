@@ -1,3 +1,8 @@
+## 1.1.2
+
+- Fixed a bug with `UserInputController`.
+- Improved `Style.toString()` output.
+
 ## 1.1.1
 
 - Internal improvements.

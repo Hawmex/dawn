@@ -10,5 +10,6 @@ class Style {
       ? ''
       : rules.entries
           .map((final ruleEntry) => '${ruleEntry.key}: ${ruleEntry.value}')
-          .reduce((final sum, final ruleString) => '$sum; $ruleString');
+          .reduce((final sum, final ruleString) => '$sum; $ruleString')
+          .replaceAll(RegExp(r'\s+'), ' ');
 }

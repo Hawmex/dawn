@@ -8,20 +8,18 @@ abstract class Controller<T extends html.Element> {
 }
 
 class UserInputController extends Controller<html.Element> {
-  String _value;
+  final String _initialValue;
 
-  UserInputController([final String? value]) : _value = value ?? '';
+  UserInputController([final String? initialValue])
+      : _initialValue = initialValue ?? '';
 
-  String get value => _value;
+  String get value => (_element as dynamic).value;
 
-  set value(final String newValue) {
-    _value = newValue;
-    (_element as dynamic).value = newValue;
-  }
+  set value(final String newValue) => (_element as dynamic).value = newValue;
 
   @override
   void _initializeElement() {
     super._initializeElement();
-    (_element as dynamic).value = value;
+    (_element as dynamic).value = _initialValue;
   }
 }
