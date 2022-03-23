@@ -1,3 +1,7 @@
+## 1.1.3
+
+- Improved `README.md`.
+
 ## 1.1.2
 
 - Fixed a bug with `UserInputController`.
