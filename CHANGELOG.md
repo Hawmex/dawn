@@ -1,3 +1,7 @@
+## 2.0.0
+
+- An overall rewrite of the framework.
+
 ## 1.1.3
 
 - Improved `README.md`.
