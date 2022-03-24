@@ -1,14 +1,14 @@
 import 'package:dawn/src/widgets.dart';
 
 abstract class Node<T extends Widget> {
-  final List<Node<Widget>> parentsSequence;
+  final List<Node> parentsSequence;
 
   late final context =
       Context(parentsSequence.map((final node) => node.widget).toList());
 
   T _widget;
 
-  Node(this._widget, {final Node<Widget>? parentNode})
+  Node(this._widget, {final Node? parentNode})
       : parentsSequence = [
           if (parentNode != null) ...[parentNode, ...parentNode.parentsSequence]
         ];

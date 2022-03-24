@@ -10,7 +10,7 @@ abstract class UserInputNode<T extends UserInputWidget, U extends html.Element>
   UserInputNode(
     final T widget, {
     required final U element,
-    final Node<Widget>? parentNode,
+    final Node? parentNode,
   }) : super(widget, element: element, parentNode: parentNode);
 
   @override

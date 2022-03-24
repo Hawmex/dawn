@@ -4,11 +4,11 @@ import 'package:dawn/src/widgets.dart';
 import 'node.dart';
 
 class StatelessNode extends Node<StatelessWidget> {
-  late Node<Widget> childNode;
+  late Node childNode;
 
   StatelessNode(
     final StatelessWidget widget, {
-    final Node<Widget>? parentNode,
+    final Node? parentNode,
   }) : super(widget, parentNode: parentNode);
 
   @override

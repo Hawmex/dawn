@@ -1,10 +1,7 @@
 import 'package:dawn/src/nodes.dart';
 import 'package:dawn/src/widgets.dart';
 
-Node<Widget> createNode(
-  final Widget widget, {
-  final Node<Widget>? parentNode,
-}) {
+Node createNode(final Widget widget, {final Node? parentNode}) {
   if (widget is StatelessWidget) {
     return StatelessNode(widget, parentNode: parentNode);
   } else if (widget is StatefulWidget) {

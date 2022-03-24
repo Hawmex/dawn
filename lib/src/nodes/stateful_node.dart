@@ -7,14 +7,12 @@ import 'package:dawn/src/widgets.dart';
 import 'node.dart';
 
 class StatefulNode extends Node<StatefulWidget> {
-  late State<StatefulWidget> state;
+  late State state;
   late StreamSubscription<void> updateStreamSubscription;
-  late Node<Widget> childNode;
+  late Node childNode;
 
-  StatefulNode(
-    final StatefulWidget widget, {
-    final Node<Widget>? parentNode,
-  }) : super(widget, parentNode: parentNode);
+  StatefulNode(final StatefulWidget widget, {final Node? parentNode})
+      : super(widget, parentNode: parentNode);
 
   @override
   void initialize() {

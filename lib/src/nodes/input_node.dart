@@ -6,7 +6,7 @@ import 'node.dart';
 import 'user_input_node.dart';
 
 class InputNode extends UserInputNode<Input, html.TextInputElement> {
-  InputNode(final Input widget, {final Node<Widget>? parentNode})
+  InputNode(final Input widget, {final Node? parentNode})
       : super(widget, element: html.TextInputElement(), parentNode: parentNode);
 
   @override

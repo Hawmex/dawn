@@ -6,7 +6,7 @@ import 'node.dart';
 import 'user_input_node.dart';
 
 class TextBoxNode extends UserInputNode<Textbox, html.TextAreaElement> {
-  TextBoxNode(final Textbox widget, {final Node<Widget>? parentNode})
+  TextBoxNode(final Textbox widget, {final Node? parentNode})
       : super(widget, element: html.TextAreaElement(), parentNode: parentNode);
 
   @override

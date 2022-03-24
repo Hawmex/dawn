@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Performance improvement.
+
 ## 2.0.0
 
 - An overall rewrite of the framework.

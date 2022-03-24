@@ -14,7 +14,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
   FrameworkNode(
     final T widget, {
     required this.element,
-    final Node<Widget>? parentNode,
+    final Node? parentNode,
   }) : super(widget, parentNode: parentNode);
 
   void initializeElement() {

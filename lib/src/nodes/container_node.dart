@@ -7,12 +7,10 @@ import 'framework_node.dart';
 import 'node.dart';
 
 class ContainerNode extends FrameworkNode<Container, html.DivElement> {
-  late List<Node<Widget>> childNodes;
+  late List<Node> childNodes;
 
-  ContainerNode(
-    final Container widget, {
-    final Node<Widget>? parentNode,
-  }) : super(widget, element: html.DivElement(), parentNode: parentNode);
+  ContainerNode(final Container widget, {final Node? parentNode})
+      : super(widget, element: html.DivElement(), parentNode: parentNode);
 
   @override
   void initialize() {
