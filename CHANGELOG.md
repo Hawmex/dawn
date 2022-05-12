@@ -1,3 +1,7 @@
+## 2.2.1
+
+- Changed example README.
+
 ## 2.2.0
 
 - Some fixes for the previous update.

@@ -15,6 +15,8 @@ Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
 
 ## Example
 
+`lib/main.dart`:
+
 ```dart
 import 'package:dawn/dawn.dart';
 
