@@ -5,7 +5,7 @@ import 'package:dawn/src/widgets.dart';
 import 'framework_node.dart';
 
 class ImageNode extends FrameworkNode<Image, html.ImageElement> {
-  ImageNode(final super._widget, {final super.parentNode})
+  ImageNode(final super.widget, {final super.parentNode})
       : super(element: html.ImageElement());
 
   @override

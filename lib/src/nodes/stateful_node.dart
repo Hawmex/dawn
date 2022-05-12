@@ -11,7 +11,7 @@ class StatefulNode extends Node<StatefulWidget> {
   late StreamSubscription<void> updateStreamSubscription;
   late Node childNode;
 
-  StatefulNode(final super._widget, {final super.parentNode});
+  StatefulNode(final super.widget, {final super.parentNode});
 
   @override
   void initialize() {

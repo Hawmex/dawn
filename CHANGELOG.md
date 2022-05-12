@@ -1,3 +1,7 @@
+## 2.2.0
+
+- Some fixes for the previous update.
+
 ## 2.1.0
 
 - Upgraded to Dart v2.17.0.

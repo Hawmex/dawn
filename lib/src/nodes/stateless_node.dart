@@ -6,7 +6,7 @@ import 'node.dart';
 class StatelessNode extends Node<StatelessWidget> {
   late Node childNode;
 
-  StatelessNode(final super._widget, {final super.parentNode});
+  StatelessNode(final super.widget, {final super.parentNode});
 
   @override
   void initialize() {

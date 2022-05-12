@@ -1,9 +1,9 @@
 name: dawn
 description: Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
-version: 2.1.0
+version: 2.2.0
 homepage: https://github.com/Hawmex/dawn
 repository: https://github.com/Hawmex/dawn
 environment:
   sdk: ">=2.17.0 <3.0.0"
 dev_dependencies:
-  dawn_lints: ^1.0.0
+  dawn_lints: ^2.0.0

@@ -7,4 +7,4 @@ dependencies:
   dawn:
     path: ../
 dev_dependencies:
-  dawn_lints: ^1.0.0
+  dawn_lints: ^2.0.0
