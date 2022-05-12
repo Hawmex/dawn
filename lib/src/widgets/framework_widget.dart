@@ -21,8 +21,8 @@ abstract class FrameworkWidget extends Widget {
     this.onPress,
     this.style,
     this.animation,
-    final String? key,
-  }) : super(key: key);
+    final super.key,
+  });
 }
 
 class Style {

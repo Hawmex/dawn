@@ -3,15 +3,14 @@ import 'dart:html' as html;
 import 'package:dawn/src/widgets.dart';
 
 import 'framework_node.dart';
-import 'node.dart';
 
 abstract class UserInputNode<T extends UserInputWidget, U extends html.Element>
     extends FrameworkNode<T, U> {
   UserInputNode(
-    final T widget, {
-    required final U element,
-    final Node? parentNode,
-  }) : super(widget, element: element, parentNode: parentNode);
+    final super._widget, {
+    required final super.element,
+    final super.parentNode,
+  });
 
   @override
   void initializeElement() {

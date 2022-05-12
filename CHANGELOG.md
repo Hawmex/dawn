@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Upgraded to Dart v2.17.0.
+
 ## 2.0.1
 
 - Performance improvement.

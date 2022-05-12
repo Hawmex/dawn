@@ -3,11 +3,10 @@ import 'dart:html' as html;
 import 'package:dawn/src/widgets.dart';
 
 import 'framework_node.dart';
-import 'node.dart';
 
 class TextNode extends FrameworkNode<Text, html.SpanElement> {
-  TextNode(final Text widget, {final Node? parentNode})
-      : super(widget, element: html.SpanElement(), parentNode: parentNode);
+  TextNode(final super._widget, {final super.parentNode})
+      : super(element: html.SpanElement());
 
   @override
   void initializeElement() {

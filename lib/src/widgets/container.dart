@@ -6,22 +6,13 @@ class Container extends FrameworkWidget {
 
   const Container(
     this.children, {
-    final EventListener? onPointerDown,
-    final EventListener? onPointerUp,
-    final EventListener? onPointerEnter,
-    final EventListener? onPointerLeave,
-    final EventListener? onPress,
-    final Style? style,
-    final Animation? animation,
-    final String? key,
-  }) : super(
-          onPointerDown: onPointerDown,
-          onPointerUp: onPointerUp,
-          onPointerEnter: onPointerEnter,
-          onPointerLeave: onPointerLeave,
-          onPress: onPress,
-          style: style,
-          animation: animation,
-          key: key,
-        );
+    final super.onPointerDown,
+    final super.onPointerUp,
+    final super.onPointerEnter,
+    final super.onPointerLeave,
+    final super.onPress,
+    final super.style,
+    final super.animation,
+    final super.key,
+  });
 }
