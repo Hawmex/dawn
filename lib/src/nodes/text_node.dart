@@ -5,7 +5,7 @@ import 'package:dawn/src/widgets.dart';
 import 'framework_node.dart';
 
 class TextNode extends FrameworkNode<Text, html.SpanElement> {
-  TextNode(final super.widget, {final super.parentNode})
+  TextNode(super.widget, {super.parentNode})
       : super(element: html.SpanElement());
 
   @override

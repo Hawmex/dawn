@@ -1,3 +1,7 @@
+## 2.2.2
+
+- Internal improvements.
+
 ## 2.2.1
 
 - Changed example README.

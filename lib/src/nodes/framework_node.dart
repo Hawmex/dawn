@@ -11,11 +11,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
 
   html.Animation? animation;
 
-  FrameworkNode(
-    final super.widget, {
-    required this.element,
-    final super.parentNode,
-  });
+  FrameworkNode(super.widget, {required this.element, super.parentNode});
 
   void initializeElement() {
     element

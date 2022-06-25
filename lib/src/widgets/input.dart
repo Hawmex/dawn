@@ -5,15 +5,15 @@ class Input extends UserInputWidget {
 
   const Input(
     this.value, {
-    final super.onChange,
-    final super.onInput,
-    final super.onPointerDown,
-    final super.onPointerUp,
-    final super.onPointerEnter,
-    final super.onPointerLeave,
-    final super.onPress,
-    final super.style,
-    final super.animation,
-    final super.key,
+    super.onChange,
+    super.onInput,
+    super.onPointerDown,
+    super.onPointerUp,
+    super.onPointerEnter,
+    super.onPointerLeave,
+    super.onPress,
+    super.style,
+    super.animation,
+    super.key,
   });
 }

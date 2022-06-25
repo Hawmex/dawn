@@ -5,7 +5,7 @@ import 'package:dawn/src/widgets.dart';
 import 'user_input_node.dart';
 
 class InputNode extends UserInputNode<Input, html.TextInputElement> {
-  InputNode(final super.widget, {final super.parentNode})
+  InputNode(super.widget, {super.parentNode})
       : super(element: html.TextInputElement());
 
   @override

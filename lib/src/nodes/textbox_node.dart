@@ -5,7 +5,7 @@ import 'package:dawn/src/widgets.dart';
 import 'user_input_node.dart';
 
 class TextBoxNode extends UserInputNode<Textbox, html.TextAreaElement> {
-  TextBoxNode(final super.widget, {final super.parentNode})
+  TextBoxNode(super.widget, {super.parentNode})
       : super(element: html.TextAreaElement());
 
   @override

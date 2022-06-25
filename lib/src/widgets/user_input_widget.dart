@@ -7,13 +7,13 @@ abstract class UserInputWidget extends FrameworkWidget {
   const UserInputWidget({
     this.onChange,
     this.onInput,
-    final super.onPointerDown,
-    final super.onPointerUp,
-    final super.onPointerEnter,
-    final super.onPointerLeave,
-    final super.onPress,
-    final super.style,
-    final super.animation,
-    final super.key,
+    super.onPointerDown,
+    super.onPointerUp,
+    super.onPointerEnter,
+    super.onPointerLeave,
+    super.onPress,
+    super.style,
+    super.animation,
+    super.key,
   });
 }

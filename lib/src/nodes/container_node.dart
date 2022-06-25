@@ -9,7 +9,7 @@ import 'node.dart';
 class ContainerNode extends FrameworkNode<Container, html.DivElement> {
   late List<Node> childNodes;
 
-  ContainerNode(final super.widget, {final super.parentNode})
+  ContainerNode(super.widget, {super.parentNode})
       : super(element: html.DivElement());
 
   @override
