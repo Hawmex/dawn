@@ -1,5 +1,4 @@
-import 'framework_widget.dart';
-import 'widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 class Container extends FrameworkWidget {
   final List<Widget> children;

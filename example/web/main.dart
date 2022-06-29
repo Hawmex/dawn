@@ -3,7 +3,7 @@ import 'package:dawn/dawn.dart';
 void main() => runApp(const App());
 
 class App extends StatelessWidget {
-  const App({final super.key});
+  const App({super.key});
 
   @override
   Widget build(final Context context) {

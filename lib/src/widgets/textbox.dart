@@ -1,4 +1,4 @@
-import 'user_input_widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 class Textbox extends UserInputWidget {
   final String value;

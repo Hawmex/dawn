@@ -1,4 +1,4 @@
-import 'framework_widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 abstract class UserInputWidget extends FrameworkWidget {
   final EventListener? onChange;

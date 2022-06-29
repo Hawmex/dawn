@@ -1,10 +1,12 @@
-import 'user_input_widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 class Input extends UserInputWidget {
   final String value;
+  final bool hideValue;
 
   const Input(
     this.value, {
+    this.hideValue = false,
     super.onChange,
     super.onInput,
     super.onPointerDown,

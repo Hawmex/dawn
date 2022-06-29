@@ -1,16 +1,16 @@
 import 'dart:html' as html;
 
+import 'package:dawn/src/nodes.dart';
 import 'package:dawn/src/widgets.dart';
 
-import 'user_input_node.dart';
-
-class InputNode extends UserInputNode<Input, html.TextInputElement> {
+class InputNode extends UserInputNode<Input, html.InputElement> {
   InputNode(super.widget, {super.parentNode})
-      : super(element: html.TextInputElement());
+      : super(element: html.InputElement());
 
   @override
   void initializeElement() {
     super.initializeElement();
+    element.type = widget.hideValue ? 'password' : 'text';
     element.value = widget.value;
   }
 }

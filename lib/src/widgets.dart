@@ -8,4 +8,5 @@ export 'widgets/stateless_widget.dart';
 export 'widgets/text.dart';
 export 'widgets/textbox.dart';
 export 'widgets/user_input_widget.dart';
+export 'widgets/video.dart';
 export 'widgets/widget.dart';

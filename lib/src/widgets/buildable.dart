@@ -1,4 +1,4 @@
-import 'widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 mixin Buildable {
   Widget build(final Context context);

@@ -1,6 +1,6 @@
 import 'dart:html' as html;
 
-import 'widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 typedef EventListener = void Function(html.Event event);
 

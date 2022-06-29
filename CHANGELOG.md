@@ -1,3 +1,8 @@
+## 2.3.0
+
+- Added `Video` widget.
+- Added `hideValue` parameter to `Input`.
+
 ## 2.2.2
 
 - Internal improvements.

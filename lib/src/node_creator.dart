@@ -10,6 +10,8 @@ Node createNode(final Widget widget, {final Node? parentNode}) {
     return TextNode(widget, parentNode: parentNode);
   } else if (widget is Image) {
     return ImageNode(widget, parentNode: parentNode);
+  } else if (widget is Video) {
+    return VideoNode(widget, parentNode: parentNode);
   } else if (widget is Container) {
     return ContainerNode(widget, parentNode: parentNode);
   } else if (widget is Input) {

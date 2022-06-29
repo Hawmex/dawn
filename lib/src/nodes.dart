@@ -8,3 +8,4 @@ export 'nodes/stateless_node.dart';
 export 'nodes/text_node.dart';
 export 'nodes/textbox_node.dart';
 export 'nodes/user_input_node.dart';
+export 'nodes/video_node.dart';

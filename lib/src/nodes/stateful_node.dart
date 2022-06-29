@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:dawn/src/node_creator.dart';
+import 'package:dawn/src/nodes.dart';
 import 'package:dawn/src/widgets.dart';
-
-import 'node.dart';
 
 class StatefulNode extends Node<StatefulWidget> {
   late State state;

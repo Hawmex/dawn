@@ -1,4 +1,4 @@
-import 'framework_widget.dart';
+import 'package:dawn/src/widgets.dart';
 
 class Text extends FrameworkWidget {
   final String value;
