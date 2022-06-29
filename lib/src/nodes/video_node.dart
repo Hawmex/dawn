@@ -12,18 +12,18 @@ class VideoNode extends FrameworkNode<Video, html.VideoElement> {
     super.initializeElement();
 
     element
-      ..src = widget.source
-      ..poster = widget.thumbnail ?? ''
-      ..controls = widget.showControls
-      ..loop = widget.loop
-      ..muted = widget.muted
-      ..autoplay = widget.autoplay
       ..addEventListener('ended', widget.onEnd)
       ..addEventListener('pause', widget.onPause)
       ..addEventListener('play', widget.onPlay)
       ..addEventListener('seeking', widget.onSeekStart)
       ..addEventListener('seeked', widget.onSeekEnd)
-      ..addEventListener('volumechange', widget.onVolumeChange);
+      ..addEventListener('volumechange', widget.onVolumeChange)
+      ..src = widget.source
+      ..poster = widget.thumbnail ?? ''
+      ..controls = widget.showControls
+      ..loop = widget.loop
+      ..muted = widget.muted
+      ..autoplay = widget.autoplay;
   }
 
   @override

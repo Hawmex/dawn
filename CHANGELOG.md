@@ -1,3 +1,7 @@
+## 2.3.1
+
+- Minor fix.
+
 ## 2.3.0
 
 - Added `Video` widget.
