@@ -4,26 +4,37 @@
 
 ## Description
 
-Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
+Dawn is a Dart Web package that provides basic classes like `StatelessWidget` similar to Flutter,
+but with a different implementation. It compiles to JavaScript and paints the UI using HTML and CSS.
+
+## [Example](https://github.com/Hawmex/dawn/blob/main/example/web/main.dart)
+
+## [Reference](https://pub.dev/documentation/dawn/latest/dawn/dawn-library.html)
+
+## Why Dawn Exists
+
+- I really like Flutter's approach (`StatelessWidget`, `StatefulWidget`, `State<T>`, etc.),
+  but I didn't find it easy at all to develop custom UIs in Flutter compared to
+  HTML and CSS. See [this issue on GitHub](https://github.com/flutter/flutter/issues/97496).
+- Flutter web is great but it hugely suffers from initial loading performance.
+
+I decided to make something that has the best of both worlds.
+The ease of developing custom UIs quickly with the elegant approach of Flutter,
+without compromising the performance.
 
 ## Getting Started
 
 1. Download the [boilterplate](https://downgit.github.io/#/home?url=https://github.com/Hawmex/dawn/tree/main/example).
 2. Extract the zip file into the directory you like.
 3. Rename the `example` folder to whatever you want.
-4. Change `pubspec.yaml` to the following spec:
-
-   ```yaml
-   name: my_project_name
-   description: A Dawn app
-   publish_to: none
-   environment:
-     sdk: ">=2.17.0 <3.0.0"
-   ```
-
+4. Change `name` and `description` in `pubspec.yaml` if you want:
 5. Run the following commands:
 
+   `dart pub remove dawn`
+
    `dart pub add dawn`
+
+   `dart pub remove dawn_lints`
 
    `dart pub add --dev dawn_lints`
 
@@ -42,24 +53,7 @@ Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
    _NOTE: You should have NodeJS and Nodemon installed._
 
 8. Run "Live Server" extension on VSCode.
-
 9. Edit `web/main.dart` and enjoy coding!
 
-_NOTE: To compile for production, run `./scripts/prod.bat`. You can find the production-ready output in `.dawn/prod`._
-
-## Dawn Reference
-
-Dawn provides the following basic widgets:
-
-- `Text`
-- `Image`
-- `Video`
-- `Container`
-- `Input`
-- `Textbox`
-
-## How Dawn Works
-
-- Dawn lets you write your front-end in Dart with a syntax similar to Flutter.
-- It's compiled to a JavaScript file which is included in `index.html`.
-- Dawn handles reactivity and widget structure with a virtual node tree.
+_NOTE: To compile for production, run `./scripts/prod.bat`.
+You can find the production-ready output in `.dawn/prod`._

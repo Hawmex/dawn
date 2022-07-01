@@ -1,3 +1,7 @@
+## 2.3.6
+
+- Improved README.
+
 ## 2.3.5
 
 - Fixed a typo in README.
