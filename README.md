@@ -18,7 +18,7 @@ Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
    description: A Dawn app
    publish_to: none
    environment:
-   sdk: ">=2.17.0 <3.0.0"
+     sdk: ">=2.17.0 <3.0.0"
    ```
 
 5. Run the following commands:
