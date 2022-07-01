@@ -1,6 +1,6 @@
 # dawn
 
-<img src="./example/web/assets/logo.svg" width="128px" height="128px">
+<img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg" width="128px" height="128px">
 
 ## Description
 
