@@ -35,7 +35,7 @@ class App extends StatelessWidget {
             'web/main.dart',
             style: Style({
               'font-family': 'monospace',
-              'background': '#666666',
+              'background': '#232323',
               'border-radius': '4px',
               'padding': '4px',
             }),
@@ -53,7 +53,7 @@ class App extends StatelessWidget {
         'height': '100vh',
         'background': '#000000',
         'color': '#ffffff',
-        'font-family': 'system-ui',
+        'font-family': 'Jost, system-ui',
         'user-select': 'none',
       }),
     );

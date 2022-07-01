@@ -1,36 +1,65 @@
 # dawn
 
+<img src="./example/web/assets/logo.svg" width="128px" height="128px">
+
 ## Description
 
 Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
 
-## Links
+## Getting Started
 
-- [GitHub Repository](https://github.com/Hawmex/dawn)
-- [Pub Page](https://pub.dev/packages/dawn)
-- [Documentation](https://pub.dev/documentation/dawn/latest/dawn/dawn-library.html)
-- An Example Weather SPA created with Dawn
-  - [Live Demo](https://dawnweather.netlify.app)
-  - [GitHub Repository](https://github.com/Hawmex/dawn_weather_app)
+1. Download the [boilterplate](https://downgit.github.io/#/home?url=https://github.com/Hawmex/dawn/tree/main/example).
+2. Extract the zip file into the directory you like.
+3. Rename the `example` folder to whatever you want.
+4. Change `pubspec.yaml` to the following spec:
 
-## Example
+   ```yaml
+   name: my_project_name
+   description: A Dawn app
+   publish_to: none
+   environment:
+   sdk: ">=2.17.0 <3.0.0"
+   ```
 
-`lib/main.dart`:
+5. Run the following commands:
 
-```dart
-import 'package:dawn/dawn.dart';
+   `dart pub add dawn`
 
-void main() => runApp(const App());
+   `dart pub add --dev dawn_lints`
 
-class App extends StatelessWidget {
-  const App({final super.key});
+6. Run the following commands:
 
-  @override
-  Widget build(final Context context) {
-    return const Text(
-      'Hello World!',
-      style: Style({'font-weight': 'bold'}),
-    );
-  }
-}
-```
+   `mkdir .dawn`
+
+   `mkdir .dawn/dev`
+
+   `mkdir .dawn/prod`
+
+7. Run the developement mode script:
+
+   `./scripts/dev.bat`
+
+   _NOTE: You should have NodeJS and Nodemon installed._
+
+8. Run live server on VSCode.
+
+9. Edit `web/main.dart` and enjoy coding!
+
+_NOTE: To compile for production, run `./scripts/prod.bat`. You can find the production-ready output in `.dawn/prod`._
+
+## Dawn Reference
+
+Dawn provides the following basic widgets: (With their equivalent HTML element)
+
+- `Text`
+- `Image`
+- `Video`
+- `Container`
+- `Input`
+- `Textbox`
+
+## How Dawn Works
+
+- Dawn lets you write your front-end in Dart with a syntax similar to Flutter.
+- It's compiled to a JavaScript file which is included in `index.html`.
+- Dawn handles reactivity and widget structure with a virtual node tree.

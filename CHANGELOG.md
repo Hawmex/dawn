@@ -1,3 +1,8 @@
+## 2.3.2
+
+- Improved `README`.
+- Other improvements.
+
 ## 2.3.1
 
 - Minor fix.
