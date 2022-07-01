@@ -1,15 +1,3 @@
 # A Dawn app
 
-## HTTP Server
-
-We recommend using "Live Server" extension on VSCode.
-
-## Running for Development
-
-`./scripts/dev.bat`
-
-_NOTE: You should have `nodemon` installed._
-
-## Running For Production
-
-`./scripts/prod.bat`
+To get started, refer to [Dawn README "Getting Started" section](https://github.com/Hawmex/dawn#getting-started)

@@ -1,3 +1,7 @@
+## 2.3.3
+
+- Fixed typos.
+
 ## 2.3.2
 
 - Improved `README`.

@@ -41,7 +41,7 @@ Dawn is a Dart web package for developing UIs in a pattern similar to Flutter.
 
    _NOTE: You should have NodeJS and Nodemon installed._
 
-8. Run live server on VSCode.
+8. Run "Live Server" extension on VSCode.
 
 9. Edit `web/main.dart` and enjoy coding!
 
@@ -49,7 +49,7 @@ _NOTE: To compile for production, run `./scripts/prod.bat`. You can find the pro
 
 ## Dawn Reference
 
-Dawn provides the following basic widgets: (With their equivalent HTML element)
+Dawn provides the following basic widgets:
 
 - `Text`
 - `Image`
