@@ -1,3 +1,8 @@
+## 2.3.7
+
+- Improvement in README.
+- Fixed typo in Live Server settings.
+
 ## 2.3.6
 
 - Improved README.

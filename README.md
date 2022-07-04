@@ -1,6 +1,6 @@
 # dawn
 
-<img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg" width="128px" height="128px">
+<img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg" width="128px" height="128px" />
 
 ## Description
 
@@ -8,6 +8,8 @@ Dawn is a Dart Web package that provides basic classes like `StatelessWidget` si
 but with a different implementation. It compiles to JavaScript and paints the UI using HTML and CSS.
 
 ## [Example](https://github.com/Hawmex/dawn/blob/main/example/web/main.dart)
+
+<img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif" width="100%" />
 
 ## [Reference](https://pub.dev/documentation/dawn/latest/dawn/dawn-library.html)
 
