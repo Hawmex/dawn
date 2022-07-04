@@ -1,3 +1,7 @@
+## 2.4.1
+
+- Fixed typos.
+
 ## 2.4.0
 
 - Added command-line interface.

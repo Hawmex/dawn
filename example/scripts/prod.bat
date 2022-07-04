@@ -1,1 +1,0 @@
-cp web/index.html .dawn/prod/index.html && cp -a web/assets/. .dawn/prod/assets/ && dart compile js web/main.dart -o .dawn/prod/main.dart.js -m -O3
