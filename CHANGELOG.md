@@ -1,3 +1,7 @@
+## 2.4.0
+
+- Added command-line interface.
+
 ## 2.3.8
 
 - Minor improvement.

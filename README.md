@@ -7,11 +7,43 @@
 Dawn is a Dart Web package that provides basic classes like `StatelessWidget` similar to Flutter,
 but with a different implementation. It compiles to JavaScript and paints the UI using HTML and CSS.
 
-## [Example](https://github.com/Hawmex/dawn/blob/main/example/web/main.dart)
+[Example](https://github.com/Hawmex/dawn/blob/main/example/web/main.dart)
+|
+[Reference](https://pub.dev/documentation/dawn/latest/dawn/dawn-library.html)
 
-<img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif" width="100%" />
+## Getting Started
 
-## [Reference](https://pub.dev/documentation/dawn/latest/dawn/dawn-library.html)
+1. ### Installation
+
+   `dart pub global activate dawn`
+
+2. ### Setup
+
+   `dawn create <project-name>`
+
+   Example:
+
+   `dawn create my_awesome_app`
+
+3. ### Build For Development
+
+   `dawn watch`
+
+4. ### Start Live Server
+
+   "Live Server" extension for VSCode is recommended.
+
+   **After Step 4, you will see this page on your browser:**
+
+   <img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif" width="100%" />
+
+5. ### Build For Production
+
+   `dawn build <optimization-level>`
+
+   Recommended:
+
+   `dawn build 3`
 
 ## Why Dawn Exists
 
@@ -23,39 +55,3 @@ but with a different implementation. It compiles to JavaScript and paints the UI
 I decided to make something that has the best of both worlds.
 The ease of developing custom UIs quickly with the elegant approach of Flutter,
 without compromising the performance.
-
-## Getting Started
-
-1. Download the [boilterplate](https://downgit.github.io/#/home?url=https://github.com/Hawmex/dawn/tree/main/example).
-2. Extract the zip file into the directory you like.
-3. Rename the `example` folder to whatever you want.
-4. Change `name` and `description` in `pubspec.yaml` if you want:
-5. Run the following commands:
-
-   `dart pub remove dawn`
-
-   `dart pub add dawn`
-
-   `dart pub remove dawn_lints`
-
-   `dart pub add --dev dawn_lints`
-
-6. Run the following commands:
-
-   `mkdir .dawn`
-
-   `mkdir .dawn/dev`
-
-   `mkdir .dawn/prod`
-
-7. Run the developement mode script:
-
-   `./scripts/dev.bat`
-
-   _NOTE: You should have NodeJS and Nodemon installed._
-
-8. Run "Live Server" extension on VSCode.
-9. Edit `web/main.dart` and enjoy coding!
-
-_NOTE: To compile for production, run `./scripts/prod.bat`.
-You can find the production-ready output in `.dawn/prod`._
