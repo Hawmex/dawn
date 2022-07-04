@@ -1,3 +1,7 @@
+## 2.3.8
+
+- Minor improvement.
+
 ## 2.3.7
 
 - Improvement in README.
