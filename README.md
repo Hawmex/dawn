@@ -25,17 +25,17 @@ but with a different implementation. It compiles to JavaScript and paints the UI
 
    `dawn compile`
 
-4. ### Start Live Server
+   To run with development server:
 
-   "Live Server" extension for VSCode is recommended.
+   `dawn compile -s`
 
-   **After Step 4, you will see this page on your browser:**
+   **After Step 3, you will see this page on your browser:**
 
    <img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif" width="100%" />
 
-5. ### Build For Production
+4. ### Build For Production
 
-   `dawn compile --mode prod`
+   `dawn compile -m prod`
 
 ## Why Dawn Exists
 
