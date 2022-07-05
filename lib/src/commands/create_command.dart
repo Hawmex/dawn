@@ -15,15 +15,16 @@ class CreateCommand extends Command<void> {
 
     createFiles();
     installDependencies();
+
+    print('\nEnjoy Coding!');
   }
 
   void createFiles() {
-    print('Creating Files');
+    print('\nCreating Files');
 
     createFile(path: '.gitignore', body: gitIgnore);
     createFile(path: './pubspec.yaml', body: pubspecDotYaml);
     createFile(path: './analysis_options.yaml', body: analysisOptionsDotYaml);
-    createFile(path: '.vscode/settings.json', body: settingsDotJson);
     createFile(path: './web/index.html', body: indexDotHtml);
     createFile(path: './web/main.dart', body: mainDotDart);
     createFile(path: './web/assets/logo.svg', body: logoDotSvg);
@@ -37,15 +38,22 @@ class CreateCommand extends Command<void> {
       ..createSync(recursive: true)
       ..writeAsStringSync(body);
 
-    print('\tCreated $path');
+    print('\t- Created $path');
   }
 
   void installDependencies() {
-    print('Installing dependencies');
-    Process.runSync('dart', ['pub', 'add', 'dawn']);
-    print('\tInstalled dawn');
-    Process.runSync('dart', ['pub', 'add', '--dev', 'dawn_lints']);
-    print('\tInstalled dawn_lints');
+    print('\nInstalling dependencies');
+
+    Process.runSync('dart', ['pub', 'add', 'dawn'], runInShell: true);
+    print('\t- Installed dawn');
+
+    Process.runSync(
+      'dart',
+      ['pub', 'add', '--dev', 'dawn_lints'],
+      runInShell: true,
+    );
+
+    print('\t- Installed dawn_lints');
   }
 
   String get gitIgnore => '''
@@ -71,12 +79,6 @@ environment:
 
   String get analysisOptionsDotYaml => '''
 include: package:dawn_lints/dawn_lints.yaml
-''';
-
-  String get settingsDotJson => '''
-{
-  "liveServer.settings.root": ".dawn/dev"
-}
 ''';
 
   String get indexDotHtml => '''

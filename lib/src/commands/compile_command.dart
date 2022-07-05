@@ -1,8 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:shelf/shelf_io.dart';
+import 'package:shelf_static/shelf_static.dart';
 
 class CompileCommand extends Command<void> {
+  final address = 'localhost';
+  final port = 8080;
+
   CompileCommand() {
     argParser.addOption(
       'mode',
@@ -15,6 +21,8 @@ class CompileCommand extends Command<void> {
       },
       defaultsTo: 'dev',
     );
+
+    argParser.addFlag('serve', abbr: 's', help: 'Run a local server.');
   }
 
   @override
@@ -24,23 +32,50 @@ class CompileCommand extends Command<void> {
   String get description => 'Compiles web/ directory contents.';
 
   @override
-  void run() {
-    copyFiles();
-    compile();
+  Future<void> run() async {
+    await runCommand(withServer: argResults!['serve']);
 
     if (argResults!['mode'] == 'dev') {
-      print('Watching for changes');
+      Timer? timer;
 
-      Directory('./web').watch().listen((final event) {
-        copyFiles();
-        compile();
-        print('Watching for changes');
+      Directory('./web').watch(recursive: true).listen((final event) {
+        timer?.cancel();
+        timer = Timer(const Duration(seconds: 1), runCommand);
       });
     }
   }
 
+  Future<void> runCommand({final bool withServer = false}) async {
+    copyFiles();
+    compile();
+
+    if (withServer) await runServer();
+
+    if (argResults!['mode'] == 'dev') {
+      print('Watching for changes');
+    }
+  }
+
+  Future<void> runServer() async {
+    print('\nStarting server');
+
+    await serve(
+      createStaticHandler(
+        './.dawn/${argResults!['mode']}',
+        defaultDocument: 'index.html',
+      ),
+      'localhost',
+      8080,
+      shared: true,
+    );
+
+    print('Server running on http://$address:$port');
+
+    Process.runSync('start', ['http://$address:$port'], runInShell: true);
+  }
+
   void copyFiles() {
-    print('Copying assests and index.html to .dawn/${argResults!['mode']}');
+    print('\nCopying assests and index.html to .dawn/${argResults!['mode']}');
 
     copyFile('index.html');
 
@@ -60,7 +95,7 @@ class CompileCommand extends Command<void> {
   void compile() {
     print('Compiling main.dart');
 
-    Process.run(
+    Process.runSync(
       'dart',
       [
         'compile',
@@ -70,6 +105,7 @@ class CompileCommand extends Command<void> {
         '.dawn/${argResults!['mode']}/main.dart.js',
         if (argResults!['mode'] == 'prod') '-m -O3'
       ],
+      runInShell: true,
     );
   }
 }

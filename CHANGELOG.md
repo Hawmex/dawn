@@ -1,3 +1,7 @@
+## 2.4.3
+
+- Improved cli.
+
 ## 2.4.2
 
 - Rewrote cli.
