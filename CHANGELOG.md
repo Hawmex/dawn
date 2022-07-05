@@ -1,3 +1,7 @@
+## 2.4.5
+
+- Internal improvement.
+
 ## 2.4.4
 
 - Improved README.
