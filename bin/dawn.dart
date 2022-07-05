@@ -1,10 +1,8 @@
+import 'package:args/command_runner.dart';
 import 'package:dawn/src/commands.dart';
-import 'package:dawn/src/commands/watch_command.dart';
 
-void main(final List<String> arguments) {
-  CommandManager(arguments, [
-    CreateCommand(),
-    BuildCommand(),
-    WatchCommand(),
-  ]).match();
-}
+void main(final List<String> args) =>
+    CommandRunner('dawn', 'The command-line interface for Dawn.')
+      ..addCommand(CreateCommand())
+      ..addCommand(CompileCommand())
+      ..run(args);

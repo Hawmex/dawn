@@ -1,3 +1,7 @@
+## 2.4.2
+
+- Rewrote cli.
+
 ## 2.4.1
 
 - Fixed typos.

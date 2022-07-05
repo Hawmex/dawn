@@ -1,22 +1,25 @@
 import 'dart:io';
 
-import 'package:dawn/src/commands.dart';
+import 'package:args/command_runner.dart';
 
-class CreateCommand extends Command {
-  late final String projectName;
-
-  CreateCommand() : super('create');
+class CreateCommand extends Command<void> {
+  @override
+  String get name => 'create';
 
   @override
-  void run(final List<String> parameters) {
-    projectName = parameters[0];
-    Directory.current = Directory('./$projectName')..createSync();
+  String get description => 'Sets up a new Dawn application.';
+
+  @override
+  void run() {
+    Directory.current = Directory('./${argResults!.rest.first}')..createSync();
 
     createFiles();
     installDependencies();
   }
 
   void createFiles() {
+    print('Creating Files');
+
     createFile(path: '.gitignore', body: gitIgnore);
     createFile(path: './pubspec.yaml', body: pubspecDotYaml);
     createFile(path: './analysis_options.yaml', body: analysisOptionsDotYaml);
@@ -29,14 +32,20 @@ class CreateCommand extends Command {
   void createFile({
     required final String path,
     required final String body,
-  }) =>
-      File(path)
-        ..createSync(recursive: true)
-        ..writeAsStringSync(body);
+  }) {
+    File(path)
+      ..createSync(recursive: true)
+      ..writeAsStringSync(body);
+
+    print('\tCreated $path');
+  }
 
   void installDependencies() {
-    Process.runSync('dart', 'pub add dawn'.split(' '));
-    Process.runSync('dart', 'pub add --dev dawn_lints'.split(' '));
+    print('Installing dependencies');
+    Process.runSync('dart', ['pub', 'add', 'dawn']);
+    print('\tInstalled dawn');
+    Process.runSync('dart', ['pub', 'add', '--dev', 'dawn_lints']);
+    print('\tInstalled dawn_lints');
   }
 
   String get gitIgnore => '''
@@ -53,7 +62,7 @@ pubspec.lock
 ''';
 
   String get pubspecDotYaml => '''
-name: $projectName
+name: ${argResults!.rest.first}
 description: A Dawn app
 publish_to: none
 environment:
@@ -77,7 +86,7 @@ include: package:dawn_lints/dawn_lints.yaml
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>$projectName</title>
+    <title>${argResults!.rest.first}</title>
 
     <link rel="shortcut icon" href="/assets/logo.svg" type="image/x-icon" />
 

@@ -19,15 +19,11 @@ but with a different implementation. It compiles to JavaScript and paints the UI
 
 2. ### Setup
 
-   `dawn create <project-name>`
-
-   Example:
-
    `dawn create my_awesome_app`
 
 3. ### Build For Development
 
-   `dawn watch`
+   `dawn compile`
 
 4. ### Start Live Server
 
@@ -39,11 +35,7 @@ but with a different implementation. It compiles to JavaScript and paints the UI
 
 5. ### Build For Production
 
-   `dawn build <optimization-level>`
-
-   Recommended:
-
-   `dawn build 3`
+   `dawn compile --mode prod`
 
 ## Why Dawn Exists
 
