@@ -1,3 +1,7 @@
+## 2.4.10
+
+- Fixed bug.
+
 ## 2.4.9
 
 - Internal improvements.

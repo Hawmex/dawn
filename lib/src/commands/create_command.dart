@@ -48,6 +48,7 @@ class CreateCommand extends Command<void> {
     print('\nInstalling dependencies...');
 
     Process.runSync('dart', ['pub', 'add', 'dawn'], runInShell: true);
+
     print('\t- Installed dawn.');
 
     Process.runSync(

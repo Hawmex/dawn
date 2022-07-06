@@ -6,23 +6,26 @@ import 'package:shelf/shelf_io.dart';
 import 'package:shelf_static/shelf_static.dart';
 
 class CompileCommand extends Command<void> {
-  final address = 'localhost';
-  final port = 8080;
-
   CompileCommand() {
-    argParser.addOption(
-      'mode',
-      abbr: 'm',
-      help: 'Compilation mode.',
-      allowed: {'dev', 'prod'},
-      allowedHelp: {
-        'dev': 'Development mode',
-        'prod': 'Production mode.',
-      },
-      defaultsTo: 'dev',
-    );
-
-    argParser.addFlag('serve', abbr: 's', help: 'Run a local server.');
+    argParser
+      ..addOption(
+        'mode',
+        abbr: 'm',
+        help: 'Compilation mode.',
+        allowed: {'dev', 'prod'},
+        allowedHelp: {
+          'dev': 'Development mode',
+          'prod': 'Production mode.',
+        },
+        defaultsTo: 'dev',
+      )
+      ..addFlag('serve', abbr: 's', help: 'Run a local server.')
+      ..addOption(
+        'port',
+        abbr: 'p',
+        help: 'Local server port.',
+        defaultsTo: '8080',
+      );
   }
 
   @override
@@ -33,6 +36,7 @@ class CompileCommand extends Command<void> {
 
   String get compilationMode => argResults!['mode'];
   bool get shouldServe => argResults!['serve'];
+  int get port => int.parse(argResults!['port']);
 
   @override
   Future<void> run() async {
@@ -67,14 +71,14 @@ class CompileCommand extends Command<void> {
         './.dawn/$compilationMode',
         defaultDocument: 'index.html',
       ),
-      'localhost',
-      8080,
+      '0.0.0.0',
+      port,
       shared: true,
     );
 
-    print('Server running on http://$address:$port.');
+    print('Server running on http://localhost:$port.');
 
-    Process.runSync('start', ['http://$address:$port'], runInShell: true);
+    Process.runSync('start', ['http://localhost:$port'], runInShell: true);
   }
 
   void copyFiles() {
@@ -106,7 +110,7 @@ class CompileCommand extends Command<void> {
         'web/main.dart',
         '-o',
         '.dawn/$compilationMode/main.dart.js',
-        if (compilationMode == 'prod') '-m -O3'
+        if (compilationMode == 'prod') '-O3'
       ],
       runInShell: true,
     );
