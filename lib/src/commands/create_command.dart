@@ -76,7 +76,7 @@ pubspec.lock
   String get readmeDotMd => '''
 # $projectName
 
-## Description
+## 📖 Description
 
 A Dawn application.
 

@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg" width="128px" height="128px" />
 
-## Description
+## 📖 Description
 
 Dawn is a Dart Web Framework that lets developers to develop UIs with a
 widget model similar to Flutter. Dawn applications are compiled to JavaScript
@@ -12,7 +12,7 @@ and are painted using HTML and CSS.
 |
 [Reference](https://pub.dev/documentation/dawn/latest/dawn/dawn-library.html)
 
-## Getting Started
+## 🚀 Getting Started
 
 1. ### Installation
 
@@ -30,7 +30,7 @@ and are painted using HTML and CSS.
 
    `dawn compile -s`
 
-   **After Step 3, you will see this page on your browser:**
+   **⚡ After running with development server, you will see this page on your browser:**
 
    <img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif" width="100%" />
 
@@ -38,7 +38,7 @@ and are painted using HTML and CSS.
 
    `dawn compile -m prod`
 
-## Why Dawn Exists
+## 📌 Why Dawn Exists
 
 - I really like Flutter's approach (`StatelessWidget`, `StatefulWidget`, `State`, etc.),
   but I didn't find it easy at all to develop custom UIs in Flutter compared to

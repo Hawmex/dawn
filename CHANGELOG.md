@@ -1,3 +1,7 @@
+## 2.4.12
+
+- Improved README.
+
 ## 2.4.11
 
 - Improved documentation.
