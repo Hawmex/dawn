@@ -98,11 +98,13 @@ abstract class Store {
   final _updateController = StreamController<void>.broadcast();
   final _updateDebouncer = Debouncer();
 
+  /// Runs the [callback] and debounces a call to [onUpdate].
   void setState(final void Function() callback) {
     callback();
     _updateDebouncer.enqueue(() => _updateController.add(null));
   }
 
+  /// [callback] is called after [setState] has been called.
   StreamSubscription<void> onUpdate(final void Function() callback) =>
       _updateController.stream.listen((final event) => callback());
 }

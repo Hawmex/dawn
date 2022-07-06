@@ -40,10 +40,12 @@ abstract class FrameworkWidget extends Widget {
 /// );
 /// ```
 class Style {
+  /// Each rule has a key as a CSS property and a corresponding value.
   final Map<String, String> rules;
 
   const Style(this.rules);
 
+  /// The string representation of the declared CSS rules.
   @override
   String toString() => rules.isEmpty
       ? ''
@@ -68,11 +70,17 @@ class Style {
 /// );
 /// ```
 class Animation {
+  /// Similar to that of JavaScript's `animate` API with the exception that
+  /// kebab-case CSS properties should be used here (Unlike to JavaScript's
+  /// `animate` API which uses camelCase CSS properties).
   final List<Map<String, String>> keyframes;
+
+  /// Similar to that of JavaScript's `animate` API.
   final Map<String, dynamic>? options;
 
   const Animation({required this.keyframes, this.options});
 
+  /// Transforms kebab-case CSS properties to their camelCase form.
   List<Map<String, String>> get keyframesForJsAnimation => keyframes
       .map(
         (final keyframe) => keyframe.map(
@@ -86,11 +94,14 @@ class Animation {
 }
 
 extension StringTransforms on String {
+  /// Capitalizes the first letter and lowercases the rest of them.
   String toCapitalized() =>
       isEmpty ? '' : this[0].toUpperCase() + substring(1).toLowerCase();
 
+  /// Removes all the unnecessary whitespace from a string.
   String trimAll() => replaceAll(RegExp(r'\s+'), ' ');
 
+  /// Transforms a string from kebab-case to camelCase.
   String fromKebabCaseToCamelCase() {
     final parts = split('-');
 

@@ -6,6 +6,9 @@ import 'package:dawn/src/widgets.dart';
 /// `<input type="password" />`.
 class Input extends UserInputWidget {
   final String value;
+
+  /// If [hideValue] is `true`, [Input] will implement
+  /// `<input type="password" />`.
   final bool hideValue;
 
   const Input(

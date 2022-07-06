@@ -1,3 +1,7 @@
+## 2.4.11
+
+- Improved documentation.
+
 ## 2.4.10
 
 - Fixed bug.
