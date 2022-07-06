@@ -1,5 +1,6 @@
 import 'package:dawn/src/widgets.dart';
 
+/// The base class for user input widgets such as [Input], [Textbox], etc.
 abstract class UserInputWidget extends FrameworkWidget {
   final EventListener? onChange;
   final EventListener? onInput;

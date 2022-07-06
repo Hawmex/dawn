@@ -1,5 +1,6 @@
 import 'package:dawn/src/widgets.dart';
 
+/// An implementation of `<textarea />`.
 class Textbox extends UserInputWidget {
   final String value;
 

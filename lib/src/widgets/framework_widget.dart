@@ -2,8 +2,11 @@ import 'dart:html' as html;
 
 import 'package:dawn/src/widgets.dart';
 
+/// The recommended type to use for event listeners in Dawn.
 typedef EventListener = void Function(html.Event event);
 
+/// The base class for Dawn framework widgets such as [Text], [Image],
+/// [Container], etc.
 abstract class FrameworkWidget extends Widget {
   final EventListener? onPointerDown;
   final EventListener? onPointerUp;
@@ -25,6 +28,17 @@ abstract class FrameworkWidget extends Widget {
   });
 }
 
+/// Use this class to declare styles for [FrameworkWidget] subclasses.
+///
+/// ```dart
+/// const Text(
+///   'Hello World!',
+///   style: Style({
+///     'color': 'red',
+///     'font-weight': 'bold',
+///   }),
+/// );
+/// ```
 class Style {
   final Map<String, String> rules;
 
@@ -39,6 +53,20 @@ class Style {
           .trimAll();
 }
 
+/// Use this class to declare an animation for [FrameworkWidget] subclasses.
+///
+/// ```dart
+/// const Text(
+///   'Hello World!',
+///   animation: Animation(
+///     keyframes: [
+///       {'transform': 'rotate(0deg)'},
+///       {'transform': 'rotate(360deg)'},
+///     ],
+///     options: {'duration': 300},
+///   ),
+/// );
+/// ```
 class Animation {
   final List<Map<String, String>> keyframes;
   final Map<String, dynamic>? options;

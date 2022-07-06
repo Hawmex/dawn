@@ -22,7 +22,8 @@ class CreateCommand extends Command<void> {
   void createFiles() {
     print('\nCreating Files');
 
-    createFile(path: '.gitignore', body: gitIgnore);
+    createFile(path: './.gitignore', body: gitIgnore);
+    createFile(path: './README.md', body: readmeDotMd);
     createFile(path: './pubspec.yaml', body: pubspecDotYaml);
     createFile(path: './analysis_options.yaml', body: analysisOptionsDotYaml);
     createFile(path: './web/index.html', body: indexDotHtml);
@@ -67,6 +68,16 @@ class CreateCommand extends Command<void> {
 # Omit committing pubspec.lock for library packages; see
 # https://dart.dev/guides/libraries/private-files#pubspeclock.
 pubspec.lock
+''';
+
+  String get readmeDotMd => '''
+# example
+
+## Description
+
+A Dawn application.
+
+Please refer to [Dawn's Getting Started section](https://github.com/Hawmex/dawn#getting-started) for more information.
 ''';
 
   String get pubspecDotYaml => '''

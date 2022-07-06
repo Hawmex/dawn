@@ -1,5 +1,6 @@
 import 'package:dawn/src/widgets.dart';
 
+/// An implementation of `<video />`.
 class Video extends FrameworkWidget {
   final String source;
   final String? thumbnail;

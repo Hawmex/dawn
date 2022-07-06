@@ -60,6 +60,7 @@ class StatefulNode extends Node<StatefulWidget> {
   }
 }
 
+/// The base class for the state of [StatefulWidget].
 abstract class State<T extends StatefulWidget> extends Store with Buildable {
   late T _widget;
   late Context _context;
@@ -67,15 +68,32 @@ abstract class State<T extends StatefulWidget> extends Store with Buildable {
   bool _isMounted = false;
 
   Context get context => _context;
+
+  /// Gets the current [widget] to which the state is attached to.
   T get widget => _widget;
+
   bool get isMounted => _isMounted;
 
+  /// Called when the [widget] is added to the node tree (top to bottom).
   void initialize() {}
+
+  /// Called when the [widget]'s subtree is completely added to the node tree
+  /// (bottom to top).
   void didMount() => _isMounted = true;
+
+  /// Called when the [widget] is going to be removed from the node tree
+  /// (top to bottom).
   void willUnmount() {}
+
+  /// Called when the [widget]'s subtree is completely removed from the node
+  /// tree (bottom to top).
   void dispose() => _isMounted = false;
 }
 
+/// A base class for storing data and subscribing to it.
+///
+/// It can be used to implement complex state management solutions in patterns
+/// similar to `Provider`.
 abstract class Store {
   final _updateController = StreamController<void>.broadcast();
   final _updateDebouncer = Debouncer();
@@ -89,9 +107,21 @@ abstract class Store {
       _updateController.stream.listen((final event) => callback());
 }
 
+/// A class to debounce heavy tasks like rebuilding Dawn widgets.
+///
+/// [Debouncer] uses `requestAnimationFrame` api under the hood.
 class Debouncer {
   int? _animationFrame;
 
+  /// Add a new task to the execution line.
+  ///
+  /// ```dart
+  /// Debouncer()
+  ///   ..enqueue(() => print('Hello World!'))
+  ///   ..enqueue(() => print('Hello World!'));
+  /// ```
+  ///
+  /// `Hello World!` will be printed once.
   void enqueue(final void Function() task) {
     if (_animationFrame != null) {
       html.window.cancelAnimationFrame(_animationFrame!);
