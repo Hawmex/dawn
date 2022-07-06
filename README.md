@@ -4,8 +4,8 @@
 
 ## Description
 
-Dawn is a Dart Web package that provides basic classes like `StatelessWidget` similar to Flutter,
-but with a different implementation. It compiles to JavaScript and paints the UI using HTML and CSS.
+Dawn is a Dart Web Framework that lets developers to develop UIs in a style of coding
+which is similar to Flutter's. Dawn applications are compiled to JavaScript and are painted using HTML and CSS.
 
 [Example](https://github.com/Hawmex/dawn/blob/main/example/web/main.dart)
 |

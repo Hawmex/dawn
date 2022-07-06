@@ -1,6 +1,7 @@
 import 'package:dawn/src/widgets.dart';
 
-/// A widget to wrap multiple widgets. An implementation of `<div />`.
+/// A widget to wrap multiple widgets as children. An implementation of
+/// `<div />`.
 class Container extends FrameworkWidget {
   final List<Widget> children;
 

@@ -1,3 +1,7 @@
+## 2.4.7
+
+- Some fixes.
+
 ## 2.4.6
 
 - Added dartdoc to the public api.

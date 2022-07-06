@@ -109,11 +109,11 @@ abstract class Store {
 
 /// A class to debounce heavy tasks like rebuilding Dawn widgets.
 ///
-/// [Debouncer] uses `requestAnimationFrame` api under the hood.
+/// [Debouncer] uses `requestAnimationFrame` API under the hood.
 class Debouncer {
   int? _animationFrame;
 
-  /// Add a new task to the execution line.
+  /// Add a new task to the execution queue.
   ///
   /// ```dart
   /// Debouncer()
