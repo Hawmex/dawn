@@ -1,3 +1,8 @@
+## 2.4.8
+
+- Internal improvements.
+- Fixed a bug with `dawn create`.
+
 ## 2.4.7
 
 - Some fixes.

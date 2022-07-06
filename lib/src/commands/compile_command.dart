@@ -31,11 +31,14 @@ class CompileCommand extends Command<void> {
   @override
   String get description => 'Compiles web/ directory contents.';
 
+  String get compilationMode => argResults!['mode'];
+  bool get shouldServe => argResults!['serve'];
+
   @override
   Future<void> run() async {
-    await runCommand(withServer: argResults!['serve']);
+    await runCommand(withServer: shouldServe);
 
-    if (argResults!['mode'] == 'dev') {
+    if (compilationMode == 'dev') {
       Timer? timer;
 
       Directory('./web').watch(recursive: true).listen((final event) {
@@ -51,7 +54,7 @@ class CompileCommand extends Command<void> {
 
     if (withServer) await runServer();
 
-    if (argResults!['mode'] == 'dev') {
+    if (compilationMode == 'dev') {
       print('Watching for changes');
     }
   }
@@ -61,7 +64,7 @@ class CompileCommand extends Command<void> {
 
     await serve(
       createStaticHandler(
-        './.dawn/${argResults!['mode']}',
+        './.dawn/$compilationMode',
         defaultDocument: 'index.html',
       ),
       'localhost',
@@ -75,7 +78,7 @@ class CompileCommand extends Command<void> {
   }
 
   void copyFiles() {
-    print('\nCopying assests and index.html to .dawn/${argResults!['mode']}');
+    print('\nCopying assests and index.html to .dawn/$compilationMode');
 
     copyFile('index.html');
 
@@ -88,7 +91,7 @@ class CompileCommand extends Command<void> {
   }
 
   void copyFile(final String basicPath) =>
-      File('./.dawn/${argResults!['mode']}/$basicPath')
+      File('./.dawn/$compilationMode/$basicPath')
         ..createSync(recursive: true)
         ..writeAsBytesSync(File('./web/$basicPath').readAsBytesSync());
 
@@ -102,8 +105,8 @@ class CompileCommand extends Command<void> {
         'js',
         'web/main.dart',
         '-o',
-        '.dawn/${argResults!['mode']}/main.dart.js',
-        if (argResults!['mode'] == 'prod') '-m -O3'
+        '.dawn/$compilationMode/main.dart.js',
+        if (compilationMode == 'prod') '-m -O3'
       ],
       runInShell: true,
     );

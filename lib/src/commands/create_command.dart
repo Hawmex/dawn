@@ -9,9 +9,11 @@ class CreateCommand extends Command<void> {
   @override
   String get description => 'Sets up a new Dawn application.';
 
+  String get projectName => argResults!.rest.first;
+
   @override
   void run() {
-    Directory.current = Directory('./${argResults!.rest.first}')..createSync();
+    Directory.current = Directory('./$projectName')..createSync();
 
     createFiles();
     installDependencies();
@@ -71,7 +73,7 @@ pubspec.lock
 ''';
 
   String get readmeDotMd => '''
-# example
+# $projectName
 
 ## Description
 
@@ -81,7 +83,7 @@ Please refer to [Dawn's Getting Started section](https://github.com/Hawmex/dawn#
 ''';
 
   String get pubspecDotYaml => '''
-name: ${argResults!.rest.first}
+name: $projectName
 description: A Dawn app
 publish_to: none
 environment:
@@ -99,7 +101,7 @@ include: package:dawn_lints/dawn_lints.yaml
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>${argResults!.rest.first}</title>
+    <title>$projectName</title>
 
     <link rel="shortcut icon" href="/assets/logo.svg" type="image/x-icon" />
 
