@@ -55,12 +55,12 @@ class CompileCommand extends Command<void> {
     if (withServer) await runServer();
 
     if (compilationMode == 'dev') {
-      print('Watching for changes');
+      print('Watching for changes...');
     }
   }
 
   Future<void> runServer() async {
-    print('\nStarting server');
+    print('\nStarting server...');
 
     await serve(
       createStaticHandler(
@@ -72,13 +72,13 @@ class CompileCommand extends Command<void> {
       shared: true,
     );
 
-    print('Server running on http://$address:$port');
+    print('Server running on http://$address:$port.');
 
     Process.runSync('start', ['http://$address:$port'], runInShell: true);
   }
 
   void copyFiles() {
-    print('\nCopying assests and index.html to .dawn/$compilationMode');
+    print('\nCopying assests and index.html to .dawn/$compilationMode...');
 
     copyFile('index.html');
 
@@ -96,7 +96,7 @@ class CompileCommand extends Command<void> {
         ..writeAsBytesSync(File('./web/$basicPath').readAsBytesSync());
 
   void compile() {
-    print('Compiling main.dart');
+    print('Compiling main.dart...');
 
     Process.runSync(
       'dart',

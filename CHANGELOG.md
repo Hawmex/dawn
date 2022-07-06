@@ -1,3 +1,7 @@
+## 2.4.9
+
+- Internal improvements.
+
 ## 2.4.8
 
 - Internal improvements.
