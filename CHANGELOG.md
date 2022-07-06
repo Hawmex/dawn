@@ -1,3 +1,7 @@
+## 2.4.13
+
+- Bug fixes and improvements.
+
 ## 2.4.12
 
 - Improved README.

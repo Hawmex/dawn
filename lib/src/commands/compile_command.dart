@@ -24,7 +24,7 @@ class CompileCommand extends Command<void> {
         'port',
         abbr: 'p',
         help: 'Local server port.',
-        defaultsTo: '8080',
+        defaultsTo: '5500',
       );
   }
 
@@ -71,7 +71,7 @@ class CompileCommand extends Command<void> {
         './.dawn/$compilationMode',
         defaultDocument: 'index.html',
       ),
-      '0.0.0.0',
+      InternetAddress.anyIPv4,
       port,
       shared: true,
     );
