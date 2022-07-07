@@ -92,7 +92,7 @@ class CompileCommand extends Command<void> {
         );
 
     print(
-      '\n\x1B[32m✓\x1B[0m '
+      '\n\x1B[32m+\x1B[0m '
       'Copied assests and index.html to .dawn/$compilationMode...',
     );
   }
@@ -116,6 +116,6 @@ class CompileCommand extends Command<void> {
       runInShell: true,
     );
 
-    print('\x1B[32m✓\x1B[0m Compiled main.dart.');
+    print('\x1B[32m+\x1B[0m Compiled main.dart.');
   }
 }

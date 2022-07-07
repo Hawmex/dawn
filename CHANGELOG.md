@@ -1,3 +1,7 @@
+## 2.5.2
+
+- Improved CLI.
+
 ## 2.5.1
 
 - Improved CLI.
