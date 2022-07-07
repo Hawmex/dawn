@@ -41,7 +41,7 @@ class CreateCommand extends Command<void> {
       ..createSync(recursive: true)
       ..writeAsStringSync(body);
 
-    print('\t- Created $path.');
+    print('\t\x1B[32m✓\x1B[0m Created $path.');
   }
 
   void installDependencies() {
@@ -49,7 +49,7 @@ class CreateCommand extends Command<void> {
 
     Process.runSync('dart', ['pub', 'add', 'dawn'], runInShell: true);
 
-    print('\t- Installed dawn.');
+    print('\t\x1B[32m✓\x1B[0m Installed dawn.');
 
     Process.runSync(
       'dart',
@@ -57,7 +57,7 @@ class CreateCommand extends Command<void> {
       runInShell: true,
     );
 
-    print('\t- Installed dawn_lints.');
+    print('\t\x1B[32m✓\x1B[0m Installed dawn_lints.');
   }
 
   String get gitIgnore => '''

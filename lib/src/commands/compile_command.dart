@@ -59,7 +59,7 @@ class CompileCommand extends Command<void> {
     if (withServer) await runServer();
 
     if (compilationMode == 'dev') {
-      print('Watching for changes...');
+      print('\nWatching for changes...');
     }
   }
 
@@ -76,14 +76,12 @@ class CompileCommand extends Command<void> {
       shared: true,
     );
 
-    print('Server running on http://localhost:$port.');
+    print('\x1B[32mServer running on http://localhost:$port.\x1B[0m');
 
     Process.runSync('start', ['http://localhost:$port'], runInShell: true);
   }
 
   void copyFiles() {
-    print('\nCopying assests and index.html to .dawn/$compilationMode...');
-
     copyFile('index.html');
 
     Directory('./web/assets')
@@ -92,6 +90,11 @@ class CompileCommand extends Command<void> {
         .forEach(
           (final file) => copyFile(file.path.replaceFirst('./web/', '')),
         );
+
+    print(
+      '\n\x1B[32m✓\x1B[0m '
+      'Copied assests and index.html to .dawn/$compilationMode...',
+    );
   }
 
   void copyFile(final String basicPath) =>
@@ -100,8 +103,6 @@ class CompileCommand extends Command<void> {
         ..writeAsBytesSync(File('./web/$basicPath').readAsBytesSync());
 
   void compile() {
-    print('Compiling main.dart...');
-
     Process.runSync(
       'dart',
       [
@@ -114,5 +115,7 @@ class CompileCommand extends Command<void> {
       ],
       runInShell: true,
     );
+
+    print('\x1B[32m✓\x1B[0m Compiled main.dart.');
   }
 }
