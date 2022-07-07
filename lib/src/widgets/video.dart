@@ -3,6 +3,7 @@ import 'package:dawn/src/widgets.dart';
 /// An implementation of `<video />`.
 class Video extends FrameworkWidget {
   final String source;
+  final String? alternativeText;
   final String? thumbnail;
   final bool showControls;
   final bool loop;
@@ -18,6 +19,7 @@ class Video extends FrameworkWidget {
 
   const Video(
     this.source, {
+    this.alternativeText,
     this.thumbnail,
     this.showControls = true,
     this.loop = false,

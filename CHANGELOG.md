@@ -1,3 +1,7 @@
+## 2.5.0
+
+- Added `alternativeText` to `Video` and `Image`.
+
 ## 2.4.13
 
 - Bug fixes and improvements.
