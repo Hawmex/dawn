@@ -1,3 +1,7 @@
+## 2.5.6
+
+- Fixed typo.
+
 ## 2.5.5
 
 - Added an example to `README.md`.

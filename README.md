@@ -41,7 +41,7 @@ and are painted using HTML and CSS.
 ## ✏️ More Examples
 
 - Portfolio made with Dawn.
-  [Demo](https://hamed-aarab-portfolio.netlify.app) | [Repository](https://github.com/Hawmex/porfolio_new)
+  [Demo](https://hamed-aarab-portfolio.netlify.app) | [Repository](https://github.com/Hawmex/portfolio_new)
 
 ## 📌 Why Dawn Exists
 
