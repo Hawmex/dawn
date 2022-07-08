@@ -1,3 +1,7 @@
+## 2.5.4
+
+- Improved error handling in CLI.
+
 ## 2.5.3
 
 - Fixed a bug with `StatelessWidget` rebuild process.

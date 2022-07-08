@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:dawn/src/utils.dart';
 
 class CreateCommand extends Command<void> {
   @override
@@ -47,17 +48,19 @@ class CreateCommand extends Command<void> {
   void installDependencies() {
     print('\nInstalling dependencies...');
 
-    Process.runSync('dart', ['pub', 'add', 'dawn'], runInShell: true);
-
-    print('\t\x1B[32m+\x1B[0m Installed dawn.');
-
-    Process.runSync(
+    runProcess(
       'dart',
-      ['pub', 'add', '--dev', 'dawn_lints'],
-      runInShell: true,
+      ['pub', 'add', 'dawn'],
+      onSuccess: () => print('\t\x1B[32m+\x1B[0m Installed dawn.'),
+      onError: () => print('\t\x1B[31mx\x1B[0m Couldn\'t install dawn.'),
     );
 
-    print('\t\x1B[32m+\x1B[0m Installed dawn_lints.');
+    runProcess(
+      'dart',
+      ['pub', 'add', '--dev', 'dawn_lints'],
+      onSuccess: () => print('\t\x1B[32m+\x1B[0m Installed dawn_lints.'),
+      onError: () => print('\t\x1B[31mx\x1B[0m Couldn\'t install dawn_lints.'),
+    );
   }
 
   String get gitIgnore => '''

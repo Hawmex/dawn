@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:dawn/src/utils.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_static/shelf_static.dart';
 
@@ -78,7 +79,7 @@ class CompileCommand extends Command<void> {
 
     print('\x1B[32mServer running on http://localhost:$port.\x1B[0m');
 
-    Process.runSync('start', ['http://localhost:$port'], runInShell: true);
+    runProcess('start', ['http://localhost:$port']);
   }
 
   void copyFiles() {
@@ -103,7 +104,7 @@ class CompileCommand extends Command<void> {
         ..writeAsBytesSync(File('./web/$basicPath').readAsBytesSync());
 
   void compile() {
-    Process.runSync(
+    runProcess(
       'dart',
       [
         'compile',
@@ -113,9 +114,9 @@ class CompileCommand extends Command<void> {
         '.dawn/$compilationMode/main.dart.js',
         if (compilationMode == 'prod') '-O3'
       ],
-      runInShell: true,
+      block: false,
+      onSuccess: () => print('\x1B[32m+\x1B[0m Compiled main.dart.'),
+      onError: () => print('\x1B[31mx\x1B[0m Couldn\'t compile main.dart.'),
     );
-
-    print('\x1B[32m+\x1B[0m Compiled main.dart.');
   }
 }
