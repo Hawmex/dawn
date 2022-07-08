@@ -1,3 +1,7 @@
+## 2.5.3
+
+- Fixed a bug with `StatelessWidget` rebuild process.
+
 ## 2.5.2
 
 - Improved CLI.

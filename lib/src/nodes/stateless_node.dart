@@ -26,7 +26,7 @@ class StatelessNode extends Node<StatelessWidget> {
       childNode.widget = newChildWidget;
     } else {
       childNode.dispose();
-      childNode = createNode(newChildWidget, parentNode: this);
+      childNode = createNode(newChildWidget, parentNode: this)..initialize();
     }
   }
 
