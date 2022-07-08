@@ -1,3 +1,7 @@
+## 2.5.5
+
+- Added an example to `README.md`.
+
 ## 2.5.4
 
 - Improved error handling in CLI.
