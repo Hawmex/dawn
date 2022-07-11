@@ -1,3 +1,7 @@
+## 3.1.0
+
+- Adopted static typing for `Animation` API.
+
 ## 3.0.0
 
 - Added `Audio`.

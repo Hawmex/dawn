@@ -1,39 +1,105 @@
+import 'dart:html' as html;
+
 import 'package:dawn/src/utils.dart';
 
 /// Use this class to declare an animation for [FrameworkWidget] subclasses.
-///
-/// ```dart
-/// const Text(
-///   'Hello World!',
-///   animation: Animation(
-///     keyframes: [
-///       {'transform': 'rotate(0deg)'},
-///       {'transform': 'rotate(360deg)'},
-///     ],
-///     options: {'duration': 300},
-///   ),
-/// );
-/// ```
 class Animation {
-  /// Similar to that of JavaScript's `animate` API with the exception that
-  /// kebab-case CSS properties should be used here (Unlike to JavaScript's
-  /// `animate` API which uses camelCase CSS properties).
-  final List<Map<String, String>> keyframes;
+  final List<Style> keyframes;
+  final Duration duration;
+  final Duration startDelay;
+  final Duration endDelay;
+  final Easing easing;
+  final AnimationDirection direction;
+  final AnimationFill fill;
+  final double iterations;
 
-  /// Similar to that of JavaScript's `animate` API.
-  final Map<String, dynamic>? options;
+  const Animation(
+    this.keyframes, {
+    this.duration = Duration.zero,
+    this.startDelay = Duration.zero,
+    this.endDelay = Duration.zero,
+    this.easing = const Easing.linear(),
+    this.direction = AnimationDirection.forwards,
+    this.fill = AnimationFill.none,
+    this.iterations = 1,
+  });
 
-  const Animation({required this.keyframes, this.options});
+  html.Animation runOnElement(final html.Element element) {
+    return element.animate(
+      keyframes.map((final style) => style.toKeyframe()),
+      {
+        'duration': duration.inMilliseconds,
+        'delay': startDelay.inMilliseconds,
+        'endDelay': endDelay.inMilliseconds,
+        'easing': easing.toString(),
+        'direction': direction.name,
+        'fill': fill.name,
+        'iterations': iterations,
+      },
+    );
+  }
+}
 
-  /// Transforms kebab-case CSS properties to their camelCase form.
-  List<Map<String, String>> get keyframesForJsAnimation => keyframes
-      .map(
-        (final keyframe) => keyframe.map(
-          (final key, final value) => MapEntry(
-            key.fromKebabCaseToCamelCase(),
-            value,
-          ),
-        ),
-      )
-      .toList();
+class Easing {
+  final double x1;
+  final double y1;
+  final double x2;
+  final double y2;
+
+  const Easing(this.x1, this.y1, this.x2, this.y2);
+
+  const Easing.linear()
+      : x1 = 0,
+        y1 = 0,
+        x2 = 1,
+        y2 = 1;
+
+  const Easing.ease()
+      : x1 = 0.25,
+        y1 = 0.1,
+        x2 = 0.25,
+        y2 = 1;
+
+  const Easing.easeIn()
+      : x1 = 0.42,
+        y1 = 0,
+        x2 = 1,
+        y2 = 1;
+
+  const Easing.easeOut()
+      : x1 = 0,
+        y1 = 0,
+        x2 = 0.58,
+        y2 = 1;
+
+  const Easing.easeInAndOut()
+      : x1 = 0.42,
+        y1 = 0,
+        x2 = 0.58,
+        y2 = 1;
+
+  @override
+  String toString() => 'cubic-bezier($x1, $y1, $x2, $y2)';
+}
+
+enum AnimationDirection {
+  forwards('normal'),
+  backwards('reverse'),
+  forwardsThenAlternating('alternate'),
+  backwardsThenAlternating('alternate-reverse');
+
+  final String name;
+
+  const AnimationDirection(this.name);
+}
+
+enum AnimationFill {
+  forwards('forwards'),
+  backwards('backwards'),
+  none('none'),
+  both('both');
+
+  final String name;
+
+  const AnimationFill(this.name);
 }

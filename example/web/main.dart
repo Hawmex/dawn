@@ -13,16 +13,14 @@ class App extends StatelessWidget {
           '/assets/logo.svg',
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
-            keyframes: [
-              {'transform': 'scale(0.8)'},
-              {'transform': 'scale(1.0)'}
+            [
+              Style({'transform': 'scale(0.2)'}),
+              Style({'transform': 'scale(1.0)'}),
             ],
-            options: {
-              'duration': 1000,
-              'iterations': double.infinity,
-              'direction': 'alternate',
-              'easing': 'cubic-bezier(0.2, 0.0, 0.4, 1)',
-            },
+            duration: Duration(seconds: 1),
+            easing: Easing(0.2, 0.0, 0.4, 1),
+            direction: AnimationDirection.forwardsThenAlternating,
+            iterations: double.infinity,
           ),
         ),
         Text(

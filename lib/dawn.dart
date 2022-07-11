@@ -5,14 +5,5 @@ library dawn;
 
 export 'src/app_runner.dart';
 export 'src/nodes.dart' show State;
-export 'src/utils.dart'
-    show
-        Animation,
-        Buildable,
-        Context,
-        Debouncer,
-        EventListener,
-        Store,
-        StringTransforms,
-        Style;
+export 'src/utils.dart' hide runProcess;
 export 'src/widgets.dart';

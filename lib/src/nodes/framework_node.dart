@@ -22,7 +22,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     if (widget.style == null) {
       element.removeAttribute('style');
     } else {
-      element.setAttribute('style', widget.style!.toString());
+      element.setAttribute('style', widget.style!.toInline());
     }
   }
 
@@ -66,10 +66,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     initializeElement();
 
     if (widget.animation != null) {
-      animation = element.animate(
-        widget.animation!.keyframesForJsAnimation,
-        widget.animation!.options,
-      );
+      animation = widget.animation!.runOnElement(element);
     } else {
       animation = null;
     }
