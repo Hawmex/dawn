@@ -10,12 +10,12 @@ class Debouncer {
   ///
   /// ```dart
   /// Debouncer()
-  ///   ..enqueue(() => print('Hello World!'))
-  ///   ..enqueue(() => print('Hello World!'));
+  ///   ..enqueueTask(() => print('Hello World!'))
+  ///   ..enqueueTask(() => print('Hello World!'));
   /// ```
   ///
   /// `Hello World!` will be printed once.
-  void enqueue(final void Function() task) {
+  void enqueueTask(final void Function() task) {
     if (_animationFrame != null) {
       html.window.cancelAnimationFrame(_animationFrame!);
     }

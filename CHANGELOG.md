@@ -1,3 +1,7 @@
+## 3.1.1
+
+- Fixed typos.
+
 ## 3.1.0
 
 - Adopted static typing for `Animation` API.

@@ -1,6 +1,7 @@
 import 'dart:html' as html;
 
 import 'package:dawn/src/utils.dart';
+import 'package:dawn/src/widgets.dart';
 
 /// Use this class to declare an animation for [FrameworkWidget] subclasses.
 class Animation {
@@ -46,7 +47,7 @@ class Easing {
   final double x2;
   final double y2;
 
-  const Easing(this.x1, this.y1, this.x2, this.y2);
+  const Easing.cubicBezier(this.x1, this.y1, this.x2, this.y2);
 
   const Easing.linear()
       : x1 = 0,
@@ -85,8 +86,8 @@ class Easing {
 enum AnimationDirection {
   forwards('normal'),
   backwards('reverse'),
-  forwardsThenAlternating('alternate'),
-  backwardsThenAlternating('alternate-reverse');
+  forwardsAlternating('alternate'),
+  backwardsAlternating('alternate-reverse');
 
   final String name;
 

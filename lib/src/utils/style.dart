@@ -1,4 +1,5 @@
 import 'package:dawn/src/utils.dart';
+import 'package:dawn/src/widgets.dart';
 
 /// Use this class to declare styles for [FrameworkWidget] subclasses.
 class Style {
@@ -16,6 +17,6 @@ class Style {
       ? ''
       : rules.entries
           .map((final ruleEntry) => '${ruleEntry.key}: ${ruleEntry.value}')
-          .join(';')
+          .join('; ')
           .trimAll();
 }

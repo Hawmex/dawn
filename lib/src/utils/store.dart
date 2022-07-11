@@ -13,7 +13,7 @@ abstract class Store {
   /// Runs the [callback] and debounces a call to [onUpdate].
   void setState(final void Function() callback) {
     callback();
-    _updateDebouncer.enqueue(() => _updateController.add(null));
+    _updateDebouncer.enqueueTask(() => _updateController.add(null));
   }
 
   /// [callback] is called after [setState] has been called.
