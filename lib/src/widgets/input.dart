@@ -1,19 +1,13 @@
 import 'package:dawn/src/widgets.dart';
 
-/// An implementation of `<input type="text" />`.
-///
-/// Note: If [hideValue] is `true`, it will implement
-/// `<input type="password" />`.
+/// An implementation of `<input />`.
 class Input extends UserInputWidget {
   final String value;
-
-  /// If [hideValue] is `true`, [Input] will implement
-  /// `<input type="password" />`.
-  final bool hideValue;
+  final String? type;
 
   const Input(
     this.value, {
-    this.hideValue = false,
+    this.type,
     super.onChange,
     super.onInput,
     super.onPointerDown,

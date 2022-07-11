@@ -1,7 +1,9 @@
+export 'nodes/audio_node.dart';
 export 'nodes/container_node.dart';
 export 'nodes/framework_node.dart';
 export 'nodes/image_node.dart';
 export 'nodes/input_node.dart';
+export 'nodes/media_node.dart';
 export 'nodes/node.dart';
 export 'nodes/stateful_node.dart';
 export 'nodes/stateless_node.dart';

@@ -10,8 +10,9 @@ class InputNode extends UserInputNode<Input, html.InputElement> {
   @override
   void initializeElement() {
     super.initializeElement();
+
     element
-      ..type = widget.hideValue ? 'password' : 'text'
+      ..type = widget.type
       ..value = widget.value;
   }
 }

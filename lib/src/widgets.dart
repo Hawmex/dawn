@@ -1,7 +1,9 @@
+export 'widgets/audio.dart';
 export 'widgets/container.dart';
 export 'widgets/framework_widget.dart';
 export 'widgets/image.dart';
 export 'widgets/input.dart';
+export 'widgets/media_widget.dart';
 export 'widgets/stateful_widget.dart';
 export 'widgets/stateless_widget.dart';
 export 'widgets/text.dart';

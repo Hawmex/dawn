@@ -1,12 +1,9 @@
 import 'package:dawn/src/widgets.dart';
 
-/// An implementation of `<video />`.
-class Video extends MediaWidget {
-  final String? thumbnail;
-
-  const Video(
+/// An implementation of `<audio />`.
+class Audio extends MediaWidget {
+  const Audio(
     super.source, {
-    this.thumbnail,
     super.showControls,
     super.loop,
     super.muted,

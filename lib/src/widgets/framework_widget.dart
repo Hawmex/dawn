@@ -9,6 +9,7 @@ abstract class FrameworkWidget extends Widget {
   final EventListener? onPointerEnter;
   final EventListener? onPointerLeave;
   final EventListener? onPress;
+
   final Style? style;
   final Animation? animation;
 

@@ -1,3 +1,9 @@
+## 3.0.0
+
+- Added `Audio`.
+- Changed `Input` causing a breaking change.
+- Removed `alternativeText` from `Video`.
+
 ## 2.5.8
 
 - Internal improvements.
