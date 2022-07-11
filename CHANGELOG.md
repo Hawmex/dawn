@@ -1,3 +1,7 @@
+## 2.5.8
+
+- Internal improvements.
+
 ## 2.5.7
 
 - Fixed a bug with `alternativeText` in `Video` and `Image`.

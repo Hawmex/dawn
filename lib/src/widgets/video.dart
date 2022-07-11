@@ -1,3 +1,4 @@
+import 'package:dawn/src/utils.dart';
 import 'package:dawn/src/widgets.dart';
 
 /// An implementation of `<video />`.
