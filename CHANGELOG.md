@@ -1,3 +1,7 @@
+## 3.1.3
+
+- Internal improvements.
+
 ## 3.1.2
 
 - Fixed major bug.

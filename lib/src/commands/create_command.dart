@@ -146,7 +146,7 @@ class App extends StatelessWidget {
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
             [
-              Style({'transform': 'scale(0.2)'}),
+              Style({'transform': 'scale(0.8)'}),
               Style({'transform': 'scale(1.0)'}),
             ],
             duration: Duration(seconds: 1),
