@@ -10,6 +10,9 @@ class ImageNode extends FrameworkNode<Image, html.ImageElement> {
   @override
   void initializeElement() {
     super.initializeElement();
-    element.src = widget.source;
+
+    element
+      ..src = widget.source
+      ..alt = widget.alternativeText;
   }
 }

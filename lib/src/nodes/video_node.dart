@@ -23,7 +23,8 @@ class VideoNode extends FrameworkNode<Video, html.VideoElement> {
       ..controls = widget.showControls
       ..loop = widget.loop
       ..muted = widget.muted
-      ..autoplay = widget.autoplay;
+      ..autoplay = widget.autoplay
+      ..text = widget.alternativeText;
   }
 
   @override
