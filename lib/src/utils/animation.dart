@@ -1,7 +1,6 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/utils.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/utils/style.dart';
 
 /// Use this class to declare an animation for [FrameworkWidget] subclasses.
 class Animation {

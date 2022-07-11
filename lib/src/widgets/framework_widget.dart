@@ -1,5 +1,10 @@
-import 'package:dawn/src/utils.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/utils/animation.dart';
+import 'package:dawn/src/utils/event_listener.dart';
+import 'package:dawn/src/utils/style.dart';
+import 'package:dawn/src/widgets/container.dart';
+import 'package:dawn/src/widgets/image.dart';
+import 'package:dawn/src/widgets/text.dart';
+import 'package:dawn/src/widgets/widget.dart';
 
 /// The base class for Dawn framework widgets such as [Text], [Image],
 /// [Container], etc.

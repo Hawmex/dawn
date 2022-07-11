@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dawn/src/utils.dart';
+import 'package:dawn/src/utils/debouncer.dart';
 
 /// A base class for storing data and subscribing to it.
 ///

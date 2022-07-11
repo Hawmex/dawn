@@ -1,4 +1,4 @@
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/widgets/media_widget.dart';
 
 /// An implementation of `<video />`.
 class Video extends MediaWidget {

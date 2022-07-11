@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/framework_node.dart';
+import 'package:dawn/src/widgets/media_widget.dart';
 
 abstract class MediaNode<T extends MediaWidget, U extends html.MediaElement>
     extends FrameworkNode<T, U> {

@@ -1,6 +1,6 @@
 import 'package:dawn/src/node_creator.dart';
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/node.dart';
+import 'package:dawn/src/widgets/stateless_widget.dart';
 
 class StatelessNode extends Node<StatelessWidget> {
   late Node childNode;

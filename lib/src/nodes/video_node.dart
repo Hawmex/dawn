@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/media_node.dart';
+import 'package:dawn/src/widgets/video.dart';
 
 class VideoNode extends MediaNode<Video, html.VideoElement> {
   VideoNode(super.widget, {super.parentNode})

@@ -1,4 +1,5 @@
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/widgets/framework_widget.dart';
+import 'package:dawn/src/widgets/widget.dart';
 
 /// A widget to wrap multiple widgets as children. An implementation of
 /// `<div />`.

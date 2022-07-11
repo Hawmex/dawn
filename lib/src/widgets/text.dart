@@ -1,4 +1,4 @@
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/widgets/framework_widget.dart';
 
 /// A widget to display text in Dawn apps. An implementation of `<span />`.
 class Text extends FrameworkWidget {

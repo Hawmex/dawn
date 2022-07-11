@@ -1,3 +1,7 @@
+## 3.1.2
+
+- Fixed major bug.
+
 ## 3.1.1
 
 - Fixed typos.

@@ -1,4 +1,4 @@
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/widgets/widget.dart';
 
 /// Contains a list of parent widgets in [sequence].
 class Context {

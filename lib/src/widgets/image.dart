@@ -1,4 +1,4 @@
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/widgets/framework_widget.dart';
 
 /// An implementation of `<img />`.
 class Image extends FrameworkWidget {

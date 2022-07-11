@@ -1,5 +1,5 @@
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/stateful_node.dart';
+import 'package:dawn/src/widgets/widget.dart';
 
 /// The base class for creating stateful widgets in Dawn.
 abstract class StatefulWidget extends Widget {

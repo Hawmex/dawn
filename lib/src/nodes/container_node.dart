@@ -1,8 +1,9 @@
 import 'dart:html' as html;
 
 import 'package:dawn/src/node_creator.dart';
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/framework_node.dart';
+import 'package:dawn/src/nodes/node.dart';
+import 'package:dawn/src/widgets/container.dart';
 
 class ContainerNode extends FrameworkNode<Container, html.DivElement> {
   late List<Node> childNodes;

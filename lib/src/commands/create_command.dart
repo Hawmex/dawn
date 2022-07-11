@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:dawn/src/utils.dart';
+import 'package:dawn/src/utils/process_runner.dart';
 
 class CreateCommand extends Command<void> {
   @override

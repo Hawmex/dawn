@@ -1,5 +1,7 @@
-import 'package:dawn/src/utils.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/utils/event_listener.dart';
+import 'package:dawn/src/widgets/audio.dart';
+import 'package:dawn/src/widgets/framework_widget.dart';
+import 'package:dawn/src/widgets/video.dart';
 
 /// The base class for media widgets such as [Video], [Audio], etc.
 abstract class MediaWidget extends FrameworkWidget {

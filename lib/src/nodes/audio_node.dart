@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/media_node.dart';
+import 'package:dawn/src/widgets/audio.dart';
 
 class AudioNode extends MediaNode<Audio, html.AudioElement> {
   AudioNode(super.widget, {super.parentNode})

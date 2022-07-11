@@ -1,7 +1,8 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/container_node.dart';
+import 'package:dawn/src/nodes/node.dart';
+import 'package:dawn/src/widgets/framework_widget.dart';
 
 abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     extends Node<T> {

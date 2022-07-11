@@ -1,5 +1,5 @@
-import 'package:dawn/src/utils.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/utils/string_transforms.dart';
+import 'package:dawn/src/widgets/framework_widget.dart';
 
 /// Use this class to declare styles for [FrameworkWidget] subclasses.
 class Style {

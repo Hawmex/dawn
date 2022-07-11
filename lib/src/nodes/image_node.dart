@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/nodes/framework_node.dart';
+import 'package:dawn/src/widgets/image.dart';
 
 class ImageNode extends FrameworkNode<Image, html.ImageElement> {
   ImageNode(super.widget, {super.parentNode})

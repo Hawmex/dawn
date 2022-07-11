@@ -1,5 +1,5 @@
-import 'package:dawn/src/utils.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/utils/context.dart';
+import 'package:dawn/src/widgets/widget.dart';
 
 abstract class Node<T extends Widget> {
   final List<Node> parentsSequence;

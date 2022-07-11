@@ -1,5 +1,5 @@
-import 'package:dawn/src/utils.dart';
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/utils/context.dart';
+import 'package:dawn/src/widgets/widget.dart';
 
 /// A mixin to implement [build] for [StatelessWidget], etc.
 mixin Buildable {

@@ -1,4 +1,4 @@
-import 'package:dawn/src/widgets.dart';
+import 'package:dawn/src/widgets/user_input_widget.dart';
 
 /// An implementation of `<textarea />`.
 class Textbox extends UserInputWidget {
