@@ -3,7 +3,7 @@ extension StringTransforms on String {
   String toCapitalized() =>
       isEmpty ? '' : this[0].toUpperCase() + substring(1).toLowerCase();
 
-  /// Removes all the unnecessary whitespace from a string.
+  /// Removes the unnecessary whitespace from a string.
   String trimAll() => replaceAll(RegExp(r'\s+'), ' ');
 
   /// Transforms a string from kebab-case to camelCase.

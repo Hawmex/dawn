@@ -12,8 +12,8 @@ class Style {
   Map<String, String> toKeyframe() => rules.map((final key, final value) =>
       MapEntry(key.fromKebabCaseToCamelCase(), value));
 
-  /// The inline representation of the declared CSS rules.
-  String toInline() => rules.isEmpty
+  @override
+  String toString() => rules.isEmpty
       ? ''
       : rules.entries
           .map((final ruleEntry) => '${ruleEntry.key}: ${ruleEntry.value}')

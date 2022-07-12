@@ -23,7 +23,7 @@ abstract class FrameworkNode<T extends FrameworkWidget, U extends html.Element>
     if (widget.style == null) {
       element.removeAttribute('style');
     } else {
-      element.setAttribute('style', widget.style!.toInline());
+      element.setAttribute('style', widget.style!.toString());
     }
   }
 

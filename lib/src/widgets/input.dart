@@ -3,7 +3,7 @@ import 'package:dawn/src/widgets/user_input_widget.dart';
 /// An implementation of `<input />`.
 class Input extends UserInputWidget {
   final String value;
-  final String? type;
+  final String type;
 
   const Input.password(
     this.value, {
