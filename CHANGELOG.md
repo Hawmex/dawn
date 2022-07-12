@@ -1,3 +1,7 @@
+## 3.3.1
+
+- Bug fixes and internal improvements.
+
 ## 3.3.0
 
 - Added a basic router API including `Router`, `Route`, and `Navigator`.

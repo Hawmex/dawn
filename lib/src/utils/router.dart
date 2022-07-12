@@ -60,7 +60,5 @@ class _RouterState extends State<Router> {
   }
 
   @override
-  Widget build(final Context context) {
-    return matchingRoute.widget;
-  }
+  Widget build(final Context context) => matchingRoute.builder(context);
 }
