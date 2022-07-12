@@ -1,3 +1,7 @@
+## 3.2.0
+
+- Added `Provider`, `StatelessBuilder`, `StatefulBuilder`, and `ConsumerBuilder`.
+
 ## 3.1.4
 
 - Internal improvements.

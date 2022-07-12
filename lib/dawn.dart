@@ -4,6 +4,9 @@
 library dawn;
 
 export 'src/app_runner.dart';
+export 'src/builders/consumer_builder.dart';
+export 'src/builders/stateful_builder.dart';
+export 'src/builders/stateless_builder.dart';
 export 'src/nodes/stateful_node.dart' show State;
 export 'src/utils/animation.dart';
 export 'src/utils/buildable.dart';
@@ -19,6 +22,7 @@ export 'src/widgets/framework_widget.dart';
 export 'src/widgets/image.dart';
 export 'src/widgets/input.dart';
 export 'src/widgets/media_widget.dart';
+export 'src/widgets/provider.dart';
 export 'src/widgets/stateful_widget.dart';
 export 'src/widgets/stateless_widget.dart';
 export 'src/widgets/text.dart';
