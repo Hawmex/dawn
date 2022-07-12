@@ -9,7 +9,7 @@ import 'package:dawn/src/widgets/widget.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';
 
 class Router extends StatefulWidget {
-  final Set<Route> routes;
+  final List<Route> routes;
 
   const Router(this.routes, {super.key});
 

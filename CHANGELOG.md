@@ -1,3 +1,7 @@
+## 3.3.2
+
+- Fixed typo.
+
 ## 3.3.1
 
 - Bug fixes and internal improvements.
