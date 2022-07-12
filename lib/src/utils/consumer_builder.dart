@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:dawn/src/nodes/stateful_node.dart';
 import 'package:dawn/src/utils/context.dart';
+import 'package:dawn/src/utils/provider.dart';
 import 'package:dawn/src/utils/store.dart';
-import 'package:dawn/src/widgets/provider.dart';
 import 'package:dawn/src/widgets/stateful_widget.dart';
 import 'package:dawn/src/widgets/widget.dart';
 

@@ -1,3 +1,7 @@
+## 3.3.0
+
+- Added a basic router API including `Router`, `Route`, and `Navigator`.
+
 ## 3.2.0
 
 - Added `Provider`, `StatelessBuilder`, `StatefulBuilder`, and `ConsumerBuilder`.
