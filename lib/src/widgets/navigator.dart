@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:html' as html;
 
 import 'package:dawn/src/nodes/stateful_node.dart';
 import 'package:dawn/src/utils/animation.dart';
@@ -17,6 +17,11 @@ extension Navigation on Context {
 
   /// Goes to the previous navigation state.
   void pop() => _navigatorState.pop();
+
+  /// Adds a modal that will be notified when back button is pressed in the
+  /// browser.
+  void addModal({required final void Function() onPop}) =>
+      _navigatorState.addModal(onPop: onPop);
 }
 
 /// A simple navigator widget.
@@ -40,31 +45,67 @@ class Navigator extends StatefulWidget {
 enum _NavigationAction { push, pop }
 
 class _NavigatorState extends State<Navigator> {
+  final List<void Function()> modalStack = [];
+
   late final List<Widget> childStack = [widget.child];
 
   _NavigationAction lastAction = _NavigationAction.push;
+
+  int get historyState => html.window.history.state;
+
+  void pushHistoryState() => html.window.history
+      .pushState(childStack.length + modalStack.length, '', null);
+
+  void historyBack() => html.window.history.back();
+
+  void addModal({required final void Function() onPop}) {
+    modalStack.add(onPop);
+    pushHistoryState();
+  }
 
   void push({required final Widget Function(Context context) builder}) {
     setState(() {
       childStack.add(builder(context));
       lastAction = _NavigationAction.push;
+      pushHistoryState();
     });
   }
 
   void pop() {
-    if (childStack.isNotEmpty) {
-      setState(() {
+    setState(() {
+      if (modalStack.isNotEmpty) {
+        modalStack
+          ..last()
+          ..removeLast();
+      } else {
         childStack.removeLast();
         lastAction = _NavigationAction.pop;
+      }
+
+      if (historyState > childStack.length + modalStack.length) historyBack();
+    });
+  }
+
+  @override
+  void initialize() {
+    super.initialize();
+
+    html.window
+      ..history.replaceState(1, '', null)
+      ..addEventListener('popstate', (final event) {
+        if (historyState > childStack.length + modalStack.length) {
+          historyBack();
+        } else if (historyState < childStack.length + modalStack.length) {
+          pop();
+        }
       });
-    }
   }
 
   @override
   Widget build(final Context context) {
     return Container(
       children: [childStack.last],
-      key: Random().nextDouble().toString(),
+      key: childStack.length.toString(),
       animation: lastAction == _NavigationAction.push
           ? widget.pushAnimation
           : widget.popAnimation,

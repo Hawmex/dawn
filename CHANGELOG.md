@@ -1,3 +1,7 @@
+## 4.0.1
+
+- Improved `Navigator`. Added `addModal`.
+
 ## 4.0.0
 
 - Reworked navigation and routing.
