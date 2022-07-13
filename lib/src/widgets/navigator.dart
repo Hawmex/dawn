@@ -9,13 +9,17 @@ import 'package:dawn/src/widgets/widget.dart';
 
 final _navigatorState = _NavigatorState();
 
+/// Adds navigation functionality to [Context].
 extension Navigation on Context {
+  /// Builds a new [Widget] at [Navigator].
   void push({required final Widget Function(Context context) builder}) =>
       _navigatorState.push(builder: builder);
 
+  /// Goes to the previous navigation state.
   void pop() => _navigatorState.pop();
 }
 
+/// A simple navigator widget.
 class Navigator extends StatefulWidget {
   final Widget child;
 

@@ -7,6 +7,7 @@ import 'package:dawn/src/widgets/provider.dart';
 import 'package:dawn/src/widgets/stateful_widget.dart';
 import 'package:dawn/src/widgets/widget.dart';
 
+/// A widget that rebuilds its content by listening to a provided [Store].
 class ConsumerBuilder<T extends Store> extends StatefulWidget {
   final Widget Function(Context context, T store) builder;
 
