@@ -42,14 +42,14 @@ class Navigator extends StatefulWidget {
   State createState() => _navigatorState;
 }
 
-enum _NavigationAction { push, pop }
+enum _NavigationAction { push, pop, none }
 
 class _NavigatorState extends State<Navigator> {
   final List<void Function()> modalStack = [];
 
   late final List<Widget> childStack = [widget.child];
 
-  _NavigationAction lastAction = _NavigationAction.push;
+  _NavigationAction lastAction = _NavigationAction.none;
 
   int get historyState => html.window.history.state;
 
@@ -108,7 +108,9 @@ class _NavigatorState extends State<Navigator> {
       key: childStack.length.toString(),
       animation: lastAction == _NavigationAction.push
           ? widget.pushAnimation
-          : widget.popAnimation,
+          : lastAction == _NavigationAction.pop
+              ? widget.popAnimation
+              : null,
     );
   }
 }

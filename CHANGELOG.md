@@ -1,3 +1,7 @@
+## 4.0.2
+
+- Fixed a bug with `Navigator`.
+
 ## 4.0.1
 
 - Improved `Navigator`. Added `addModal`.
