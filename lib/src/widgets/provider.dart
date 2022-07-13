@@ -5,14 +5,16 @@ import 'package:dawn/src/widgets/widget.dart';
 
 extension GetStore on Context {
   T getProvidedStoreOfExactType<T extends Store>() =>
-      getParentWidgetOfExactType<Provider<T>>().store;
+      getParentWidgetOfExactType<Provider>()
+          .stores
+          .firstWhere((final store) => store.runtimeType == T) as T;
 }
 
 class Provider<T extends Store> extends StatelessWidget {
-  final T store;
+  final List<Store> stores;
   final Widget child;
 
-  const Provider(this.store, this.child, {super.key});
+  const Provider({required this.stores, required this.child, super.key});
 
   @override
   Widget build(final Context context) => child;

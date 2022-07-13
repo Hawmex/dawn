@@ -19,25 +19,25 @@ import 'package:dawn/src/widgets/textbox.dart';
 import 'package:dawn/src/widgets/video.dart';
 import 'package:dawn/src/widgets/widget.dart';
 
-Node createNode(final Widget widget, {final Node? parentNode}) {
+Node createNode({required final Widget widget, final Node? parentNode}) {
   if (widget is StatelessWidget) {
-    return StatelessNode(widget, parentNode: parentNode);
+    return StatelessNode(widget: widget, parentNode: parentNode);
   } else if (widget is StatefulWidget) {
-    return StatefulNode(widget, parentNode: parentNode);
+    return StatefulNode(widget: widget, parentNode: parentNode);
   } else if (widget is Audio) {
-    return AudioNode(widget, parentNode: parentNode);
+    return AudioNode(widget: widget, parentNode: parentNode);
   } else if (widget is Container) {
-    return ContainerNode(widget, parentNode: parentNode);
+    return ContainerNode(widget: widget, parentNode: parentNode);
   } else if (widget is Image) {
-    return ImageNode(widget, parentNode: parentNode);
+    return ImageNode(widget: widget, parentNode: parentNode);
   } else if (widget is Input) {
-    return InputNode(widget, parentNode: parentNode);
+    return InputNode(widget: widget, parentNode: parentNode);
   } else if (widget is Text) {
-    return TextNode(widget, parentNode: parentNode);
+    return TextNode(widget: widget, parentNode: parentNode);
   } else if (widget is Textbox) {
-    return TextBoxNode(widget, parentNode: parentNode);
+    return TextBoxNode(widget: widget, parentNode: parentNode);
   } else if (widget is Video) {
-    return VideoNode(widget, parentNode: parentNode);
+    return VideoNode(widget: widget, parentNode: parentNode);
   } else {
     throw TypeError();
   }

@@ -1,3 +1,7 @@
+## 4.0.0
+
+- Reworked navigation and routing.
+
 ## 3.3.2
 
 - Fixed typo.

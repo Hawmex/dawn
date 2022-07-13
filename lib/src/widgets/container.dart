@@ -6,8 +6,8 @@ import 'package:dawn/src/widgets/widget.dart';
 class Container extends FrameworkWidget {
   final List<Widget> children;
 
-  const Container(
-    this.children, {
+  const Container({
+    required this.children,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,

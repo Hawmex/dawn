@@ -18,8 +18,8 @@ abstract class MediaWidget extends FrameworkWidget {
   final EventListener? onSeekEnd;
   final EventListener? onVolumeChange;
 
-  const MediaWidget(
-    this.source, {
+  const MediaWidget({
+    required this.source,
     this.showControls = true,
     this.loop = false,
     this.muted = false,

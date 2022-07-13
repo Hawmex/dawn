@@ -4,8 +4,8 @@ import 'package:dawn/src/widgets/user_input_widget.dart';
 class Textbox extends UserInputWidget {
   final String value;
 
-  const Textbox(
-    this.value, {
+  const Textbox({
+    required this.value,
     super.onChange,
     super.onInput,
     super.onPointerDown,

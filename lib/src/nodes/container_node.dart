@@ -8,7 +8,7 @@ import 'package:dawn/src/widgets/container.dart';
 class ContainerNode extends FrameworkNode<Container, html.DivElement> {
   late List<Node> childNodes;
 
-  ContainerNode(super.widget, {super.parentNode})
+  ContainerNode({required super.widget, super.parentNode})
       : super(element: html.DivElement());
 
   @override
@@ -16,7 +16,7 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
     super.initialize();
 
     childNodes = widget.children
-        .map((final child) => createNode(child, parentNode: this))
+        .map((final child) => createNode(widget: child, parentNode: this))
         .toList();
 
     for (final childNode in childNodes) {
@@ -31,7 +31,7 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
     final oldChildNodes = childNodes;
 
     final newChildNodes = widget.children
-        .map((final child) => createNode(child, parentNode: this))
+        .map((final child) => createNode(widget: child, parentNode: this))
         .toList();
 
     int exactSearchStartIndex = 0;

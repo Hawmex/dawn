@@ -8,12 +8,12 @@ class App extends StatelessWidget {
   @override
   Widget build(final Context context) {
     return const Container(
-      [
+      children: [
         Image(
-          '/assets/logo.svg',
+          source: '/assets/logo.svg',
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
-            [
+            keyframes: [
               Style({'transform': 'scale(0.8)'}),
               Style({'transform': 'scale(1.0)'}),
             ],
@@ -27,7 +27,7 @@ class App extends StatelessWidget {
           'Welcome to Dawn',
           style: Style({'font-size': '24px', 'font-weight': 'bold'}),
         ),
-        Container([
+        Container(children: [
           Text('To get started, edit '),
           Text(
             'web/main.dart',

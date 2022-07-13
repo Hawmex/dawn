@@ -5,13 +5,13 @@ import 'package:dawn/src/widgets/stateless_widget.dart';
 class StatelessNode extends Node<StatelessWidget> {
   late Node childNode;
 
-  StatelessNode(super.widget, {super.parentNode});
+  StatelessNode({required super.widget, super.parentNode});
 
   @override
   void initialize() {
     super.initialize();
 
-    childNode = createNode(widget.build(context), parentNode: this)
+    childNode = createNode(widget: widget.build(context), parentNode: this)
       ..initialize();
   }
 
@@ -26,7 +26,9 @@ class StatelessNode extends Node<StatelessWidget> {
       childNode.widget = newChildWidget;
     } else {
       childNode.dispose();
-      childNode = createNode(newChildWidget, parentNode: this)..initialize();
+
+      childNode = createNode(widget: newChildWidget, parentNode: this)
+        ..initialize();
     }
   }
 

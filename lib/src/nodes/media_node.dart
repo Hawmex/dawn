@@ -5,7 +5,7 @@ import 'package:dawn/src/widgets/media_widget.dart';
 
 abstract class MediaNode<T extends MediaWidget, U extends html.MediaElement>
     extends FrameworkNode<T, U> {
-  MediaNode(super.widget, {required super.element, super.parentNode});
+  MediaNode({required super.widget, required super.element, super.parentNode});
 
   @override
   void initializeElement() {

@@ -4,8 +4,8 @@ import 'package:dawn/src/widgets/media_widget.dart';
 class Video extends MediaWidget {
   final String? thumbnail;
 
-  const Video(
-    super.source, {
+  const Video({
+    required super.source,
     this.thumbnail,
     super.showControls,
     super.loop,

@@ -5,8 +5,8 @@ class Image extends FrameworkWidget {
   final String source;
   final String? alternativeText;
 
-  const Image(
-    this.source, {
+  const Image({
+    required this.source,
     this.alternativeText,
     super.onPointerDown,
     super.onPointerUp,

@@ -5,8 +5,8 @@ class Input extends UserInputWidget {
   final String value;
   final String type;
 
-  const Input.password(
-    this.value, {
+  const Input.password({
+    required this.value,
     super.onChange,
     super.onInput,
     super.onPointerDown,
@@ -19,8 +19,8 @@ class Input extends UserInputWidget {
     super.key,
   }) : type = 'password';
 
-  const Input.text(
-    this.value, {
+  const Input.text({
+    required this.value,
     super.onChange,
     super.onInput,
     super.onPointerDown,

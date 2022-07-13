@@ -14,8 +14,8 @@ class Animation {
   final AnimationFill fill;
   final double iterations;
 
-  const Animation(
-    this.keyframes, {
+  const Animation({
+    required this.keyframes,
     this.duration = Duration.zero,
     this.startDelay = Duration.zero,
     this.endDelay = Duration.zero,

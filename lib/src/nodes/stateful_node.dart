@@ -12,7 +12,7 @@ class StatefulNode extends Node<StatefulWidget> {
   late StreamSubscription<void> updateStreamSubscription;
   late Node childNode;
 
-  StatefulNode(super.widget, {super.parentNode});
+  StatefulNode({required super.widget, super.parentNode});
 
   @override
   void initialize() {
@@ -24,7 +24,7 @@ class StatefulNode extends Node<StatefulWidget> {
       ..initialize();
 
     childNode = createNode(
-      state.build(context),
+      widget: state.build(context),
       parentNode: this,
     )..initialize();
 
@@ -41,7 +41,9 @@ class StatefulNode extends Node<StatefulWidget> {
       childNode.widget = newChildWidget;
     } else {
       childNode.dispose();
-      childNode = createNode(newChildWidget, parentNode: this)..initialize();
+
+      childNode = createNode(widget: newChildWidget, parentNode: this)
+        ..initialize();
     }
   }
 

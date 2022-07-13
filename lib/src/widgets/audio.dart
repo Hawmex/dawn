@@ -2,8 +2,8 @@ import 'package:dawn/src/widgets/media_widget.dart';
 
 /// An implementation of `<audio />`.
 class Audio extends MediaWidget {
-  const Audio(
-    super.source, {
+  const Audio({
+    required super.source,
     super.showControls,
     super.loop,
     super.muted,

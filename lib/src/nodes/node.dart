@@ -9,8 +9,9 @@ abstract class Node<T extends Widget> {
 
   T _widget;
 
-  Node(this._widget, {final Node? parentNode})
-      : parentsSequence = [
+  Node({required final T widget, final Node? parentNode})
+      : _widget = widget,
+        parentsSequence = [
           if (parentNode != null) ...[parentNode, ...parentNode.parentsSequence]
         ];
 

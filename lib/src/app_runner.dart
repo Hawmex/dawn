@@ -9,9 +9,9 @@ import 'package:dawn/src/widgets/widget.dart';
 /// [app] must be a [StatefulWidget] or [StatelessWidget].
 void runApp(final Widget app) {
   if (app is StatelessWidget) {
-    StatelessNode(app).initialize();
+    StatelessNode(widget: app).initialize();
   } else if (app is StatefulWidget) {
-    StatefulNode(app).initialize();
+    StatefulNode(widget: app).initialize();
   } else {
     throw TypeError();
   }

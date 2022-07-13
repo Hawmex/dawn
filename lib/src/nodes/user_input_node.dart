@@ -5,7 +5,11 @@ import 'package:dawn/src/widgets/user_input_widget.dart';
 
 abstract class UserInputNode<T extends UserInputWidget, U extends html.Element>
     extends FrameworkNode<T, U> {
-  UserInputNode(super.widget, {required super.element, super.parentNode});
+  UserInputNode({
+    required super.widget,
+    required super.element,
+    super.parentNode,
+  });
 
   @override
   void initializeElement() {
