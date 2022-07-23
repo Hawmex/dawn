@@ -1,35 +1,64 @@
-import 'package:dawn/src/widgets/user_input_widget.dart';
+import 'user_input_widget.dart';
 
-/// An implementation of `<input />`.
 class Input extends UserInputWidget {
   final String value;
   final String type;
 
-  const Input.password({
-    required this.value,
+  const Input.password(
+    this.value, {
     super.onChange,
     super.onInput,
+    super.style,
+    super.animation,
+    super.onPress,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,
     super.onPointerLeave,
-    super.onPress,
-    super.style,
-    super.animation,
+    super.onPointerMove,
+    super.onPointerCancel,
+    super.onPointerOver,
+    super.onPointerOut,
+    super.onMouseDown,
+    super.onMouseUp,
+    super.onMouseEnter,
+    super.onMouseLeave,
+    super.onMouseMove,
+    super.onMouseOver,
+    super.onMouseOut,
+    super.onTouchStart,
+    super.onTouchEnd,
+    super.onTouchMove,
+    super.onTouchCancel,
     super.key,
   }) : type = 'password';
 
-  const Input.text({
-    required this.value,
+  const Input.text(
+    this.value, {
     super.onChange,
     super.onInput,
+    super.style,
+    super.animation,
+    super.onPress,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,
     super.onPointerLeave,
-    super.onPress,
-    super.style,
-    super.animation,
+    super.onPointerMove,
+    super.onPointerCancel,
+    super.onPointerOver,
+    super.onPointerOut,
+    super.onMouseDown,
+    super.onMouseUp,
+    super.onMouseEnter,
+    super.onMouseLeave,
+    super.onMouseMove,
+    super.onMouseOver,
+    super.onMouseOut,
+    super.onTouchStart,
+    super.onTouchEnd,
+    super.onTouchMove,
+    super.onTouchCancel,
     super.key,
   }) : type = 'text';
 }

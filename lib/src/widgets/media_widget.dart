@@ -1,9 +1,7 @@
-import 'package:dawn/src/utils/event_listener.dart';
-import 'package:dawn/src/widgets/audio.dart';
-import 'package:dawn/src/widgets/framework_widget.dart';
-import 'package:dawn/src/widgets/video.dart';
+import 'package:dawn/foundation.dart';
 
-/// The base class for media widgets such as [Video], [Audio], etc.
+import 'framework_widget.dart';
+
 abstract class MediaWidget extends FrameworkWidget {
   final String source;
   final bool showControls;
@@ -18,8 +16,8 @@ abstract class MediaWidget extends FrameworkWidget {
   final EventListener? onSeekEnd;
   final EventListener? onVolumeChange;
 
-  const MediaWidget({
-    required this.source,
+  const MediaWidget(
+    this.source, {
     this.showControls = true,
     this.loop = false,
     this.muted = false,
@@ -30,13 +28,28 @@ abstract class MediaWidget extends FrameworkWidget {
     this.onSeekStart,
     this.onSeekEnd,
     this.onVolumeChange,
+    super.style,
+    super.animation,
+    super.onPress,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,
     super.onPointerLeave,
-    super.onPress,
-    super.style,
-    super.animation,
+    super.onPointerMove,
+    super.onPointerCancel,
+    super.onPointerOver,
+    super.onPointerOut,
+    super.onMouseDown,
+    super.onMouseUp,
+    super.onMouseEnter,
+    super.onMouseLeave,
+    super.onMouseMove,
+    super.onMouseOver,
+    super.onMouseOut,
+    super.onTouchStart,
+    super.onTouchEnd,
+    super.onTouchMove,
+    super.onTouchCancel,
     super.key,
   });
 }

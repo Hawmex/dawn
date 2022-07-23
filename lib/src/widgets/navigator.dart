@@ -1,30 +1,24 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes/stateful_node.dart';
-import 'package:dawn/src/utils/animation.dart';
-import 'package:dawn/src/utils/context.dart';
-import 'package:dawn/src/widgets/container.dart';
-import 'package:dawn/src/widgets/stateful_widget.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/animation.dart';
+import 'package:dawn/foundation.dart';
+
+import 'container.dart';
+import 'stateful_widget.dart';
+import 'widget.dart';
 
 final _navigatorState = _NavigatorState();
 
-/// Adds navigation functionality to [Context].
-extension Navigation on Context {
-  /// Builds a new [Widget] at [Navigator].
-  void push({required final Widget Function(Context context) builder}) =>
+extension Navigation on BuildContext {
+  void push({required final Widget Function(BuildContext context) builder}) =>
       _navigatorState.push(builder: builder);
 
-  /// Goes to the previous navigation state.
   void pop() => _navigatorState.pop();
 
-  /// Adds a modal that will be notified when back button is pressed in the
-  /// browser.
   void addModal({required final void Function() onPop}) =>
       _navigatorState.addModal(onPop: onPop);
 }
 
-/// A simple navigator widget.
 class Navigator extends StatefulWidget {
   final Widget child;
 
@@ -63,7 +57,7 @@ class _NavigatorState extends State<Navigator> {
     pushHistoryState();
   }
 
-  void push({required final Widget Function(Context context) builder}) {
+  void push({required final Widget Function(BuildContext context) builder}) {
     setState(() {
       childStack.add(builder(context));
       lastAction = _NavigationAction.push;
@@ -102,9 +96,9 @@ class _NavigatorState extends State<Navigator> {
   }
 
   @override
-  Widget build(final Context context) {
+  Widget build(final BuildContext context) {
     return Container(
-      children: [childStack.last],
+      [childStack.last],
       key: childStack.length.toString(),
       animation: lastAction == _NavigationAction.push
           ? widget.pushAnimation

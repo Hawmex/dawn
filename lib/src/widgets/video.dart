@@ -1,11 +1,10 @@
-import 'package:dawn/src/widgets/media_widget.dart';
+import 'media_widget.dart';
 
-/// An implementation of `<video />`.
 class Video extends MediaWidget {
   final String? thumbnail;
 
-  const Video({
-    required super.source,
+  const Video(
+    super.source, {
     this.thumbnail,
     super.showControls,
     super.loop,
@@ -17,13 +16,28 @@ class Video extends MediaWidget {
     super.onSeekStart,
     super.onSeekEnd,
     super.onVolumeChange,
+    super.style,
+    super.animation,
+    super.onPress,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,
     super.onPointerLeave,
-    super.onPress,
-    super.style,
-    super.animation,
+    super.onPointerMove,
+    super.onPointerCancel,
+    super.onPointerOver,
+    super.onPointerOut,
+    super.onMouseDown,
+    super.onMouseUp,
+    super.onMouseEnter,
+    super.onMouseLeave,
+    super.onMouseMove,
+    super.onMouseOver,
+    super.onMouseOut,
+    super.onTouchStart,
+    super.onTouchEnd,
+    super.onTouchMove,
+    super.onTouchCancel,
     super.key,
   });
 }
