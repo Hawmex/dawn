@@ -1,11 +1,14 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes/user_input_node.dart';
-import 'package:dawn/src/widgets/input.dart';
+import 'package:dawn/widgets.dart';
+
+import 'user_input_node.dart';
 
 class InputNode extends UserInputNode<Input, html.InputElement> {
-  InputNode({required super.widget, super.parentNode})
-      : super(element: html.InputElement());
+  InputNode({
+    required super.widget,
+    super.parentNode,
+  }) : super(element: html.InputElement());
 
   @override
   void initializeElement() {

@@ -1,16 +1,14 @@
 import 'dart:async';
 
-import 'package:dawn/src/node_creator.dart';
-import 'package:dawn/src/nodes/node.dart';
-import 'package:dawn/src/utils/buildable.dart';
-import 'package:dawn/src/utils/context.dart';
-import 'package:dawn/src/utils/store.dart';
-import 'package:dawn/src/widgets/stateful_widget.dart';
+import 'package:dawn/foundation.dart';
+import 'package:dawn/widgets.dart';
+
+import 'node.dart';
 
 class StatefulNode extends Node<StatefulWidget> {
   late State state;
-  late StreamSubscription<void> updateStreamSubscription;
   late Node childNode;
+  late StreamSubscription<void> updateStreamSubscription;
 
   StatefulNode({required super.widget, super.parentNode});
 
@@ -23,7 +21,7 @@ class StatefulNode extends Node<StatefulWidget> {
       .._context = context
       ..initialize();
 
-    childNode = createNode(
+    childNode = Node.create(
       widget: state.build(context),
       parentNode: this,
     )..initialize();
@@ -42,8 +40,10 @@ class StatefulNode extends Node<StatefulWidget> {
     } else {
       childNode.dispose();
 
-      childNode = createNode(widget: newChildWidget, parentNode: this)
-        ..initialize();
+      childNode = Node.create(
+        widget: newChildWidget,
+        parentNode: this,
+      )..initialize();
     }
   }
 
@@ -64,32 +64,22 @@ class StatefulNode extends Node<StatefulWidget> {
   }
 }
 
-/// The base class for the state of [StatefulWidget].
 abstract class State<T extends StatefulWidget> extends Store with Buildable {
-  late T _widget;
-  late Context _context;
-
   bool _isMounted = false;
 
-  Context get context => _context;
-
-  /// Gets the current [widget] to which the state is attached to.
-  T get widget => _widget;
+  late T _widget;
+  late BuildContext _context;
 
   bool get isMounted => _isMounted;
+  T get widget => _widget;
+  BuildContext get context => _context;
 
-  /// Called when the [widget] is added to the node tree (top to bottom).
-  void initialize() {}
-
-  /// Called when the [widget]'s subtree is completely added to the node tree
-  /// (bottom to top).
   void didMount() => _isMounted = true;
-
-  /// Called when the [widget] is going to be removed from the node tree
-  /// (top to bottom).
   void willUnmount() {}
 
-  /// Called when the [widget]'s subtree is completely removed from the node
-  /// tree (bottom to top).
-  void dispose() => _isMounted = false;
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
 }

@@ -1,23 +1,29 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/nodes/framework_node.dart';
-import 'package:dawn/src/widgets/media_widget.dart';
+import 'package:dawn/widgets.dart';
+
+import 'framework_node.dart';
 
 abstract class MediaNode<T extends MediaWidget, U extends html.MediaElement>
     extends FrameworkNode<T, U> {
-  MediaNode({required super.widget, required super.element, super.parentNode});
+  MediaNode({
+    required super.widget,
+    required super.element,
+    super.parentNode,
+  });
 
   @override
   void initializeElement() {
     super.initializeElement();
 
+    addListener(type: 'ended', listener: widget.onEnd);
+    addListener(type: 'pause', listener: widget.onPause);
+    addListener(type: 'play', listener: widget.onPlay);
+    addListener(type: 'seeking', listener: widget.onSeekStart);
+    addListener(type: 'seeked', listener: widget.onSeekEnd);
+    addListener(type: 'volumechange', listener: widget.onVolumeChange);
+
     element
-      ..addEventListener('ended', widget.onEnd)
-      ..addEventListener('pause', widget.onPause)
-      ..addEventListener('play', widget.onPlay)
-      ..addEventListener('seeking', widget.onSeekStart)
-      ..addEventListener('seeked', widget.onSeekEnd)
-      ..addEventListener('volumechange', widget.onVolumeChange)
       ..src = widget.source
       ..controls = widget.showControls
       ..loop = widget.loop
@@ -27,14 +33,12 @@ abstract class MediaNode<T extends MediaWidget, U extends html.MediaElement>
 
   @override
   void disposeElement() {
-    element
-      ..removeEventListener('ended', widget.onEnd)
-      ..removeEventListener('pause', widget.onPause)
-      ..removeEventListener('play', widget.onPlay)
-      ..removeEventListener('seeking', widget.onSeekStart)
-      ..removeEventListener('seeked', widget.onSeekEnd)
-      ..removeEventListener('volumechange', widget.onVolumeChange);
-
+    removeListener(type: 'ended', listener: widget.onEnd);
+    removeListener(type: 'pause', listener: widget.onPause);
+    removeListener(type: 'play', listener: widget.onPlay);
+    removeListener(type: 'seeking', listener: widget.onSeekStart);
+    removeListener(type: 'seeked', listener: widget.onSeekEnd);
+    removeListener(type: 'volumechange', listener: widget.onVolumeChange);
     super.disposeElement();
   }
 }

@@ -1,7 +1,7 @@
-import 'package:dawn/src/utils/buildable.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/foundation.dart';
 
-/// The base class for creating stateless widgets in Dawn.
+import 'widget.dart';
+
 abstract class StatelessWidget extends Widget with Buildable {
   const StatelessWidget({super.key});
 }

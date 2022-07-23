@@ -1,10 +1,9 @@
-import 'package:dawn/src/nodes/stateful_node.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/foundation.dart';
 
-/// The base class for creating stateful widgets in Dawn.
+import 'widget.dart';
+
 abstract class StatefulWidget extends Widget {
   const StatefulWidget({super.key});
 
-  /// Used to attach a [State] to a [StatefulWidget].
   State createState();
 }

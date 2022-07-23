@@ -1,9 +1,8 @@
-import 'package:dawn/src/widgets/media_widget.dart';
+import 'media_widget.dart';
 
-/// An implementation of `<audio />`.
 class Audio extends MediaWidget {
-  const Audio({
-    required super.source,
+  const Audio(
+    super.source, {
     super.showControls,
     super.loop,
     super.muted,
@@ -14,13 +13,28 @@ class Audio extends MediaWidget {
     super.onSeekStart,
     super.onSeekEnd,
     super.onVolumeChange,
+    super.style,
+    super.animation,
+    super.onPress,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,
     super.onPointerLeave,
-    super.onPress,
-    super.style,
-    super.animation,
+    super.onPointerMove,
+    super.onPointerCancel,
+    super.onPointerOver,
+    super.onPointerOut,
+    super.onMouseDown,
+    super.onMouseUp,
+    super.onMouseEnter,
+    super.onMouseLeave,
+    super.onMouseMove,
+    super.onMouseOver,
+    super.onMouseOut,
+    super.onTouchStart,
+    super.onTouchEnd,
+    super.onTouchMove,
+    super.onTouchCancel,
     super.key,
   });
 }

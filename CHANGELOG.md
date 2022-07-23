@@ -1,3 +1,7 @@
+## 5.0.0
+
+- Rewrote the project.
+
 ## 4.0.2
 
 - Fixed a bug with `Navigator`.

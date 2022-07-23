@@ -1,22 +1,24 @@
 import 'dart:html' as html;
 
-import 'package:dawn/src/node_creator.dart';
-import 'package:dawn/src/nodes/framework_node.dart';
-import 'package:dawn/src/nodes/node.dart';
-import 'package:dawn/src/widgets/container.dart';
+import 'package:dawn/widgets.dart';
+
+import 'framework_node.dart';
+import 'node.dart';
 
 class ContainerNode extends FrameworkNode<Container, html.DivElement> {
   late List<Node> childNodes;
 
-  ContainerNode({required super.widget, super.parentNode})
-      : super(element: html.DivElement());
+  ContainerNode({
+    required super.widget,
+    super.parentNode,
+  }) : super(element: html.DivElement());
 
   @override
   void initialize() {
     super.initialize();
 
     childNodes = widget.children
-        .map((final child) => createNode(widget: child, parentNode: this))
+        .map((final child) => Node.create(widget: child, parentNode: this))
         .toList();
 
     for (final childNode in childNodes) {
@@ -31,7 +33,7 @@ class ContainerNode extends FrameworkNode<Container, html.DivElement> {
     final oldChildNodes = childNodes;
 
     final newChildNodes = widget.children
-        .map((final child) => createNode(widget: child, parentNode: this))
+        .map((final child) => Node.create(widget: child, parentNode: this))
         .toList();
 
     int exactSearchStartIndex = 0;

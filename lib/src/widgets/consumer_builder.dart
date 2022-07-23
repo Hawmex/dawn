@@ -1,15 +1,13 @@
 import 'dart:async';
 
-import 'package:dawn/src/nodes/stateful_node.dart';
-import 'package:dawn/src/utils/context.dart';
-import 'package:dawn/src/utils/store.dart';
-import 'package:dawn/src/widgets/provider.dart';
-import 'package:dawn/src/widgets/stateful_widget.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/foundation.dart';
 
-/// A widget that rebuilds its content by listening to a provided [Store].
+import 'provider.dart';
+import 'stateful_widget.dart';
+import 'widget.dart';
+
 class ConsumerBuilder<T extends Store> extends StatefulWidget {
-  final Widget Function(Context context, T store) builder;
+  final Widget Function(BuildContext context, T store) builder;
 
   const ConsumerBuilder(this.builder, {super.key});
 
@@ -35,5 +33,5 @@ class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
   }
 
   @override
-  Widget build(final Context context) => widget.builder(context, store);
+  Widget build(final BuildContext context) => widget.builder(context, store);
 }

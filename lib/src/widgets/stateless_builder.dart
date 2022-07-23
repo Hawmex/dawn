@@ -1,13 +1,13 @@
-import 'package:dawn/src/utils/context.dart';
-import 'package:dawn/src/widgets/stateless_widget.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/foundation.dart';
 
-/// A widget that statelessly builds its content.
+import 'stateless_widget.dart';
+import 'widget.dart';
+
 class StatelessBuilder extends StatelessWidget {
-  final Widget Function(Context context) builder;
+  final Widget Function(BuildContext context) builder;
 
   const StatelessBuilder(this.builder, {super.key});
 
   @override
-  Widget build(final Context context) => builder(context);
+  Widget build(final BuildContext context) => builder(context);
 }

@@ -1,18 +1,32 @@
-import 'package:dawn/src/widgets/framework_widget.dart';
+import 'framework_widget.dart';
 
-/// A widget to display text in Dawn apps. An implementation of `<span />`.
 class Text extends FrameworkWidget {
   final String value;
 
   const Text(
     this.value, {
+    super.style,
+    super.animation,
+    super.onPress,
     super.onPointerDown,
     super.onPointerUp,
     super.onPointerEnter,
     super.onPointerLeave,
-    super.onPress,
-    super.style,
-    super.animation,
+    super.onPointerMove,
+    super.onPointerCancel,
+    super.onPointerOver,
+    super.onPointerOut,
+    super.onMouseDown,
+    super.onMouseUp,
+    super.onMouseEnter,
+    super.onMouseLeave,
+    super.onMouseMove,
+    super.onMouseOver,
+    super.onMouseOut,
+    super.onTouchStart,
+    super.onTouchEnd,
+    super.onTouchMove,
+    super.onTouchCancel,
     super.key,
   });
 }
