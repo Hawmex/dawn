@@ -1,6 +1,6 @@
 name: dawn
 description: Dawn is a Dart Web Framework that lets developers to develop UIs with a widget model similar to Flutter. Dawn applications are compiled to JavaScript and are painted using HTML and CSS.
-version: 5.0.1
+version: 5.0.2
 homepage: https://github.com/Hawmex/dawn
 repository: https://github.com/Hawmex/dawn
 environment:

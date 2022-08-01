@@ -118,6 +118,8 @@ class ContainerNode extends PaintedNode<Container, html.DivElement> {
       childNode.dispose();
     }
 
+    childNodes.clear();
+
     super.dispose();
   }
 }

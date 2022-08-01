@@ -1,3 +1,7 @@
+## 5.0.2
+
+- Fixed memory leak.
+
 ## 5.0.1
 
 - Internal improvements.
