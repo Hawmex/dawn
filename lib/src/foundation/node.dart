@@ -9,7 +9,6 @@ abstract class Node<T extends Widget> {
   T _widget;
   bool _isActive = false;
   late final context = BuildContext(this);
-  late final _dependencies = <StreamSubscription<void>>[];
   late final _subtreeUpdateDebouncer = Debouncer();
   late final Node? parentNode;
 
@@ -21,9 +20,9 @@ abstract class Node<T extends Widget> {
     final oldWidget = widget;
 
     if (newWidget != oldWidget) {
-      willWidgetUpdate(newWidget);
+      if (_isActive) willWidgetUpdate(newWidget);
       _widget = newWidget;
-      didWidgetUpdate(oldWidget);
+      if (_isActive) didWidgetUpdate(oldWidget);
     }
   }
 
@@ -36,39 +35,26 @@ abstract class Node<T extends Widget> {
     });
   }
 
-  void _clearDependencies() {
-    for (final dependency in _dependencies) {
-      dependency.cancel();
-    }
-
-    _dependencies.clear();
-  }
-
   U dependOnInheritedWidgetOfExactType<U extends InheritedWidget>() {
     final inheritedNode = parentNodes.firstWhere(
       (final parentNode) => parentNode.widget.runtimeType == U,
     ) as InheritedNode;
 
-    _dependencies.add(inheritedNode.listen(didDependenciesUpdate));
+    late StreamSubscription<void> subscription;
+
+    subscription = inheritedNode.listen(() {
+      subscription.cancel();
+      if (_isActive) didDependenciesUpdate();
+    });
 
     return inheritedNode.widget as U;
   }
 
   void initialize() => _isActive = true;
-
   void willWidgetUpdate(final T newWidget) {}
-
   void didWidgetUpdate(final T oldWidget) => _enqueueSubtreeUpdate();
-
-  void didDependenciesUpdate() {
-    _clearDependencies();
-    _enqueueSubtreeUpdate();
-  }
-
-  void dispose() {
-    _clearDependencies();
-    _isActive = false;
-  }
+  void didDependenciesUpdate() => _enqueueSubtreeUpdate();
+  void dispose() => _isActive = false;
 
   void updateSubtree();
 }

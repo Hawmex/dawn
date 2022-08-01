@@ -75,7 +75,6 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
     if (widget.future != oldWidget.future) {
       if (_activeCallbackIdentity != null) {
         _unsubscribe();
-
         _snapshot = _snapshot.inConnectionState(ConnectionState.none);
       }
 

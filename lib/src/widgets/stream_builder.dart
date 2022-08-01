@@ -79,7 +79,6 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
     if (widget.stream != oldWidget.stream) {
       if (_subscription != null) {
         _unsubscribe();
-
         _snapshot = _snapshot.inConnectionState(ConnectionState.none);
       }
 

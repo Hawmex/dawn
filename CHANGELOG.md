@@ -1,3 +1,7 @@
+## 5.0.3
+
+- Internal improvement for depending on InheritedWidget.
+
 ## 5.0.2
 
 - Fixed memory leak.
