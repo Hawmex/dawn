@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:dawn/src/utils/process_runner.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_static/shelf_static.dart';
+
+import '../foundation/process_runner.dart';
 
 class CompileCommand extends Command<void> {
   CompileCommand() {
@@ -14,10 +15,7 @@ class CompileCommand extends Command<void> {
         abbr: 'm',
         help: 'Compilation mode.',
         allowed: {'dev', 'prod'},
-        allowedHelp: {
-          'dev': 'Development mode',
-          'prod': 'Production mode.',
-        },
+        allowedHelp: {'dev': 'Development mode', 'prod': 'Production mode.'},
         defaultsTo: 'dev',
       )
       ..addFlag('serve', abbr: 's', help: 'Run a local server.')
@@ -58,10 +56,7 @@ class CompileCommand extends Command<void> {
     compile();
 
     if (withServer) await runServer();
-
-    if (compilationMode == 'dev') {
-      print('\nWatching for changes...');
-    }
+    if (compilationMode == 'dev') print('\nWatching for changes...');
   }
 
   Future<void> runServer() async {
@@ -94,7 +89,7 @@ class CompileCommand extends Command<void> {
 
     print(
       '\n\x1B[32m+\x1B[0m '
-      'Copied assests and index.html to .dawn/$compilationMode...',
+      'Copied assets and index.html to .dawn/$compilationMode...',
     );
   }
 
@@ -114,7 +109,7 @@ class CompileCommand extends Command<void> {
         '.dawn/$compilationMode/main.dart.js',
         if (compilationMode == 'prod') '-O3'
       ],
-      block: false,
+      cancelOnError: false,
       onSuccess: () => print('\x1B[32m+\x1B[0m Compiled main.dart.'),
       onError: () => print('\x1B[31mx\x1B[0m Couldn\'t compile main.dart.'),
     );

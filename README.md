@@ -1,6 +1,10 @@
 # dawn
 
-<img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg" width="128px" height="128px" />
+<img
+    src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg"
+    width="128px"
+    height="128px"
+/>
 
 ## 📖 Description
 
@@ -32,7 +36,10 @@ and are painted using HTML and CSS.
 
    **⚡ After running with development server, you will see this page on your browser:**
 
-   <img src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif" width="100%" />
+   <img
+        src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/example.gif"
+        width="100%"
+    />
 
 4. ### Build For Production
 
@@ -41,7 +48,9 @@ and are painted using HTML and CSS.
 ## ✏️ More Examples
 
 - Portfolio made with Dawn.
-  [Demo](https://hamed-aarab-portfolio.netlify.app) | [Repository](https://github.com/Hawmex/portfolio_new)
+  [Demo](https://hamed-aarab-portfolio.netlify.app)
+  |
+  [Repository](https://github.com/Hawmex/portfolio_new)
 
 ## 📌 Why Dawn Exists
 

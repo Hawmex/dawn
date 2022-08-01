@@ -1,14 +1,17 @@
-import 'package:dawn/src/nodes/stateful_node.dart';
-import 'package:dawn/src/utils/context.dart';
-import 'package:dawn/src/widgets/stateful_widget.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/foundation.dart';
 
-/// A type to declare state setter functions.
+import 'stateful_widget.dart';
+import 'widget.dart';
+
 typedef StateSetter = void Function(void Function() callback);
 
-/// A widget that rebuilds its content everytime `setState` is called.
+typedef StatefulWidgetBuilder = Widget Function(
+  BuildContext context,
+  StateSetter setState,
+);
+
 class StatefulBuilder extends StatefulWidget {
-  final Widget Function(Context context, StateSetter setState) builder;
+  final StatefulWidgetBuilder builder;
 
   const StatefulBuilder(this.builder, {super.key});
 
@@ -18,5 +21,5 @@ class StatefulBuilder extends StatefulWidget {
 
 class _StatefulBuilderState extends State<StatefulBuilder> {
   @override
-  Widget build(final Context context) => widget.builder(context, setState);
+  Widget build(final BuildContext context) => widget.builder(context, setState);
 }

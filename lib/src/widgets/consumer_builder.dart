@@ -1,15 +1,18 @@
 import 'dart:async';
 
-import 'package:dawn/src/nodes/stateful_node.dart';
-import 'package:dawn/src/utils/context.dart';
-import 'package:dawn/src/utils/store.dart';
-import 'package:dawn/src/widgets/provider.dart';
-import 'package:dawn/src/widgets/stateful_widget.dart';
-import 'package:dawn/src/widgets/widget.dart';
+import 'package:dawn/foundation.dart';
 
-/// A widget that rebuilds its content by listening to a provided [Store].
+import 'provider.dart';
+import 'stateful_widget.dart';
+import 'widget.dart';
+
+typedef ConsumerWidgetBuilder<T extends Store> = Widget Function(
+  BuildContext context,
+  T store,
+);
+
 class ConsumerBuilder<T extends Store> extends StatefulWidget {
-  final Widget Function(Context context, T store) builder;
+  final ConsumerWidgetBuilder<T> builder;
 
   const ConsumerBuilder(this.builder, {super.key});
 
@@ -18,14 +21,22 @@ class ConsumerBuilder<T extends Store> extends StatefulWidget {
 }
 
 class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
-  late final T store;
-  late final StreamSubscription subscription;
+  late T store;
+  late StreamSubscription subscription;
 
   @override
   void initialize() {
     super.initialize();
-    store = context.getProvidedStoreOfExactType<T>();
-    subscription = store.onUpdate(() => setState(() {}));
+    store = context.dependOnProvidedStoreOfExactType<T>();
+    subscription = store.listen(() => setState(() {}));
+  }
+
+  @override
+  void didDependenciesUpdate() {
+    super.didDependenciesUpdate();
+    subscription.cancel();
+    store = context.dependOnProvidedStoreOfExactType<T>();
+    subscription = store.listen(() => setState(() {}));
   }
 
   @override
@@ -35,5 +46,5 @@ class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
   }
 
   @override
-  Widget build(final Context context) => widget.builder(context, store);
+  Widget build(final BuildContext context) => widget.builder(context, store);
 }

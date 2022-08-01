@@ -6,20 +6,20 @@ class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  Widget build(final Context context) {
+  Widget build(final BuildContext context) {
     return const Container(
-      children: [
+      [
         Image(
-          source: '/assets/logo.svg',
+          '/assets/logo.svg',
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
             keyframes: [
-              Style({'transform': 'scale(0.8)'}),
-              Style({'transform': 'scale(1.0)'}),
+              Keyframe(offset: 0, style: Style({'transform': 'scale(0.8)'})),
+              Keyframe(offset: 1, style: Style({'transform': 'scale(1.0)'})),
             ],
             duration: Duration(seconds: 1),
-            easing: Easing.cubicBezier(0.2, 0, 0.4, 1),
-            direction: AnimationDirection.forwardsAlternating,
+            easing: Easing(0.2, 0, 0.4, 1),
+            direction: AnimationDirection.alternate,
             iterations: double.infinity,
           ),
         ),
@@ -27,7 +27,7 @@ class App extends StatelessWidget {
           'Welcome to Dawn',
           style: Style({'font-size': '24px', 'font-weight': 'bold'}),
         ),
-        Container(children: [
+        Container([
           Text('To get started, edit '),
           Text(
             'web/main.dart',
