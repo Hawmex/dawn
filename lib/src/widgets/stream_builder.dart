@@ -17,15 +17,15 @@ class StreamBuilder<T> extends StatefulWidget {
 }
 
 class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
-  StreamSubscription<T>? subscription;
-  late AsyncSnapshot<T> snapshot;
+  StreamSubscription<T>? _subscription;
+  late AsyncSnapshot<T> _snapshot;
 
-  void subscribe() {
+  void _subscribe() {
     if (widget.stream != null) {
-      subscription = widget.stream!.listen(
+      _subscription = widget.stream!.listen(
         (final T data) {
           setState(() {
-            snapshot = AsyncSnapshot.withData(
+            _snapshot = AsyncSnapshot.withData(
               connectionState: ConnectionState.active,
               data: data,
             );
@@ -33,7 +33,7 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
         },
         onError: (final Object error, final StackTrace stackTrace) {
           setState(() {
-            snapshot = AsyncSnapshot.withError(
+            _snapshot = AsyncSnapshot.withError(
               connectionState: ConnectionState.active,
               error: error,
               stackTrace: stackTrace,
@@ -42,19 +42,19 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
         },
         onDone: () {
           setState(() {
-            snapshot = snapshot.inConnectionState(ConnectionState.done);
+            _snapshot = _snapshot.inConnectionState(ConnectionState.done);
           });
         },
       );
 
-      snapshot = snapshot.inConnectionState(ConnectionState.waiting);
+      _snapshot = _snapshot.inConnectionState(ConnectionState.waiting);
     }
   }
 
-  void unsubscribe() {
-    if (subscription != null) {
-      subscription!.cancel();
-      subscription = null;
+  void _unsubscribe() {
+    if (_subscription != null) {
+      _subscription!.cancel();
+      _subscription = null;
     }
   }
 
@@ -62,14 +62,14 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
   void initialize() {
     super.initialize();
 
-    snapshot = widget.initialData == null
+    _snapshot = widget.initialData == null
         ? AsyncSnapshot.nothing()
         : AsyncSnapshot.withData(
             connectionState: ConnectionState.none,
             data: widget.initialData as T,
           );
 
-    subscribe();
+    _subscribe();
   }
 
   @override
@@ -77,22 +77,23 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
     super.didWidgetUpdate(oldWidget);
 
     if (widget.stream != oldWidget.stream) {
-      if (subscription != null) {
-        unsubscribe();
+      if (_subscription != null) {
+        _unsubscribe();
 
-        snapshot = snapshot.inConnectionState(ConnectionState.none);
+        _snapshot = _snapshot.inConnectionState(ConnectionState.none);
       }
 
-      subscribe();
+      _subscribe();
     }
   }
 
   @override
   void dispose() {
-    unsubscribe();
+    _unsubscribe();
     super.dispose();
   }
 
   @override
-  Widget build(final BuildContext context) => widget.builder(context, snapshot);
+  Widget build(final BuildContext context) =>
+      widget.builder(context, _snapshot);
 }

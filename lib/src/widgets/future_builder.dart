@@ -15,20 +15,20 @@ class FutureBuilder<T> extends StatefulWidget {
 }
 
 class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
-  Object? activeCallbackIdentity;
-  late AsyncSnapshot<T> snapshot;
+  Object? _activeCallbackIdentity;
+  late AsyncSnapshot<T> _snapshot;
 
-  void subscribe() {
+  void _subscribe() {
     if (widget.future != null) {
       final callbackIdentity = Object();
 
-      activeCallbackIdentity = callbackIdentity;
+      _activeCallbackIdentity = callbackIdentity;
 
       widget.future!.then<void>(
         (final T data) {
-          if (activeCallbackIdentity == callbackIdentity) {
+          if (_activeCallbackIdentity == callbackIdentity) {
             setState(() {
-              snapshot = AsyncSnapshot.withData(
+              _snapshot = AsyncSnapshot.withData(
                 connectionState: ConnectionState.done,
                 data: data,
               );
@@ -36,9 +36,9 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
           }
         },
         onError: (final Object error, final StackTrace stackTrace) {
-          if (activeCallbackIdentity == callbackIdentity) {
+          if (_activeCallbackIdentity == callbackIdentity) {
             setState(() {
-              snapshot = AsyncSnapshot.withError(
+              _snapshot = AsyncSnapshot.withError(
                 connectionState: ConnectionState.done,
                 error: error,
                 stackTrace: stackTrace,
@@ -48,24 +48,24 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
         },
       );
 
-      snapshot = snapshot.inConnectionState(ConnectionState.waiting);
+      _snapshot = _snapshot.inConnectionState(ConnectionState.waiting);
     }
   }
 
-  void unsubscribe() => activeCallbackIdentity = null;
+  void _unsubscribe() => _activeCallbackIdentity = null;
 
   @override
   void initialize() {
     super.initialize();
 
-    snapshot = widget.initialData == null
+    _snapshot = widget.initialData == null
         ? AsyncSnapshot.nothing()
         : AsyncSnapshot.withData(
             connectionState: ConnectionState.none,
             data: widget.initialData as T,
           );
 
-    subscribe();
+    _subscribe();
   }
 
   @override
@@ -73,22 +73,23 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
     super.didWidgetUpdate(oldWidget);
 
     if (widget.future != oldWidget.future) {
-      if (activeCallbackIdentity != null) {
-        unsubscribe();
+      if (_activeCallbackIdentity != null) {
+        _unsubscribe();
 
-        snapshot = snapshot.inConnectionState(ConnectionState.none);
+        _snapshot = _snapshot.inConnectionState(ConnectionState.none);
       }
 
-      subscribe();
+      _subscribe();
     }
   }
 
   @override
   void dispose() {
-    unsubscribe();
+    _unsubscribe();
     super.dispose();
   }
 
   @override
-  Widget build(final BuildContext context) => widget.builder(context, snapshot);
+  Widget build(final BuildContext context) =>
+      widget.builder(context, _snapshot);
 }

@@ -12,12 +12,12 @@ final _navigatorState = _NavigatorState();
 
 extension Navigation on BuildContext {
   void pushRoute({required final StatelessWidgetBuilder builder}) =>
-      _navigatorState.pushRoute(builder: builder);
+      _navigatorState._pushRoute(builder: builder);
 
-  void pop() => _navigatorState.pop();
+  void pop() => _navigatorState._pop();
 
   void pushModal({required final void Function() onPop}) =>
-      _navigatorState.pushModal(onPop: onPop);
+      _navigatorState._pushModal(onPop: onPop);
 }
 
 class Navigator extends StatefulWidget {
@@ -39,52 +39,51 @@ class Navigator extends StatefulWidget {
 enum _NavigationAction { push, pop, none }
 
 class _NavigatorState extends State<Navigator> {
-  _NavigationAction lastAction = _NavigationAction.none;
-
-  final List<void Function()> modalStack = [];
-  late final List<Widget> childStack = [widget.child];
+  _NavigationAction _lastAction = _NavigationAction.none;
+  final List<void Function()> _modalStack = [];
+  late final List<Widget> _childStack = [widget.child];
 
   int get historyState => html.window.history.state;
 
-  void pushHistoryState() => html.window.history
-      .pushState(childStack.length + modalStack.length, '', null);
+  void _pushHistoryState() => html.window.history
+      .pushState(_childStack.length + _modalStack.length, '', null);
 
-  void historyBack() => html.window.history.back();
+  void _historyBack() => html.window.history.back();
 
-  void pushModal({required final void Function() onPop}) {
-    modalStack.add(onPop);
-    pushHistoryState();
+  void _pushModal({required final void Function() onPop}) {
+    _modalStack.add(onPop);
+    _pushHistoryState();
   }
 
-  void pushRoute({required final StatelessWidgetBuilder builder}) {
+  void _pushRoute({required final StatelessWidgetBuilder builder}) {
     setState(() {
-      childStack.add(builder(context));
-      lastAction = _NavigationAction.push;
+      _childStack.add(builder(context));
+      _lastAction = _NavigationAction.push;
     });
 
-    pushHistoryState();
+    _pushHistoryState();
   }
 
-  void pop() {
-    if (modalStack.isNotEmpty) {
-      modalStack
+  void _pop() {
+    if (_modalStack.isNotEmpty) {
+      _modalStack
         ..last()
         ..removeLast();
     } else {
       setState(() {
-        childStack.removeLast();
-        lastAction = _NavigationAction.pop;
+        _childStack.removeLast();
+        _lastAction = _NavigationAction.pop;
       });
     }
 
-    if (historyState > childStack.length + modalStack.length) historyBack();
+    if (historyState > _childStack.length + _modalStack.length) _historyBack();
   }
 
-  void popStateHandler(final html.Event event) {
-    if (historyState > childStack.length + modalStack.length) {
-      historyBack();
-    } else if (historyState < childStack.length + modalStack.length) {
-      pop();
+  void _popStateHandler(final html.Event event) {
+    if (historyState > _childStack.length + _modalStack.length) {
+      _historyBack();
+    } else if (historyState < _childStack.length + _modalStack.length) {
+      _pop();
     }
   }
 
@@ -94,23 +93,23 @@ class _NavigatorState extends State<Navigator> {
 
     html.window
       ..history.replaceState(1, '', null)
-      ..addEventListener('popstate', popStateHandler);
+      ..addEventListener('popstate', _popStateHandler);
   }
 
   @override
   void dispose() {
-    html.window.removeEventListener('popstate', popStateHandler);
+    html.window.removeEventListener('popstate', _popStateHandler);
     super.dispose();
   }
 
   @override
   Widget build(final BuildContext context) {
     return Container(
-      [childStack.last],
-      key: childStack.length.toString(),
-      animation: lastAction == _NavigationAction.push
+      [_childStack.last],
+      key: _childStack.length.toString(),
+      animation: _lastAction == _NavigationAction.push
           ? widget.pushAnimation
-          : lastAction == _NavigationAction.pop
+          : _lastAction == _NavigationAction.pop
               ? widget.popAnimation
               : null,
     );

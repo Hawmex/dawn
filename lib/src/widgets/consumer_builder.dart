@@ -21,30 +21,30 @@ class ConsumerBuilder<T extends Store> extends StatefulWidget {
 }
 
 class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
-  late T store;
-  late StreamSubscription subscription;
+  late T _store;
+  late StreamSubscription _subscription;
 
   @override
   void initialize() {
     super.initialize();
-    store = context.dependOnProvidedStoreOfExactType<T>();
-    subscription = store.listen(() => setState(() {}));
+    _store = context.dependOnProvidedStoreOfExactType<T>();
+    _subscription = _store.listen(() => setState(() {}));
   }
 
   @override
   void didDependenciesUpdate() {
     super.didDependenciesUpdate();
-    subscription.cancel();
-    store = context.dependOnProvidedStoreOfExactType<T>();
-    subscription = store.listen(() => setState(() {}));
+    _subscription.cancel();
+    _store = context.dependOnProvidedStoreOfExactType<T>();
+    _subscription = _store.listen(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    subscription.cancel();
+    _subscription.cancel();
     super.dispose();
   }
 
   @override
-  Widget build(final BuildContext context) => widget.builder(context, store);
+  Widget build(final BuildContext context) => widget.builder(context, _store);
 }

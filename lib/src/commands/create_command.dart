@@ -17,25 +17,25 @@ class CreateCommand extends Command<void> {
   void run() {
     Directory.current = Directory('./$projectName')..createSync();
 
-    createFiles();
-    installDependencies();
+    _createFiles();
+    _installDependencies();
 
     print('\nEnjoy Coding!\n');
   }
 
-  void createFiles() {
+  void _createFiles() {
     print('\nCreating Files...\n');
 
-    createFile(path: './.gitignore', body: gitIgnore);
-    createFile(path: './README.md', body: readmeDotMd);
-    createFile(path: './pubspec.yaml', body: pubspecDotYaml);
-    createFile(path: './analysis_options.yaml', body: analysisOptionsDotYaml);
-    createFile(path: './web/index.html', body: indexDotHtml);
-    createFile(path: './web/main.dart', body: mainDotDart);
-    createFile(path: './web/assets/logo.svg', body: logoDotSvg);
+    _createFile(path: './.gitignore', body: gitIgnore);
+    _createFile(path: './README.md', body: readmeDotMd);
+    _createFile(path: './pubspec.yaml', body: pubspecDotYaml);
+    _createFile(path: './analysis_options.yaml', body: analysisOptionsDotYaml);
+    _createFile(path: './web/index.html', body: indexDotHtml);
+    _createFile(path: './web/main.dart', body: mainDotDart);
+    _createFile(path: './web/assets/logo.svg', body: logoDotSvg);
   }
 
-  void createFile({
+  void _createFile({
     required final String path,
     required final String body,
   }) {
@@ -46,7 +46,7 @@ class CreateCommand extends Command<void> {
     print('\t\x1B[32m+\x1B[0m Created $path.');
   }
 
-  void installDependencies() {
+  void _installDependencies() {
     print('\nInstalling dependencies...\n');
 
     runProcess(

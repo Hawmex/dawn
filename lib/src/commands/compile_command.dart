@@ -39,27 +39,27 @@ class CompileCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    await runCommand(withServer: shouldServe);
+    await _runCommand(withServer: shouldServe);
 
     if (compilationMode == 'dev') {
       Timer? timer;
 
       Directory('./web').watch(recursive: true).listen((final event) {
         timer?.cancel();
-        timer = Timer(const Duration(seconds: 1), runCommand);
+        timer = Timer(const Duration(seconds: 1), _runCommand);
       });
     }
   }
 
-  Future<void> runCommand({final bool withServer = false}) async {
-    copyFiles();
-    compile();
+  Future<void> _runCommand({final bool withServer = false}) async {
+    _copyFiles();
+    _compile();
 
-    if (withServer) await runServer();
+    if (withServer) await _runServer();
     if (compilationMode == 'dev') print('\nWatching for changes...');
   }
 
-  Future<void> runServer() async {
+  Future<void> _runServer() async {
     print('\nStarting server...');
 
     await serve(
@@ -77,14 +77,14 @@ class CompileCommand extends Command<void> {
     runProcess('start', ['http://localhost:$port']);
   }
 
-  void copyFiles() {
-    copyFile('index.html');
+  void _copyFiles() {
+    _copyFile('index.html');
 
     Directory('./web/assets')
         .listSync(recursive: true)
         .whereType<File>()
         .forEach(
-          (final file) => copyFile(file.path.replaceFirst('./web/', '')),
+          (final file) => _copyFile(file.path.replaceFirst('./web/', '')),
         );
 
     print(
@@ -93,12 +93,12 @@ class CompileCommand extends Command<void> {
     );
   }
 
-  void copyFile(final String basicPath) =>
+  void _copyFile(final String basicPath) =>
       File('./.dawn/$compilationMode/$basicPath')
         ..createSync(recursive: true)
         ..writeAsBytesSync(File('./web/$basicPath').readAsBytesSync());
 
-  void compile() {
+  void _compile() {
     runProcess(
       'dart',
       [

@@ -1,3 +1,7 @@
+## 5.0.1
+
+- Internal improvements.
+
 ## 5.0.0
 
 - Rewrote the project.
