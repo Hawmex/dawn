@@ -1,3 +1,7 @@
+## 5.0.4
+
+- Patched ConsumerBuilder.
+
 ## 5.0.3
 
 - Internal improvement for depending on InheritedWidget.

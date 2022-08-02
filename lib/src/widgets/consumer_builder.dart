@@ -27,7 +27,7 @@ class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
   @override
   void initialize() {
     super.initialize();
-    _store = context.dependOnProvidedStoreOfExactType<T>();
+    _store = context.dependOnProvidedStoreOfExactType<T>()..initialize();
     _subscription = _store.listen(() => setState(() {}));
   }
 
@@ -35,13 +35,15 @@ class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
   void didDependenciesUpdate() {
     super.didDependenciesUpdate();
     _subscription.cancel();
-    _store = context.dependOnProvidedStoreOfExactType<T>();
+    _store.dispose();
+    _store = context.dependOnProvidedStoreOfExactType<T>()..initialize();
     _subscription = _store.listen(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _subscription.cancel();
+    _store.dispose();
     super.dispose();
   }
 
