@@ -1,3 +1,7 @@
+## 5.0.6
+
+- Patched `State`.
+
 ## 5.0.5
 
 - Added `include` to the `Style` API.
