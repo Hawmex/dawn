@@ -1,3 +1,7 @@
+## 5.0.5
+
+- Added `include` to the `Style` API.
+
 ## 5.0.4
 
 - Patched ConsumerBuilder.

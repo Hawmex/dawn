@@ -14,6 +14,9 @@ class Style {
     );
   }
 
+  Style include(final Style? style) =>
+      Style({..._rules, if (style != null) ...style._rules});
+
   @override
   String toString() => _rules.isEmpty
       ? ''
