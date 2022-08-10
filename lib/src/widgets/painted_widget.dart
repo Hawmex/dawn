@@ -102,29 +102,35 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
     } else {
       element.setAttribute('style', widget.style!.toString());
     }
+
+    _animation = widget.animation?.runOnElement(element);
   }
 
-  void disposeElement() => element
-    ..removeEventListener('click', widget.onTap)
-    ..removeEventListener('pointerdown', widget.onPointerDown)
-    ..removeEventListener('pointerup', widget.onPointerUp)
-    ..removeEventListener('pointerenter', widget.onPointerEnter)
-    ..removeEventListener('pointerleave', widget.onPointerLeave)
-    ..removeEventListener('pointermove', widget.onPointerMove)
-    ..removeEventListener('pointercancel', widget.onPointerCancel)
-    ..removeEventListener('pointerover', widget.onPointerOver)
-    ..removeEventListener('pointerout', widget.onPointerOut)
-    ..removeEventListener('mousedown', widget.onMouseDown)
-    ..removeEventListener('mouseup', widget.onMouseUp)
-    ..removeEventListener('mouseenter', widget.onMouseEnter)
-    ..removeEventListener('mouseleave', widget.onMouseLeave)
-    ..removeEventListener('mousemove', widget.onMouseMove)
-    ..removeEventListener('mouseover', widget.onMouseOver)
-    ..removeEventListener('mouseout', widget.onMouseOut)
-    ..removeEventListener('touchstart', widget.onTouchStart)
-    ..removeEventListener('touchend', widget.onTouchEnd)
-    ..removeEventListener('touchmove', widget.onTouchMove)
-    ..removeEventListener('touchcancel', widget.onTouchCancel);
+  void disposeElement() {
+    _animation?.cancel();
+
+    element
+      ..removeEventListener('click', widget.onTap)
+      ..removeEventListener('pointerdown', widget.onPointerDown)
+      ..removeEventListener('pointerup', widget.onPointerUp)
+      ..removeEventListener('pointerenter', widget.onPointerEnter)
+      ..removeEventListener('pointerleave', widget.onPointerLeave)
+      ..removeEventListener('pointermove', widget.onPointerMove)
+      ..removeEventListener('pointercancel', widget.onPointerCancel)
+      ..removeEventListener('pointerover', widget.onPointerOver)
+      ..removeEventListener('pointerout', widget.onPointerOut)
+      ..removeEventListener('mousedown', widget.onMouseDown)
+      ..removeEventListener('mouseup', widget.onMouseUp)
+      ..removeEventListener('mouseenter', widget.onMouseEnter)
+      ..removeEventListener('mouseleave', widget.onMouseLeave)
+      ..removeEventListener('mousemove', widget.onMouseMove)
+      ..removeEventListener('mouseover', widget.onMouseOver)
+      ..removeEventListener('mouseout', widget.onMouseOut)
+      ..removeEventListener('touchstart', widget.onTouchStart)
+      ..removeEventListener('touchend', widget.onTouchEnd)
+      ..removeEventListener('touchmove', widget.onTouchMove)
+      ..removeEventListener('touchcancel', widget.onTouchCancel);
+  }
 
   @override
   void initialize() {
@@ -157,8 +163,6 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
     }
 
     initializeElement();
-
-    _animation = widget.animation?.runOnElement(element);
   }
 
   @override
@@ -175,7 +179,6 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
 
   @override
   void dispose() {
-    _animation?.cancel();
     disposeElement();
     element.remove();
     super.dispose();

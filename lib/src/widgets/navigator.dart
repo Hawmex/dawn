@@ -11,13 +11,17 @@ import 'widget.dart';
 final _navigatorState = _NavigatorState();
 
 extension Navigation on BuildContext {
-  void pushRoute({required final StatelessWidgetBuilder builder}) =>
-      _navigatorState._pushRoute(builder: builder);
+  void pushRoute({required final StatelessWidgetBuilder builder}) {
+    _navigatorState._pushRoute(builder: builder);
+  }
 
-  void pop() => _navigatorState._pop();
+  void pop() {
+    _navigatorState._pop();
+  }
 
-  void pushModal({required final void Function() onPop}) =>
-      _navigatorState._pushModal(onPop: onPop);
+  void pushModal({required final void Function() onPop}) {
+    _navigatorState._pushModal(onPop: onPop);
+  }
 }
 
 class Navigator extends StatefulWidget {
@@ -36,53 +40,72 @@ class Navigator extends StatefulWidget {
   State createState() => _navigatorState;
 }
 
-enum _NavigationAction { push, pop, none }
+enum _NavigationAction { none, pop, push }
 
 class _NavigatorState extends State<Navigator> {
-  _NavigationAction _lastAction = _NavigationAction.none;
-  final List<void Function()> _modalStack = [];
-  late final List<Widget> _childStack = [widget.child];
+  final _modalsStack = <void Function()>[];
+  late final _routesStack = [widget.child];
+  _NavigationAction _lastNavigationAction = _NavigationAction.none;
 
-  int get historyState => html.window.history.state;
+  int get _browserHistoryState => html.window.history.state;
 
-  void _pushHistoryState() => html.window.history
-      .pushState(_childStack.length + _modalStack.length, '', null);
+  Animation? get _routeAnimation {
+    switch (_lastNavigationAction) {
+      case _NavigationAction.none:
+        return null;
+      case _NavigationAction.pop:
+        return widget.popAnimation;
+      case _NavigationAction.push:
+        return widget.pushAnimation;
+    }
+  }
 
-  void _historyBack() => html.window.history.back();
+  void _pushBrowserHistory() {
+    html.window.history.pushState(
+      _routesStack.length + _modalsStack.length,
+      '',
+      null,
+    );
+  }
+
+  void _browserHistoryBack() => html.window.history.back();
 
   void _pushModal({required final void Function() onPop}) {
-    _modalStack.add(onPop);
-    _pushHistoryState();
+    _modalsStack.add(onPop);
+    _pushBrowserHistory();
   }
 
   void _pushRoute({required final StatelessWidgetBuilder builder}) {
     setState(() {
-      _childStack.add(builder(context));
-      _lastAction = _NavigationAction.push;
+      _routesStack.add(builder(context));
+      _lastNavigationAction = _NavigationAction.push;
     });
 
-    _pushHistoryState();
+    _pushBrowserHistory();
   }
 
   void _pop() {
-    if (_modalStack.isNotEmpty) {
-      _modalStack
+    if (_modalsStack.isNotEmpty) {
+      _modalsStack
         ..last()
         ..removeLast();
     } else {
       setState(() {
-        _childStack.removeLast();
-        _lastAction = _NavigationAction.pop;
+        _routesStack.removeLast();
+        _lastNavigationAction = _NavigationAction.pop;
       });
     }
 
-    if (historyState > _childStack.length + _modalStack.length) _historyBack();
+    if (_browserHistoryState > _routesStack.length + _modalsStack.length) {
+      _browserHistoryBack();
+    }
   }
 
-  void _popStateHandler(final html.Event event) {
-    if (historyState > _childStack.length + _modalStack.length) {
-      _historyBack();
-    } else if (historyState < _childStack.length + _modalStack.length) {
+  void _browserHistoryPopHandler(final html.Event event) {
+    if (_browserHistoryState > _routesStack.length + _modalsStack.length) {
+      _browserHistoryBack();
+    } else if (_browserHistoryState <
+        _routesStack.length + _modalsStack.length) {
       _pop();
     }
   }
@@ -93,25 +116,35 @@ class _NavigatorState extends State<Navigator> {
 
     html.window
       ..history.replaceState(1, '', null)
-      ..addEventListener('popstate', _popStateHandler);
+      ..addEventListener('popstate', _browserHistoryPopHandler);
   }
 
   @override
   void dispose() {
-    html.window.removeEventListener('popstate', _popStateHandler);
+    html.window.removeEventListener('popstate', _browserHistoryPopHandler);
     super.dispose();
   }
 
   @override
   Widget build(final BuildContext context) {
+    final inactiveRoutes = [..._routesStack];
+    final activeRoute = inactiveRoutes.removeLast();
+
+    const routeStyle = Style({
+      'position': 'absolute',
+      'width': '100%',
+      'height': '100%',
+      'top': '0px',
+      'left': '0px',
+    });
+
     return Container(
-      [_childStack.last],
-      key: _childStack.length.toString(),
-      animation: _lastAction == _NavigationAction.push
-          ? widget.pushAnimation
-          : _lastAction == _NavigationAction.pop
-              ? widget.popAnimation
-              : null,
+      [
+        for (final inactiveRoute in inactiveRoutes)
+          Container([inactiveRoute], style: routeStyle),
+        Container([activeRoute], style: routeStyle, animation: _routeAnimation)
+      ],
+      style: const Style({'position': 'relative'}),
     );
   }
 }

@@ -1,3 +1,9 @@
+## 5.1.0
+
+- Improved `Navigator`.
+- Changed `animation` behavior (now runs on every repaint of a `PaintedWidget`,
+  instead of running only on the first paint).
+
 ## 5.0.6
 
 - Patched `State`.
