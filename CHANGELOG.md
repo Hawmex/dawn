@@ -1,3 +1,7 @@
+## 5.1.1
+
+- Fixed `Navigator` bug.
+
 ## 5.1.0
 
 - Improved `Navigator`.

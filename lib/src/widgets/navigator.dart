@@ -130,21 +130,10 @@ class _NavigatorState extends State<Navigator> {
     final inactiveRoutes = [..._routesStack];
     final activeRoute = inactiveRoutes.removeLast();
 
-    const routeStyle = Style({
-      'position': 'absolute',
-      'width': '100%',
-      'height': '100%',
-      'top': '0px',
-      'left': '0px',
-    });
-
-    return Container(
-      [
-        for (final inactiveRoute in inactiveRoutes)
-          Container([inactiveRoute], style: routeStyle),
-        Container([activeRoute], style: routeStyle, animation: _routeAnimation)
-      ],
-      style: const Style({'position': 'relative'}),
-    );
+    return Container([
+      for (final inactiveRoute in inactiveRoutes)
+        Container([inactiveRoute], style: const Style({'display': 'none'})),
+      Container([activeRoute], animation: _routeAnimation)
+    ]);
   }
 }
