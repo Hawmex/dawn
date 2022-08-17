@@ -127,13 +127,10 @@ class _NavigatorState extends State<Navigator> {
 
   @override
   Widget build(final BuildContext context) {
-    final inactiveRoutes = [..._routesStack];
-    final activeRoute = inactiveRoutes.removeLast();
-
-    return Container([
-      for (final inactiveRoute in inactiveRoutes)
-        Container([inactiveRoute], style: const Style({'display': 'none'})),
-      Container([activeRoute], animation: _routeAnimation)
-    ]);
+    return Container(
+      [_routesStack.last],
+      animation: _routeAnimation,
+      key: _routesStack.length.toString(),
+    );
   }
 }

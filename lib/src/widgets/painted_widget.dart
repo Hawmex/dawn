@@ -102,13 +102,9 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
     } else {
       element.setAttribute('style', widget.style!.toString());
     }
-
-    _animation = widget.animation?.runOnElement(element);
   }
 
   void disposeElement() {
-    _animation?.cancel();
-
     element
       ..removeEventListener('click', widget.onTap)
       ..removeEventListener('pointerdown', widget.onPointerDown)
@@ -163,6 +159,8 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
     }
 
     initializeElement();
+
+    _animation = widget.animation?.runOnElement(element);
   }
 
   @override
@@ -179,6 +177,7 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
 
   @override
   void dispose() {
+    _animation?.cancel();
     disposeElement();
     element.remove();
     super.dispose();

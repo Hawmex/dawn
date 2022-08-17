@@ -1,3 +1,7 @@
+## 5.2.0
+
+- Reverted `Navigator` back.
+
 ## 5.1.1
 
 - Fixed `Navigator` bug.
