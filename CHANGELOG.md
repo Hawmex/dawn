@@ -1,3 +1,7 @@
+## 5.2.1
+
+- Updated README.
+
 ## 5.2.0
 
 - Reverted `Navigator` back.
