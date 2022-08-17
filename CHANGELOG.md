@@ -1,3 +1,7 @@
+## 5.2.2
+
+- Update example.
+
 ## 5.2.1
 
 - Updated README.
