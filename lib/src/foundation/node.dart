@@ -29,7 +29,7 @@ abstract class Node<T extends Widget> {
   List<Node> get parentNodes =>
       parentNode == null ? [] : [parentNode!, ...parentNode!.parentNodes];
 
-  void _enqueueSubtreeUpdate() {
+  void enqueueSubtreeUpdate() {
     _subtreeUpdateDebouncer.enqueueTask(() {
       if (_isActive) updateSubtree();
     });
@@ -52,8 +52,8 @@ abstract class Node<T extends Widget> {
 
   void initialize() => _isActive = true;
   void willWidgetUpdate(final T newWidget) {}
-  void didWidgetUpdate(final T oldWidget) => _enqueueSubtreeUpdate();
-  void didDependenciesUpdate() => _enqueueSubtreeUpdate();
+  void didWidgetUpdate(final T oldWidget) => enqueueSubtreeUpdate();
+  void didDependenciesUpdate() => enqueueSubtreeUpdate();
   void dispose() => _isActive = false;
 
   void updateSubtree();

@@ -1,3 +1,7 @@
+## 5.2.3
+
+- Enabled debouncing subtree updates on state updates.
+
 ## 5.2.2
 
 - Update example.

@@ -63,7 +63,7 @@ class StatefulNode extends Node<StatefulWidget> {
       ..parentNode = this
       ..initialize();
 
-    _updateStreamSubscription = _state.listen(updateSubtree);
+    _updateStreamSubscription = _state.listen(enqueueSubtreeUpdate);
 
     _state.didMount();
   }
