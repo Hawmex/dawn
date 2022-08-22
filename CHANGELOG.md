@@ -1,3 +1,7 @@
+## 5.2.4
+
+- Fixed a bug with `ConsumerBuilder`.
+
 ## 5.2.3
 
 - Enabled debouncing subtree updates on state updates.
