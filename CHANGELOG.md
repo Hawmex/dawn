@@ -1,3 +1,7 @@
+## 5.3.0
+
+- Fixed naming conventions.
+
 ## 5.2.4
 
 - Fixed a bug with `ConsumerBuilder`.

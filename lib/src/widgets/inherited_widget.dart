@@ -12,7 +12,7 @@ abstract class InheritedWidget extends Widget {
   @override
   InheritedNode createNode() => InheritedNode(this);
 
-  bool updateShouldNotify(covariant final InheritedWidget oldWidget);
+  bool shouldUpdateNotify(covariant final InheritedWidget oldWidget);
 }
 
 class InheritedNode extends Node<InheritedWidget> {
@@ -53,7 +53,7 @@ class InheritedNode extends Node<InheritedWidget> {
   @override
   void didWidgetUpdate(final InheritedWidget oldWidget) {
     super.didWidgetUpdate(oldWidget);
-    if (widget.updateShouldNotify(oldWidget)) _updateStreamController.add(null);
+    if (widget.shouldUpdateNotify(oldWidget)) _updateStreamController.add(null);
   }
 
   @override

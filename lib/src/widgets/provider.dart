@@ -17,5 +17,5 @@ class Provider extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<Provider>();
 
   @override
-  updateShouldNotify(final Provider oldWidget) => stores != oldWidget.stores;
+  shouldUpdateNotify(final Provider oldWidget) => stores != oldWidget.stores;
 }
