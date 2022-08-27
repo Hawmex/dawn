@@ -37,7 +37,7 @@ class CompileCommand extends Command<void> {
   bool get _shouldServe => argResults!['serve'];
   int get _port => int.parse(argResults!['port']);
 
-  String get _openUrlCommand {
+  String get _urlOpenerCommand {
     if (Platform.isFuchsia || Platform.isMacOS) {
       return 'open';
     } else if (Platform.isLinux) {
@@ -51,7 +51,7 @@ class CompileCommand extends Command<void> {
 
   @override
   Future<void> run() async {
-    await _runCommand(withServer: _shouldServe);
+    await _runCommand(shouldServe: _shouldServe);
 
     if (_compilationMode == 'dev') {
       Timer? timer;
@@ -63,11 +63,11 @@ class CompileCommand extends Command<void> {
     }
   }
 
-  Future<void> _runCommand({final bool withServer = false}) async {
+  Future<void> _runCommand({final bool shouldServe = false}) async {
     _copyFiles();
     _compile();
 
-    if (withServer) await _runServer();
+    if (shouldServe) await _runServer();
     if (_compilationMode == 'dev') print('\nWatching for changes...');
   }
 
@@ -86,7 +86,7 @@ class CompileCommand extends Command<void> {
 
     print('\x1B[32mServer running on http://localhost:$_port.\x1B[0m');
 
-    runProcess(_openUrlCommand, ['http://localhost:$_port']);
+    runProcess(_urlOpenerCommand, ['http://localhost:$_port']);
   }
 
   void _copyFiles() {
