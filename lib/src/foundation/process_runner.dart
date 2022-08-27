@@ -3,7 +3,7 @@ import 'dart:io';
 void runProcess(
   final String executable,
   final List<String> args, {
-  final bool cancelOnError = true,
+  final bool throwOnError = true,
   final void Function()? onSuccess,
   final void Function()? onError,
 }) {
@@ -12,7 +12,7 @@ void runProcess(
   if (processResult.exitCode > 0) {
     if (onError != null) onError();
 
-    if (cancelOnError) {
+    if (throwOnError) {
       throw '\n${processResult.stdout}';
     } else {
       print('\n${processResult.stdout}');

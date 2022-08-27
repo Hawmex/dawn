@@ -11,11 +11,11 @@ class CreateCommand extends Command<void> {
   @override
   String get description => 'Sets up a new Dawn application.';
 
-  String get projectName => argResults!.rest.first;
+  String get _projectName => argResults!.rest.first;
 
   @override
   void run() {
-    Directory.current = Directory('./$projectName')..createSync();
+    Directory.current = Directory('./$_projectName')..createSync();
 
     _createFiles();
     _installDependencies();
@@ -26,13 +26,13 @@ class CreateCommand extends Command<void> {
   void _createFiles() {
     print('\nCreating Files...\n');
 
-    _createFile(path: './.gitignore', body: gitIgnore);
-    _createFile(path: './README.md', body: readmeDotMd);
-    _createFile(path: './pubspec.yaml', body: pubspecDotYaml);
-    _createFile(path: './analysis_options.yaml', body: analysisOptionsDotYaml);
-    _createFile(path: './web/index.html', body: indexDotHtml);
-    _createFile(path: './web/main.dart', body: mainDotDart);
-    _createFile(path: './web/assets/logo.svg', body: logoDotSvg);
+    _createFile(path: './.gitignore', body: _gitIgnore);
+    _createFile(path: './README.md', body: _readmeDotMd);
+    _createFile(path: './pubspec.yaml', body: _pubspecDotYaml);
+    _createFile(path: './analysis_options.yaml', body: _analysisOptionsDotYaml);
+    _createFile(path: './web/index.html', body: _indexDotHtml);
+    _createFile(path: './web/main.dart', body: _mainDotDart);
+    _createFile(path: './web/assets/logo.svg', body: _logoDotSvg);
   }
 
   void _createFile({
@@ -64,7 +64,7 @@ class CreateCommand extends Command<void> {
     );
   }
 
-  String get gitIgnore => '''
+  String get _gitIgnore => '''
 # Files and directories created by pub.
 .dart_tool/
 .packages
@@ -77,8 +77,8 @@ class CreateCommand extends Command<void> {
 pubspec.lock
 ''';
 
-  String get readmeDotMd => '''
-# $projectName
+  String get _readmeDotMd => '''
+# $_projectName
 
 ## 📖 Description
 
@@ -87,26 +87,26 @@ A Dawn application.
 Please visit [Dawn's Website](https://dawn-dev.netlify.app) for more information.
 ''';
 
-  String get pubspecDotYaml => '''
-name: $projectName
+  String get _pubspecDotYaml => '''
+name: $_projectName
 description: A Dawn app
 publish_to: none
 environment:
   sdk: ">=2.17.5 <3.0.0"
 ''';
 
-  String get analysisOptionsDotYaml => '''
+  String get _analysisOptionsDotYaml => '''
 include: package:dawn_lints/dawn_lints.yaml
 ''';
 
-  String get indexDotHtml => '''
+  String get _indexDotHtml => '''
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>$projectName</title>
+    <title>$_projectName</title>
 
     <link rel="shortcut icon" href="/assets/logo.svg" type="image/x-icon" />
 
@@ -128,7 +128,7 @@ include: package:dawn_lints/dawn_lints.yaml
 </html>
 ''';
 
-  String get mainDotDart => '''
+  String get _mainDotDart => '''
 import 'package:dawn/dawn.dart';
 
 void main() => runApp(const App());
@@ -192,7 +192,7 @@ class App extends StatelessWidget {
 }
 ''';
 
-  String get logoDotSvg => '''
+  String get _logoDotSvg => '''
 <svg
   width="264"
   height="265"

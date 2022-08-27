@@ -1,3 +1,7 @@
+## 5.3.1
+
+- Fixed [#10](https://github.com/Hawmex/dawn/issues/10).
+
 ## 5.3.0
 
 - Fixed naming conventions.

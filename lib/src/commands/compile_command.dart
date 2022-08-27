@@ -33,15 +33,27 @@ class CompileCommand extends Command<void> {
   @override
   String get description => 'Compiles web/ directory contents.';
 
-  String get compilationMode => argResults!['mode'];
-  bool get shouldServe => argResults!['serve'];
-  int get port => int.parse(argResults!['port']);
+  String get _compilationMode => argResults!['mode'];
+  bool get _shouldServe => argResults!['serve'];
+  int get _port => int.parse(argResults!['port']);
+
+  String get _openUrlCommand {
+    if (Platform.isFuchsia || Platform.isMacOS) {
+      return 'open';
+    } else if (Platform.isLinux) {
+      return 'xdg-open';
+    } else if (Platform.isWindows) {
+      return 'start';
+    } else {
+      throw UnsupportedError('This platform is not supported.');
+    }
+  }
 
   @override
   Future<void> run() async {
-    await _runCommand(withServer: shouldServe);
+    await _runCommand(withServer: _shouldServe);
 
-    if (compilationMode == 'dev') {
+    if (_compilationMode == 'dev') {
       Timer? timer;
 
       Directory('./web').watch(recursive: true).listen((final event) {
@@ -56,7 +68,7 @@ class CompileCommand extends Command<void> {
     _compile();
 
     if (withServer) await _runServer();
-    if (compilationMode == 'dev') print('\nWatching for changes...');
+    if (_compilationMode == 'dev') print('\nWatching for changes...');
   }
 
   Future<void> _runServer() async {
@@ -64,17 +76,17 @@ class CompileCommand extends Command<void> {
 
     await serve(
       createStaticHandler(
-        './.dawn/$compilationMode',
+        './.dawn/$_compilationMode',
         defaultDocument: 'index.html',
       ),
       InternetAddress.anyIPv4,
-      port,
+      _port,
       shared: true,
     );
 
-    print('\x1B[32mServer running on http://localhost:$port.\x1B[0m');
+    print('\x1B[32mServer running on http://localhost:$_port.\x1B[0m');
 
-    runProcess('start', ['http://localhost:$port']);
+    runProcess(_openUrlCommand, ['http://localhost:$_port']);
   }
 
   void _copyFiles() {
@@ -89,12 +101,12 @@ class CompileCommand extends Command<void> {
 
     print(
       '\n\x1B[32m+\x1B[0m '
-      'Copied assets and index.html to .dawn/$compilationMode...',
+      'Copied assets and index.html to .dawn/$_compilationMode...',
     );
   }
 
   void _copyFile(final String basicPath) =>
-      File('./.dawn/$compilationMode/$basicPath')
+      File('./.dawn/$_compilationMode/$basicPath')
         ..createSync(recursive: true)
         ..writeAsBytesSync(File('./web/$basicPath').readAsBytesSync());
 
@@ -106,10 +118,10 @@ class CompileCommand extends Command<void> {
         'js',
         'web/main.dart',
         '-o',
-        '.dawn/$compilationMode/main.dart.js',
-        if (compilationMode == 'prod') '-O3'
+        '.dawn/$_compilationMode/main.dart.js',
+        if (_compilationMode == 'prod') '-O3'
       ],
-      cancelOnError: false,
+      throwOnError: false,
       onSuccess: () => print('\x1B[32m+\x1B[0m Compiled main.dart.'),
       onError: () => print('\x1B[31mx\x1B[0m Couldn\'t compile main.dart.'),
     );

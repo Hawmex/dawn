@@ -53,7 +53,7 @@ class ImageNode extends PaintedNode<Image, html.ImageElement> {
     element
       ..addEventListener('error', widget.onError)
       ..src = widget.source
-      ..alt = widget.alternativeText;
+      ..alt = widget.alternativeText ?? '';
   }
 
   @override
