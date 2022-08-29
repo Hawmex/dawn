@@ -1,3 +1,7 @@
+## 5.3.3
+
+- Fixed a bug with `Navigator`.
+
 ## 5.3.2
 
 - Internal improvements.
