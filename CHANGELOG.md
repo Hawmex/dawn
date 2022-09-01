@@ -1,3 +1,7 @@
+## 5.4.2
+
+- Fixed a bug with `Navigator`.
+
 ## 5.4.1
 
 - Updated `dawn create` command.

@@ -130,7 +130,6 @@ class _NavigatorState extends State<Navigator> {
     return Container(
       [_routesStack.last],
       animation: _routeAnimation,
-      style: const Style({'display': 'contents'}),
       key: _routesStack.length.toString(),
     );
   }
