@@ -92,7 +92,7 @@ name: $_projectName
 description: A Dawn app
 publish_to: none
 environment:
-  sdk: ">=2.17.5 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 ''';
 
   String get _analysisOptionsDotYaml => '''

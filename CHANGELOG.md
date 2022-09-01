@@ -1,3 +1,7 @@
+## 5.4.1
+
+- Updated `dawn create` command.
+
 ## 5.4.0
 
 - Dawn 5.4.0 uses Dart ^2.18.0.
