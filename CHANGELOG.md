@@ -1,3 +1,7 @@
+## 5.4.0
+
+- Dawn 5.4.0 uses Dart ^2.18.0.
+
 ## 5.3.3
 
 - Fixed a bug with `Navigator`.
