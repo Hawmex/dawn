@@ -4,6 +4,7 @@ import 'package:dawn/animation.dart';
 import 'package:dawn/foundation.dart';
 
 import 'container.dart';
+import 'future_builder.dart';
 import 'stateful_widget.dart';
 import 'stateless_builder.dart';
 import 'widget.dart';
@@ -13,6 +14,23 @@ final _navigatorState = _NavigatorState();
 extension Navigation on BuildContext {
   void pushRoute({required final StatelessWidgetBuilder builder}) {
     _navigatorState._pushRoute(builder: builder);
+  }
+
+  void pushRouteLazily({
+    required final Future<dynamic> Function() loader,
+    required final StatelessWidgetBuilder builder,
+    required final Widget initialData,
+  }) {
+    pushRoute(
+      builder: (final context) => FutureBuilder<Widget>(
+        (final context, final snapshot) => snapshot.data!,
+        initialData: initialData,
+        future: Future(() async {
+          await loader();
+          return builder(context);
+        }),
+      ),
+    );
   }
 
   void pop() {

@@ -1,3 +1,7 @@
+## 5.5.0
+
+- Added `pushRouteLazily` API.
+
 ## 5.4.3
 
 - Fixed a bug (files accumulation in `.dawn/dev` and `.dawn/prod` directories).s
