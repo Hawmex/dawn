@@ -1,3 +1,7 @@
+## 5.4.3
+
+- Fixed a bug (files accumulation in `.dawn/dev` and `.dawn/prod` directories).s
+
 ## 5.4.2
 
 - Fixed a bug with `Navigator`.

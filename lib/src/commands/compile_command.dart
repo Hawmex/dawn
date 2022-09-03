@@ -90,6 +90,8 @@ class CompileCommand extends Command<void> {
   }
 
   void _copyFiles() {
+    Directory('./.dawn/$_compilationMode').deleteSync(recursive: true);
+
     _copyFile('index.html');
 
     Directory('./web/assets')
