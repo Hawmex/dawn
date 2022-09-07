@@ -1,3 +1,7 @@
+## 5.6.0
+
+- Added `onScroll` event to `Container`.
+
 ## 5.5.0
 
 - Added `pushRouteLazily` API.

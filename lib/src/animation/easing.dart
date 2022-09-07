@@ -10,9 +10,7 @@ class Easing {
   final double x2;
   final double y2;
 
-  const Easing(this.x1, this.y1, this.x2, this.y2)
-      : assert(x1 >= 0 && x1 <= 1),
-        assert(x2 >= 0 && x2 <= 1);
+  const Easing(this.x1, this.y1, this.x2, this.y2);
 
   @override
   String toString() => 'cubic-bezier($x1, $y1, $x2, $y2)';

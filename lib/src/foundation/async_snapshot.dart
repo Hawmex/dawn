@@ -11,8 +11,7 @@ class AsyncSnapshot<T> {
     this.data,
     this.error,
     this.stackTrace,
-  })  : assert(data == null || error == null),
-        assert(stackTrace == null || error != null);
+  });
 
   factory AsyncSnapshot.nothing() {
     return const AsyncSnapshot._(connectionState: ConnectionState.none);

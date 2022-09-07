@@ -7,8 +7,7 @@ class Keyframe {
   final Style style;
   final Easing? easing;
 
-  const Keyframe({required this.offset, required this.style, this.easing})
-      : assert(offset >= 0 && offset <= 1);
+  const Keyframe({required this.offset, required this.style, this.easing});
 
   Map<String, String> toMap() {
     return {

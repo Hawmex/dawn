@@ -8,6 +8,8 @@ import 'widget.dart';
 class Container extends PaintedWidget {
   final List<Widget> children;
 
+  final EventListener? onScroll;
+
   const Container(
     this.children, {
     super.style,
@@ -32,6 +34,7 @@ class Container extends PaintedWidget {
     super.onTouchEnd,
     super.onTouchMove,
     super.onTouchCancel,
+    this.onScroll,
     super.key,
   });
 
@@ -55,6 +58,18 @@ class ContainerNode extends PaintedNode<Container, html.DivElement> {
     for (final childNode in childNodes) {
       childNode.initialize();
     }
+  }
+
+  @override
+  void initializeElement() {
+    super.initializeElement();
+    element.addEventListener('scroll', widget.onScroll);
+  }
+
+  @override
+  void disposeElement() {
+    element.removeEventListener('scroll', widget.onScroll);
+    super.disposeElement();
   }
 
   @override
