@@ -1,3 +1,7 @@
+## 5.6.1
+
+- Fixed [#14](https://github.com/Hawmex/dawn/issues/14).
+
 ## 5.6.0
 
 - Added `onScroll` event to `Container`.

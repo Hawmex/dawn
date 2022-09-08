@@ -90,7 +90,11 @@ class CompileCommand extends Command<void> {
   }
 
   void _copyFiles() {
-    Directory('./.dawn/$_compilationMode').deleteSync(recursive: true);
+    final outputDirectory = Directory('./.dawn/$_compilationMode');
+
+    if (outputDirectory.existsSync()) {
+      outputDirectory.deleteSync(recursive: true);
+    }
 
     _copyFile('index.html');
 
