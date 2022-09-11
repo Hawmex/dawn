@@ -6,14 +6,19 @@ import 'provider.dart';
 import 'stateful_widget.dart';
 import 'widget.dart';
 
+/// The type of builder function used in [ConsumerBuilder].
 typedef ConsumerWidgetBuilder<T extends Store> = Widget Function(
   BuildContext context,
   T store,
 );
 
+/// A widget that is rebuilt with the latest state of a [Store] provided by a
+/// [Provider].
 class ConsumerBuilder<T extends Store> extends StatefulWidget {
   final ConsumerWidgetBuilder<T> builder;
 
+  /// Creates a new [ConsumerBuilder] which is a widget that is rebuilt with the
+  /// latest state of a [Store] provided by a [Provider].
   const ConsumerBuilder(this.builder, {super.key});
 
   @override

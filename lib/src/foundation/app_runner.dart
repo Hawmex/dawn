@@ -1,5 +1,14 @@
 import 'package:dawn/widgets.dart';
+import 'package:js/js.dart';
 
-void runApp(final Widget app) => app.createNode()
-  ..parentNode = null
-  ..initialize();
+@JS()
+external Node? _appNode;
+
+/// Inflates the given widget and attaches it to the screen.
+void runApp(final Widget app) {
+  _appNode?.dispose();
+
+  _appNode = app.createNode()
+    ..parentNode = null
+    ..initialize();
+}

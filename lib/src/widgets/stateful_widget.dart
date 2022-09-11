@@ -4,34 +4,56 @@ import 'package:dawn/foundation.dart';
 
 import 'widget.dart';
 
+/// A widget that has a mutable state.
 abstract class StatefulWidget extends Widget {
+  /// Creates a new [StatefulWidget] that has a mutable state.
   const StatefulWidget({super.key});
 
   @override
   StatefulNode createNode() => StatefulNode(this);
 
+  /// Creates the mutable state for this widget.
   State createState();
 }
 
+/// The logic and internal state for a [StatefulWidget].
 abstract class State<T extends StatefulWidget> extends Store with Buildable {
   bool _isMounted = false;
-  late final BuildContext _context;
   late T _widget;
+  late final BuildContext _context;
 
+  /// Whether this [State] is currently in the tree.
   bool get isMounted => _isMounted;
-  BuildContext get context => _context;
+
+  /// The current configuration of this [State].
   T get widget => _widget;
 
+  /// The location of this [State] in the tree.
+  BuildContext get context => _context;
+
+  /// Called after all child nodes are initialized.
+  ///
+  /// *Flowing upwards*
   void didMount() => _isMounted = true;
+
+  /// Called after the configuration is updated.
   void didWidgetUpdate(final T oldWidget) {}
+
+  /// Called after the dependencies are updated.
   void didDependenciesUpdate() {}
+
+  /// Called before the removal of this [State] from the tree.
+  ///
+  /// *Flowing downwards*
   void willUnmount() => _isMounted = false;
 }
 
 class StatefulNode extends Node<StatefulWidget> {
-  late final State _state;
+  /// The child of this [Node] in the tree.
   late Node childNode;
-  late StreamSubscription<void> _updateStreamSubscription;
+
+  late final State _state;
+  late final StreamSubscription<void> _updateStreamSubscription;
 
   StatefulNode(super.widget);
 

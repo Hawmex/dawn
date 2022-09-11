@@ -5,11 +5,20 @@ import 'package:dawn/foundation.dart';
 import 'painted_widget.dart';
 import 'widget.dart';
 
+/// A widget that can have multiple children and renders an [html.DivElement].
+///
+/// **Notice:** [Container] and [ContainerNode] are deeply used by Dawn's
+/// engine. [ContainerNode] is and should be the only [Node] that can have
+/// multiple child nodes. Thus, developers should not extend or modify
+/// [Container] or [ContainerNode]. They shouldn't create their own containers
+/// either.
 class Container extends PaintedWidget {
   final List<Widget> children;
 
   final EventListener? onScroll;
 
+  /// Creates a new [Container] that can have multiple children and renders an
+  /// [html.DivElement].
   const Container(
     this.children, {
     super.style,
@@ -51,24 +60,25 @@ class ContainerNode extends PaintedNode<Container, html.DivElement> {
   void initialize() {
     super.initialize();
 
-    childNodes = widget.children
-        .map((final child) => child.createNode()..parentNode = this)
-        .toList();
+    childNodes =
+        widget.children.map((final child) => child.createNode()).toList();
 
     for (final childNode in childNodes) {
-      childNode.initialize();
+      childNode
+        ..parentNode = this
+        ..initialize();
     }
   }
 
   @override
   void initializeElement() {
     super.initializeElement();
-    element.addEventListener('scroll', widget.onScroll);
+    element.addTypedEventListener('scroll', widget.onScroll);
   }
 
   @override
   void disposeElement() {
-    element.removeEventListener('scroll', widget.onScroll);
+    element.removeTypedEventListener('scroll', widget.onScroll);
     super.disposeElement();
   }
 
@@ -78,9 +88,8 @@ class ContainerNode extends PaintedNode<Container, html.DivElement> {
 
     final oldChildNodes = childNodes;
 
-    final newChildNodes = widget.children
-        .map((final child) => child.createNode()..parentNode = this)
-        .toList();
+    final newChildNodes =
+        widget.children.map((final child) => child.createNode()).toList();
 
     int exactSearchStartIndex = 0;
     int sameTypeSearchStartIndex = 0;
@@ -123,7 +132,11 @@ class ContainerNode extends PaintedNode<Container, html.DivElement> {
     childNodes = newChildNodes;
 
     for (final childNode in childNodes) {
-      if (!oldChildNodes.contains(childNode)) childNode.initialize();
+      if (!oldChildNodes.contains(childNode)) {
+        childNode
+          ..parentNode = this
+          ..initialize();
+      }
     }
   }
 

@@ -5,6 +5,7 @@ import 'animation_fill_mode.dart';
 import 'easing.dart';
 import 'keyframe.dart';
 
+/// An implementation similar to CSS and JS animations.
 class Animation {
   final List<Keyframe> keyframes;
   final Duration duration;
@@ -15,6 +16,7 @@ class Animation {
   final AnimationFillMode fillMode;
   final double iterations;
 
+  /// Creates a new [Animation] that describes its aspects.
   const Animation({
     required this.keyframes,
     this.duration = Duration.zero,
@@ -26,6 +28,7 @@ class Animation {
     this.iterations = 1,
   });
 
+  /// Applies this [Animation] to the given [element].
   html.Animation runOnElement(final html.Element element) {
     return element.animate(
       keyframes.map((final keyframe) => keyframe.toMap()),

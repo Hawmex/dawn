@@ -3,11 +3,14 @@ import 'package:dawn/foundation.dart';
 import 'stateful_widget.dart';
 import 'widget.dart';
 
+/// A widget that is rebuilt with the latest snapshot of a [Future].
 class FutureBuilder<T> extends StatefulWidget {
   final AsyncWidgetBuilder<T> builder;
   final Future<T>? future;
   final T? initialData;
 
+  /// Creates a new [FutureBuilder] that is rebuilt with the latest snapshot of
+  /// a [Future].
   const FutureBuilder(this.builder, {this.future, this.initialData, super.key});
 
   @override
@@ -27,23 +30,23 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
       widget.future!.then<void>(
         (final T data) {
           if (_activeCallbackIdentity == callbackIdentity) {
-            setState(() {
-              _snapshot = AsyncSnapshot.withData(
+            setState(
+              () => _snapshot = AsyncSnapshot.withData(
                 connectionState: ConnectionState.done,
                 data: data,
-              );
-            });
+              ),
+            );
           }
         },
         onError: (final Object error, final StackTrace stackTrace) {
           if (_activeCallbackIdentity == callbackIdentity) {
-            setState(() {
-              _snapshot = AsyncSnapshot.withError(
+            setState(
+              () => _snapshot = AsyncSnapshot.withError(
                 connectionState: ConnectionState.done,
                 error: error,
                 stackTrace: stackTrace,
-              );
-            });
+              ),
+            );
           }
         },
       );

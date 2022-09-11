@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
+import '../foundation/cli_message_printer.dart';
 import '../foundation/process_runner.dart';
 
 class CreateCommand extends Command<void> {
@@ -9,22 +10,36 @@ class CreateCommand extends Command<void> {
   String get name => 'create';
 
   @override
-  String get description => 'Sets up a new Dawn application.';
+  String get description =>
+      'Sets up a new Dawn application in the current directory.';
 
-  String get _projectName => argResults!.rest.first;
+  @override
+  String get invocation => 'dawn create <app_name>';
+
+  String get _appName => argResults!.rest.first;
 
   @override
   void run() {
-    Directory.current = Directory('./$_projectName')..createSync();
+    if (argResults!.rest.isEmpty) {
+      throw UsageException('Specify a target directory.', invocation);
+    }
+
+    Directory.current = Directory('./$_appName')..createSync();
 
     _createFiles();
     _installDependencies();
 
-    print('\nEnjoy Coding!\n');
+    printCliMessage('Enjoy Coding!', type: CliMessageType.success);
+
+    printCliMessage(
+      'Run the following commands:\n\t'
+      'cd $_appName\n\t'
+      'webdev serve',
+    );
   }
 
   void _createFiles() {
-    print('\nCreating Files...\n');
+    printCliMessage('Creating Files...');
 
     _createFile(path: './.gitignore', body: _gitIgnore);
     _createFile(path: './README.md', body: _readmeDotMd);
@@ -43,34 +58,43 @@ class CreateCommand extends Command<void> {
       ..createSync(recursive: true)
       ..writeAsStringSync(body);
 
-    print('\t\x1B[32m+\x1B[0m Created $path.');
+    printCliMessage(
+      'Created $path.',
+      listItem: true,
+      type: CliMessageType.success,
+    );
   }
 
   void _installDependencies() {
-    print('\nInstalling dependencies...\n');
+    printCliMessage('Installing dependencies...');
 
-    runProcess(
-      'dart',
-      ['pub', 'add', 'dawn'],
-      onSuccess: () => print('\t\x1B[32m+\x1B[0m Installed dawn.'),
-      onError: () => print('\t\x1B[31mx\x1B[0m Couldn\'t install dawn.'),
-    );
-
-    runProcess(
-      'dart',
-      ['pub', 'add', '--dev', 'dawn_lints'],
-      onSuccess: () => print('\t\x1B[32m+\x1B[0m Installed dawn_lints.'),
-      onError: () => print('\t\x1B[31mx\x1B[0m Couldn\'t install dawn_lints.'),
-    );
+    _installDependency('dawn');
+    _installDependency('dawn_lints', dev: true);
+    _installDependency('build_runner', dev: true);
+    _installDependency('build_web_compilers', dev: true);
   }
+
+  void _installDependency(final String name, {final bool dev = false}) =>
+      runProcess(
+        'dart',
+        ['pub', 'add', if (dev) '-d', name],
+        throwOnError: false,
+        onSuccess: () => printCliMessage(
+          'Installed $name.',
+          listItem: true,
+          type: CliMessageType.success,
+        ),
+        onError: () => printCliMessage(
+          'Couldn\'t install $name.',
+          listItem: true,
+          type: CliMessageType.error,
+        ),
+      );
 
   String get _gitIgnore => '''
 # Files and directories created by pub.
 .dart_tool/
 .packages
-
-# Conventional directory for Dawn outputs.
-.dawn/
 
 # Omit committing pubspec.lock for library packages; see
 # https://dart.dev/guides/libraries/private-files#pubspeclock.
@@ -78,7 +102,7 @@ pubspec.lock
 ''';
 
   String get _readmeDotMd => '''
-# $_projectName
+# $_appName
 
 ## 📖 Description
 
@@ -88,7 +112,7 @@ Please visit [Dawn's Website](https://dawn-dev.netlify.app) for more information
 ''';
 
   String get _pubspecDotYaml => '''
-name: $_projectName
+name: $_appName
 description: A Dawn app
 publish_to: none
 environment:
@@ -106,7 +130,7 @@ include: package:dawn_lints/dawn_lints.yaml
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>$_projectName</title>
+    <title>$_appName</title>
 
     <link rel="shortcut icon" href="/assets/logo.svg" type="image/x-icon" />
 

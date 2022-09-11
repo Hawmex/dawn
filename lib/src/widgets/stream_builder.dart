@@ -5,11 +5,14 @@ import 'package:dawn/foundation.dart';
 import 'stateful_widget.dart';
 import 'widget.dart';
 
+/// A widget that is rebuilt with the latest snapshot of a [Stream].
 class StreamBuilder<T> extends StatefulWidget {
   final AsyncWidgetBuilder<T> builder;
   final Stream<T>? stream;
   final T? initialData;
 
+  /// Creates a new [StreamBuilder] that is rebuilt with the latest snapshot of
+  /// a [Stream].
   const StreamBuilder(this.builder, {this.stream, this.initialData, super.key});
 
   @override
@@ -23,28 +26,22 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
   void _subscribe() {
     if (widget.stream != null) {
       _subscription = widget.stream!.listen(
-        (final T data) {
-          setState(() {
-            _snapshot = AsyncSnapshot.withData(
-              connectionState: ConnectionState.active,
-              data: data,
-            );
-          });
-        },
-        onError: (final Object error, final StackTrace stackTrace) {
-          setState(() {
-            _snapshot = AsyncSnapshot.withError(
-              connectionState: ConnectionState.active,
-              error: error,
-              stackTrace: stackTrace,
-            );
-          });
-        },
-        onDone: () {
-          setState(() {
-            _snapshot = _snapshot.inConnectionState(ConnectionState.done);
-          });
-        },
+        (final T data) => setState(
+          () => _snapshot = AsyncSnapshot.withData(
+            connectionState: ConnectionState.active,
+            data: data,
+          ),
+        ),
+        onError: (final Object error, final StackTrace stackTrace) => setState(
+          () => _snapshot = AsyncSnapshot.withError(
+            connectionState: ConnectionState.active,
+            error: error,
+            stackTrace: stackTrace,
+          ),
+        ),
+        onDone: () => setState(
+          () => _snapshot = _snapshot.inConnectionState(ConnectionState.done),
+        ),
       );
 
       _snapshot = _snapshot.inConnectionState(ConnectionState.waiting);

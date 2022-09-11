@@ -2,9 +2,11 @@ import 'dart:html' as html;
 
 import 'painted_widget.dart';
 
+/// A widget that renders an [html.SpanElement].
 class Text extends PaintedWidget {
   final String value;
 
+  /// Creates a new [Text] that renders an [html.SpanElement].
   const Text(
     this.value, {
     super.style,

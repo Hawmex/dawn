@@ -1,3 +1,4 @@
+/// This library contains Dawn's unstyled and essential widgets.
 library dawn.widgets;
 
 export 'src/widgets/consumer_builder.dart';

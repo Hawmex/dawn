@@ -2,7 +2,9 @@ import 'package:dawn/foundation.dart';
 
 import 'widget.dart';
 
+/// A widget that does not require a mutable state.
 abstract class StatelessWidget extends Widget with Buildable {
+  /// Creates a new [StatelessWidget] that does not require a mutable state.
   const StatelessWidget({super.key});
 
   @override
@@ -10,6 +12,7 @@ abstract class StatelessWidget extends Widget with Buildable {
 }
 
 class StatelessNode extends Node<StatelessWidget> {
+  /// The child of this [Node] in the tree.
   late Node childNode;
 
   StatelessNode(super.widget);

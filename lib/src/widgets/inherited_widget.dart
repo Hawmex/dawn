@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:dawn/foundation.dart';
-
 import 'widget.dart';
 
+/// The base class for widgets that efficiently propagate information down the
+/// tree.
 abstract class InheritedWidget extends Widget {
   final Widget child;
 
@@ -12,15 +12,20 @@ abstract class InheritedWidget extends Widget {
   @override
   InheritedNode createNode() => InheritedNode(this);
 
+  /// Whether [Node.updateSubtree] should be called on dependent nodes after
+  /// this widget is updated.
   bool shouldUpdateNotify(covariant final InheritedWidget oldWidget);
 }
 
 class InheritedNode extends Node<InheritedWidget> {
+  /// The child of this [Node] in the tree.
   late Node childNode;
-  late StreamController<void> _updateStreamController;
+
+  late final StreamController<void> _updateStreamController;
 
   InheritedNode(super.widget);
 
+  /// Listens to this [InheritedWidget] to get notified when it's updated.
   StreamSubscription<void> listen(final void Function() onUpdate) =>
       _updateStreamController.stream.listen((final event) => onUpdate());
 

@@ -1,3 +1,7 @@
+## 6.0.0
+
+- Please see [#11](https://github.com/Hawmex/dawn/issues/11).
+
 ## 5.6.1
 
 - Fixed [#14](https://github.com/Hawmex/dawn/issues/14).
