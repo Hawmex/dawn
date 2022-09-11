@@ -208,7 +208,7 @@ class App extends StatelessWidget {
         'height': '100vh',
         'background': '#000000',
         'color': '#ffffff',
-        'font-family': 'Jost, system-ui',
+        'font-family': '"Jost", system-ui',
         'user-select': 'none',
       }),
     );
