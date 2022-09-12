@@ -14,8 +14,14 @@ class App extends StatelessWidget {
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
             keyframes: [
-              Keyframe(offset: 0, style: Style({'transform': 'scale(0.8)'})),
-              Keyframe(offset: 1, style: Style({'transform': 'scale(1.0)'})),
+              Keyframe(
+                offset: 0,
+                style: Style({'transform': 'translateY(0px)'}),
+              ),
+              Keyframe(
+                offset: 1,
+                style: Style({'transform': 'translateY(8px)'}),
+              ),
             ],
             duration: Duration(seconds: 1),
             easing: Easing(0.2, 0, 0.4, 1),
@@ -25,7 +31,11 @@ class App extends StatelessWidget {
         ),
         Text(
           'Welcome to Dawn',
-          style: Style({'font-size': '24px', 'font-weight': 'bold'}),
+          style: Style({
+            'font-size': '24px',
+            'font-weight': 'bold',
+            'color': '#00e690',
+          }),
         ),
         Container([
           Text('To get started, edit '),
@@ -33,7 +43,7 @@ class App extends StatelessWidget {
             'web/main.dart',
             style: Style({
               'font-family': 'monospace',
-              'background': '#232323',
+              'background': '#eeeeee',
               'border-radius': '4px',
               'padding': '4px',
             }),
@@ -50,9 +60,9 @@ class App extends StatelessWidget {
         'gap': '16px',
         'padding': '16px',
         'width': '100%',
-        'height': '100vh',
-        'background': '#000000',
-        'color': '#ffffff',
+        'min-height': '100vh',
+        'background': '#ffffff',
+        'color': '#000000',
         'font-family': '"Jost", system-ui',
         'user-select': 'none',
       }),

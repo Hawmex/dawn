@@ -1,9 +1,9 @@
 # Dawn
 
 <img
-    src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo.svg"
-    width="128px"
-    height="128px"
+    src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/logo_and_title.svg"
+    width="148px"
+    height="140px"
 />
 
 ## 📖 Description
