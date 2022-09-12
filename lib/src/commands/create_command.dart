@@ -32,9 +32,9 @@ class CreateCommand extends Command<void> {
     printCliMessage('Enjoy Coding!', type: CliMessageType.success);
 
     printCliMessage(
-      'Run the following commands:\n\t'
-      'cd $_appName\n\t'
-      'webdev serve',
+      'Run the following commands:\n'
+      '  cd $_appName\n'
+      '  webdev serve',
     );
   }
 
