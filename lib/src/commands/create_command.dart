@@ -21,13 +21,13 @@ class CreateCommand extends Command<void> {
   @override
   void run() {
     if (argResults!.rest.isEmpty) {
-      usageException('Specify your application\'s name.');
+      usageException('Specify your application\'s name.\n');
     }
 
     final directory = Directory('./$_appName');
 
     if (directory.existsSync()) {
-      usageException('Directory $_appName already exists.');
+      usageException('Directory $_appName already exists.\n');
     }
 
     Directory.current = directory..createSync();
