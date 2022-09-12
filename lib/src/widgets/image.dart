@@ -53,14 +53,8 @@ class ImageNode extends PaintedNode<Image, html.ImageElement> {
     super.initializeElement();
 
     element
-      ..addTypedEventListener('error', widget.onError)
+      ..on['error'].cast<html.ErrorEvent>().listen(widget.onError)
       ..src = widget.source
       ..alt = widget.alternativeText ?? '';
-  }
-
-  @override
-  void disposeElement() {
-    element.removeTypedEventListener('error', widget.onError);
-    super.disposeElement();
   }
 }

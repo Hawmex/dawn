@@ -73,13 +73,7 @@ class ContainerNode extends PaintedNode<Container, html.DivElement> {
   @override
   void initializeElement() {
     super.initializeElement();
-    element.addTypedEventListener('scroll', widget.onScroll);
-  }
-
-  @override
-  void disposeElement() {
-    element.removeTypedEventListener('scroll', widget.onScroll);
-    super.disposeElement();
+    element.on['scroll'].listen(widget.onScroll);
   }
 
   @override

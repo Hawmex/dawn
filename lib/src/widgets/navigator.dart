@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:dawn/animation.dart';
@@ -79,6 +80,7 @@ class _NavigatorState extends State<Navigator> {
   _NavigationAction _lastNavigationAction = _NavigationAction.none;
   final _modalsStack = <void Function()>[];
   late final _routesStack = [widget.child];
+  late final StreamSubscription<html.PopStateEvent> _eventSubscription;
 
   int get _browserHistoryState => html.window.history.state;
 
@@ -147,14 +149,16 @@ class _NavigatorState extends State<Navigator> {
   void initialize() {
     super.initialize();
 
-    html.window
-      ..history.replaceState(1, '', null)
-      ..addTypedEventListener('popstate', _browserHistoryPopHandler);
+    html.window.history.replaceState(1, '', null);
+
+    _eventSubscription = html.window.on['popstate']
+        .cast<html.PopStateEvent>()
+        .listen(_browserHistoryPopHandler);
   }
 
   @override
   void dispose() {
-    html.window.removeTypedEventListener('popstate', _browserHistoryPopHandler);
+    _eventSubscription.cancel();
     super.dispose();
   }
 
