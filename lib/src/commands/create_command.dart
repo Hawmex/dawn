@@ -96,9 +96,8 @@ class CreateCommand extends Command<void> {
 .dart_tool/
 .packages
 
-# Omit committing pubspec.lock for library packages; see
-# https://dart.dev/guides/libraries/private-files#pubspeclock.
-pubspec.lock
+# Conventional directory for build output.
+build/
 ''';
 
   String get _readmeDotMd => '''

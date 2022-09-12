@@ -11,4 +11,13 @@ void runApp(final Widget app) {
   _appNode = app.createNode()
     ..parentNode = null
     ..initialize();
+
+  print(r'''
+   _____     __          ___   _ 
+  |  __ \   /\ \        / / \ | |
+  | |  | | /  \ \  /\  / /|  \| |
+  | |  | |/ /\ \ \/  \/ / | . ` |
+  | |__| / ____ \  /\  /  | |\  |
+  |_____/_/    \_\/  \/   |_| \_|                                                         
+''');
 }
