@@ -21,10 +21,16 @@ class CreateCommand extends Command<void> {
   @override
   void run() {
     if (argResults!.rest.isEmpty) {
-      throw UsageException('Specify a target directory.', invocation);
+      usageException('Specify your application\'s name.');
     }
 
-    Directory.current = Directory('./$_appName')..createSync();
+    final directory = Directory('./$_appName');
+
+    if (directory.existsSync()) {
+      usageException('Directory $_appName already exists.');
+    }
+
+    Directory.current = directory..createSync();
 
     _createFiles();
     _installDependencies();
@@ -74,22 +80,23 @@ class CreateCommand extends Command<void> {
     _installDependency('build_web_compilers', dev: true);
   }
 
-  void _installDependency(final String name, {final bool dev = false}) =>
-      runProcess(
-        'dart',
-        ['pub', 'add', if (dev) '-d', name],
-        throwOnError: false,
-        onSuccess: () => printCliMessage(
-          'Installed $name.',
-          listItem: true,
-          type: CliMessageType.success,
-        ),
-        onError: () => printCliMessage(
-          'Couldn\'t install $name.',
-          listItem: true,
-          type: CliMessageType.error,
-        ),
-      );
+  void _installDependency(final String name, {final bool dev = false}) {
+    runProcess(
+      'dart',
+      ['pub', 'add', if (dev) '-d', name],
+      throwOnError: false,
+      onSuccess: () => printCliMessage(
+        'Installed $name.',
+        listItem: true,
+        type: CliMessageType.success,
+      ),
+      onError: () => printCliMessage(
+        'Couldn\'t install $name.',
+        listItem: true,
+        type: CliMessageType.error,
+      ),
+    );
+  }
 
   String get _gitIgnore => '''
 # Files and directories created by pub.
