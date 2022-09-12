@@ -118,19 +118,19 @@ class _NavigatorState extends State<Navigator> {
   }
 
   void _pop() {
+    if (_browserHistoryState >= _routesStack.length + _modalsStack.length) {
+      _browserHistoryBack();
+    }
+
     if (_modalsStack.isNotEmpty) {
       _modalsStack
         ..last()
         ..removeLast();
-    } else {
+    } else if (_routesStack.length > 1) {
       setState(() {
         _routesStack.removeLast();
         _lastNavigationAction = _NavigationAction.pop;
       });
-    }
-
-    if (_browserHistoryState > _routesStack.length + _modalsStack.length) {
-      _browserHistoryBack();
     }
   }
 
