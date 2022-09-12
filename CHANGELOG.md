@@ -16,7 +16,7 @@
 
 ## 5.4.3
 
-- Fixed a bug (files accumulation in `.dawn/dev` and `.dawn/prod` directories).s
+- Fixed a bug (files accumulation in `.dawn/dev` and `.dawn/prod` directories).
 
 ## 5.4.2
 

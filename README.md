@@ -8,9 +8,9 @@
 
 ## 📖 Description
 
-Dawn is a Dart web framework that lets developers create UIs with a widget model
-that is similar to Flutter. Dawn applications are compiled to JavaScript and are
-painted using HTML and CSS.
+Dawn is a Dart web framework that lets developers create UIs with a widget
+model similar to Flutter. Dawn apps are compiled into JS and painted with HTML
+& CSS.
 
 Please visit [Dawn's Website](https://dawn-dev.netlify.app) for more
 information.
