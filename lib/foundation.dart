@@ -7,7 +7,7 @@ export 'src/foundation/async_widget_builder.dart';
 export 'src/foundation/build_context.dart';
 export 'src/foundation/buildable.dart';
 export 'src/foundation/debouncer.dart';
-export 'src/foundation/event_listener.dart';
 export 'src/foundation/store.dart';
 export 'src/foundation/string_transforms.dart';
 export 'src/foundation/style.dart';
+export 'src/foundation/typed_event_listeners.dart';

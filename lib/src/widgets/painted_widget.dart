@@ -11,29 +11,29 @@ abstract class PaintedWidget extends Widget {
   final Style? style;
   final Animation? animation;
 
-  final EventListener? onTap;
+  final EventListener<html.MouseEvent>? onTap;
 
-  final EventListener? onPointerDown;
-  final EventListener? onPointerUp;
-  final EventListener? onPointerEnter;
-  final EventListener? onPointerLeave;
-  final EventListener? onPointerMove;
-  final EventListener? onPointerCancel;
-  final EventListener? onPointerOver;
-  final EventListener? onPointerOut;
+  final EventListener<html.PointerEvent>? onPointerDown;
+  final EventListener<html.PointerEvent>? onPointerUp;
+  final EventListener<html.PointerEvent>? onPointerEnter;
+  final EventListener<html.PointerEvent>? onPointerLeave;
+  final EventListener<html.PointerEvent>? onPointerMove;
+  final EventListener<html.PointerEvent>? onPointerCancel;
+  final EventListener<html.PointerEvent>? onPointerOver;
+  final EventListener<html.PointerEvent>? onPointerOut;
 
-  final EventListener? onMouseDown;
-  final EventListener? onMouseUp;
-  final EventListener? onMouseEnter;
-  final EventListener? onMouseLeave;
-  final EventListener? onMouseMove;
-  final EventListener? onMouseOver;
-  final EventListener? onMouseOut;
+  final EventListener<html.MouseEvent>? onMouseDown;
+  final EventListener<html.MouseEvent>? onMouseUp;
+  final EventListener<html.MouseEvent>? onMouseEnter;
+  final EventListener<html.MouseEvent>? onMouseLeave;
+  final EventListener<html.MouseEvent>? onMouseMove;
+  final EventListener<html.MouseEvent>? onMouseOver;
+  final EventListener<html.MouseEvent>? onMouseOut;
 
-  final EventListener? onTouchStart;
-  final EventListener? onTouchEnd;
-  final EventListener? onTouchMove;
-  final EventListener? onTouchCancel;
+  final EventListener<html.TouchEvent>? onTouchStart;
+  final EventListener<html.TouchEvent>? onTouchEnd;
+  final EventListener<html.TouchEvent>? onTouchMove;
+  final EventListener<html.TouchEvent>? onTouchCancel;
 
   const PaintedWidget({
     this.style,
@@ -82,26 +82,26 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
   /// updated.
   void initializeElement() {
     element
-      ..addEventListener('click', widget.onTap)
-      ..addEventListener('pointerdown', widget.onPointerDown)
-      ..addEventListener('pointerup', widget.onPointerUp)
-      ..addEventListener('pointerenter', widget.onPointerEnter)
-      ..addEventListener('pointerleave', widget.onPointerLeave)
-      ..addEventListener('pointermove', widget.onPointerMove)
-      ..addEventListener('pointercancel', widget.onPointerCancel)
-      ..addEventListener('pointerover', widget.onPointerOver)
-      ..addEventListener('pointerout', widget.onPointerOut)
-      ..addEventListener('mousedown', widget.onMouseDown)
-      ..addEventListener('mouseup', widget.onMouseUp)
-      ..addEventListener('mouseenter', widget.onMouseEnter)
-      ..addEventListener('mouseleave', widget.onMouseLeave)
-      ..addEventListener('mousemove', widget.onMouseMove)
-      ..addEventListener('mouseover', widget.onMouseOver)
-      ..addEventListener('mouseout', widget.onMouseOut)
-      ..addEventListener('touchstart', widget.onTouchStart)
-      ..addEventListener('touchend', widget.onTouchEnd)
-      ..addEventListener('touchmove', widget.onTouchMove)
-      ..addEventListener('touchcancel', widget.onTouchCancel);
+      ..addListener('click', widget.onTap)
+      ..addListener('pointerdown', widget.onPointerDown)
+      ..addListener('pointerup', widget.onPointerUp)
+      ..addListener('pointerenter', widget.onPointerEnter)
+      ..addListener('pointerleave', widget.onPointerLeave)
+      ..addListener('pointermove', widget.onPointerMove)
+      ..addListener('pointercancel', widget.onPointerCancel)
+      ..addListener('pointerover', widget.onPointerOver)
+      ..addListener('pointerout', widget.onPointerOut)
+      ..addListener('mousedown', widget.onMouseDown)
+      ..addListener('mouseup', widget.onMouseUp)
+      ..addListener('mouseenter', widget.onMouseEnter)
+      ..addListener('mouseleave', widget.onMouseLeave)
+      ..addListener('mousemove', widget.onMouseMove)
+      ..addListener('mouseover', widget.onMouseOver)
+      ..addListener('mouseout', widget.onMouseOut)
+      ..addListener('touchstart', widget.onTouchStart)
+      ..addListener('touchend', widget.onTouchEnd)
+      ..addListener('touchmove', widget.onTouchMove)
+      ..addListener('touchcancel', widget.onTouchCancel);
 
     if (widget.style == null) {
       element.removeAttribute('style');
@@ -114,26 +114,26 @@ abstract class PaintedNode<T extends PaintedWidget, U extends html.Element>
   /// the tree.
   void disposeElement() {
     element
-      ..removeEventListener('click', widget.onTap)
-      ..removeEventListener('pointerdown', widget.onPointerDown)
-      ..removeEventListener('pointerup', widget.onPointerUp)
-      ..removeEventListener('pointerenter', widget.onPointerEnter)
-      ..removeEventListener('pointerleave', widget.onPointerLeave)
-      ..removeEventListener('pointermove', widget.onPointerMove)
-      ..removeEventListener('pointercancel', widget.onPointerCancel)
-      ..removeEventListener('pointerover', widget.onPointerOver)
-      ..removeEventListener('pointerout', widget.onPointerOut)
-      ..removeEventListener('mousedown', widget.onMouseDown)
-      ..removeEventListener('mouseup', widget.onMouseUp)
-      ..removeEventListener('mouseenter', widget.onMouseEnter)
-      ..removeEventListener('mouseleave', widget.onMouseLeave)
-      ..removeEventListener('mousemove', widget.onMouseMove)
-      ..removeEventListener('mouseover', widget.onMouseOver)
-      ..removeEventListener('mouseout', widget.onMouseOut)
-      ..removeEventListener('touchstart', widget.onTouchStart)
-      ..removeEventListener('touchend', widget.onTouchEnd)
-      ..removeEventListener('touchmove', widget.onTouchMove)
-      ..removeEventListener('touchcancel', widget.onTouchCancel);
+      ..removeListener('click', widget.onTap)
+      ..removeListener('pointerdown', widget.onPointerDown)
+      ..removeListener('pointerup', widget.onPointerUp)
+      ..removeListener('pointerenter', widget.onPointerEnter)
+      ..removeListener('pointerleave', widget.onPointerLeave)
+      ..removeListener('pointermove', widget.onPointerMove)
+      ..removeListener('pointercancel', widget.onPointerCancel)
+      ..removeListener('pointerover', widget.onPointerOver)
+      ..removeListener('pointerout', widget.onPointerOut)
+      ..removeListener('mousedown', widget.onMouseDown)
+      ..removeListener('mouseup', widget.onMouseUp)
+      ..removeListener('mouseenter', widget.onMouseEnter)
+      ..removeListener('mouseleave', widget.onMouseLeave)
+      ..removeListener('mousemove', widget.onMouseMove)
+      ..removeListener('mouseover', widget.onMouseOver)
+      ..removeListener('mouseout', widget.onMouseOut)
+      ..removeListener('touchstart', widget.onTouchStart)
+      ..removeListener('touchend', widget.onTouchEnd)
+      ..removeListener('touchmove', widget.onTouchMove)
+      ..removeListener('touchcancel', widget.onTouchCancel);
   }
 
   @override

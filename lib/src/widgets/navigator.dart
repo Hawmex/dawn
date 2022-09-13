@@ -135,7 +135,7 @@ class _NavigatorState extends State<Navigator> {
     }
   }
 
-  void _browserHistoryPopHandler(final html.Event event) {
+  void _browserHistoryPopHandler(final html.PopStateEvent event) {
     if (_browserHistoryState > _routesStack.length + _modalsStack.length) {
       _browserHistoryBack();
     } else if (_browserHistoryState <
@@ -150,12 +150,12 @@ class _NavigatorState extends State<Navigator> {
 
     html.window
       ..history.replaceState(1, '', null)
-      ..addEventListener('popstate', _browserHistoryPopHandler);
+      ..addListener('popstate', _browserHistoryPopHandler);
   }
 
   @override
   void dispose() {
-    html.window.removeEventListener('popstate', _browserHistoryPopHandler);
+    html.window.removeListener('popstate', _browserHistoryPopHandler);
     super.dispose();
   }
 

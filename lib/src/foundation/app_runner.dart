@@ -1,3 +1,5 @@
+import 'dart:html' as html;
+
 import 'package:dawn/widgets.dart';
 import 'package:js/js.dart';
 
@@ -14,6 +16,29 @@ void runApp(final Widget app) {
   | |__| / ____ \  /\  /  | |\  |
   |_____/_/    \_\/  \/   |_| \_|                                                         
 ''');
+
+  html.document.head!.append(
+    html.document.createElement('script')
+      ..text = '''
+window.__dawnAddEventListener__ = function (
+  target,
+  type,
+  listener,
+  useCapture
+) {
+  target.addEventListener(type, listener, useCapture);
+};
+
+window.__dawnRemoveEventListener__ = function (
+  target,
+  type,
+  listener,
+  useCapture
+) {
+  target.removeEventListener(type, listener, useCapture);
+};
+''',
+  );
 
   _appNode?.dispose();
 
