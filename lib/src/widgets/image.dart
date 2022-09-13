@@ -9,7 +9,7 @@ class Image extends PaintedWidget {
   final String source;
   final String? alternativeText;
 
-  final EventListener<html.ErrorEvent>? onError;
+  final EventListener? onError;
 
   /// Creates a new [Image] that renders an [html.ImageElement].
   const Image(
@@ -53,8 +53,14 @@ class ImageNode extends PaintedNode<Image, html.ImageElement> {
     super.initializeElement();
 
     element
-      ..on['error'].cast<html.ErrorEvent>().listen(widget.onError)
+      ..addEventListener('error', widget.onError)
       ..src = widget.source
       ..alt = widget.alternativeText ?? '';
+  }
+
+  @override
+  void disposeElement() {
+    element.removeEventListener('error', widget.onError);
+    super.disposeElement();
   }
 }

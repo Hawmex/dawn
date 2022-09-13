@@ -27,7 +27,7 @@ class ConsumerBuilder<T extends Store> extends StatefulWidget {
 
 class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
   late T _store;
-  late StreamSubscription _subscription;
+  late StreamSubscription<void> _subscription;
 
   @override
   void initialize() {

@@ -1,4 +1,4 @@
 import 'dart:html' as html;
 
-/// A helper for defining type-specific event listeners.
-typedef EventListener<T extends html.Event> = void Function(T event);
+/// A helper for defining event listeners.
+typedef EventListener = void Function(html.Event event);
