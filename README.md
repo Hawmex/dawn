@@ -34,7 +34,7 @@ model similar to Flutter. Dawn apps are compiled into JS and painted with HTML
 - JavaScript interop
 - CLI
 
-## Install Now
+## Install
 
 ```
 dart pub global activate webdev
@@ -46,7 +46,7 @@ dart pub global activate dawn
 
 [ [Read more →](https://dawn-dev.netlify.app/install) ]
 
-## Get Started
+## Set Up Your App
 
 ```
 dawn create my_first_dawn_app
@@ -60,7 +60,7 @@ cd my_first_dawn_app
 webdev serve
 ```
 
-[ [Read more →](https://dawn-dev.netlify.app/get-started) ]
+[ [Read more →](https://dawn-dev.netlify.app/set-up-your-app) ]
 
 ## Features + Cookbook
 
