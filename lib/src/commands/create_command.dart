@@ -116,6 +116,8 @@ build/
     width="100%"
 />
 
+---
+
 # $_appName
 
 A Dawn App.
@@ -153,7 +155,7 @@ include: package:dawn_lints/dawn_lints.yaml
 
     <title>$_appName</title>
 
-    <link rel="shortcut icon" href="/assets/logo.svg" type="image/x-icon" />
+    <link rel="shortcut icon" href="/assets/icon.svg" type="image/x-icon" />
 
     <style>
       *,
