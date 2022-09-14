@@ -13,11 +13,6 @@
 
 ---
 
-<img
-    src="./example/web/assets/banner.svg"
-    width="100%"
-/>
-
 # Dawn 6.0
 
 Dawn is a Dart web framework that lets developers create UIs with a widget
