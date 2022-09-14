@@ -111,13 +111,25 @@ build/
 ''';
 
   String get _readmeDotMd => '''
+<img
+    src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/banner.svg"
+    width="100%"
+/>
+
 # $_appName
 
-## 📖 Description
+A Dawn App.
 
-A Dawn application.
+[ [Visit Dawn's official website →](https://dawn-dev.netlify.app) ]
 
-Please visit [Dawn's Website](https://dawn-dev.netlify.app) for more information.
+## Serve Your App
+
+```
+webdev serve
+```
+
+[ [Read more →](https://dawn-dev.netlify.app/get-started) ]
+
 ''';
 
   String get _pubspecDotYaml => '''
