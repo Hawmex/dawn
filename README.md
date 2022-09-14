@@ -1,7 +1,7 @@
 <div align="center">
 
 <img
-    src="./example/web/assets/title.svg"
+    src="https://raw.githubusercontent.com/Hawmex/dawn/main/example/web/assets/title.svg"
     width="192px"
 />
 
