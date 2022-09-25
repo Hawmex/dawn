@@ -23,18 +23,8 @@ extension Navigation on BuildContext {
   void pushRouteLazily({
     required final Future<dynamic> Function() loader,
     required final StatelessWidgetBuilder builder,
-    required final Widget initialData,
   }) =>
-      pushRoute(
-        builder: (final context) => FutureBuilder<Widget>(
-          (final context, final snapshot) => snapshot.data!,
-          initialData: initialData,
-          future: Future(() async {
-            await loader();
-            return builder(context);
-          }),
-        ),
-      );
+      _navigatorState._pushRouteLazily(loader: loader, builder: builder);
 
   /// Pushes a new modal to the navigation state.
   void pushModal({required final void Function() onPop}) =>
@@ -52,6 +42,10 @@ extension Navigation on BuildContext {
 class Navigator extends StatefulWidget {
   final Widget child;
 
+  /// This widget is displayed while a route is being loaded through
+  /// [Navigation.pushRouteLazily]
+  final Widget loading;
+
   /// The animation that should be applied to the child after it's been pushed.
   final Animation? pushAnimation;
 
@@ -65,6 +59,7 @@ class Navigator extends StatefulWidget {
   /// app.
   const Navigator({
     required this.child,
+    this.loading = const Container([]),
     this.pushAnimation,
     this.popAnimation,
     super.key,
@@ -116,6 +111,22 @@ class _NavigatorState extends State<Navigator> {
     });
 
     _pushBrowserHistory();
+  }
+
+  void _pushRouteLazily({
+    required final Future<dynamic> Function() loader,
+    required final StatelessWidgetBuilder builder,
+  }) {
+    _pushRoute(
+      builder: (final context) => FutureBuilder<Widget>(
+        (final context, final snapshot) => snapshot.data!,
+        initialData: widget.loading,
+        future: Future(() async {
+          await loader();
+          return builder(context);
+        }),
+      ),
+    );
   }
 
   void _pop() {

@@ -20,8 +20,8 @@ model similar to Flutter. Dawn apps are compiled into JS and painted with HTML
 & CSS.
 
 - [Official website →](https://dawn-dev.netlify.app)
-- [Features →](https://dawn-dev.netlify.app/features)
-- [Cookbook →](https://dawn-dev.netlify.app/cookbook)
+- [Features →](https://dawn-dev.netlify.app/#/features)
+- [Cookbook →](https://dawn-dev.netlify.app/#/cookbook)
 - [API reference →](https://pub.dev/documentation/dawn)
 
 ## Features
@@ -44,9 +44,9 @@ dart pub global activate webdev
 dart pub global activate dawn
 ```
 
-[ [Read more →](https://dawn-dev.netlify.app/install) ]
+[ [Read more →](https://dawn-dev.netlify.app/#/install) ]
 
-## Set Up Your App
+## Get Started
 
 ```
 dawn create my_first_dawn_app
@@ -60,7 +60,7 @@ cd my_first_dawn_app
 webdev serve
 ```
 
-[ [Read more →](https://dawn-dev.netlify.app/set-up-your-app) ]
+[ [Read more →](https://dawn-dev.netlify.app/#/get-started) ]
 
 ## Features + Cookbook
 
@@ -68,7 +68,7 @@ webdev serve
 
 ## Support Dawn
 
-[ [Donate to Dawn →](https://dawn-dev.netlify.app/donate) ]
+[ [Donate to Dawn →](https://dawn-dev.netlify.app/#/donate) ]
 
 ## List Of Widgets
 
