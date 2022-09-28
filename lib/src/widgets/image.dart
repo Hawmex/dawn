@@ -43,7 +43,7 @@ class Image extends PaintedWidget {
   ImageNode createNode() => ImageNode(this);
 }
 
-class ImageNode extends NoChildPaintedNode<Image, html.ImageElement> {
+class ImageNode extends ChildlessPaintedNode<Image, html.ImageElement> {
   ImageNode(super.widget) : super(element: html.ImageElement());
 
   @override

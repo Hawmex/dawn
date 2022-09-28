@@ -36,7 +36,7 @@ class Text extends PaintedWidget {
   TextNode createNode() => TextNode(this);
 }
 
-class TextNode extends NoChildPaintedNode<Text, html.SpanElement> {
+class TextNode extends ChildlessPaintedNode<Text, html.SpanElement> {
   TextNode(super.widget) : super(element: html.SpanElement());
 
   @override

@@ -46,7 +46,7 @@ class StatefulNode<T extends StatefulWidget> extends SingleChildNode<T> {
 
     super.initialize();
 
-    _updateStreamSubscription = _state.listen(reassemble);
+    _updateStreamSubscription = _state.listen(enqueueReassembly);
     _state.didMount();
   }
 

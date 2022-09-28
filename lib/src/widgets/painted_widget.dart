@@ -180,12 +180,12 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
   }
 }
 
-abstract class NoChildPaintedNode<T extends PaintedWidget,
+abstract class ChildlessPaintedNode<T extends PaintedWidget,
     U extends html.Element> extends Node<T> with PaintedNode<T, U> {
   @override
   final U element;
 
-  NoChildPaintedNode(super.widget, {required this.element});
+  ChildlessPaintedNode(super.widget, {required this.element});
 }
 
 abstract class SingleChildPaintedNode<T extends PaintedWidget,

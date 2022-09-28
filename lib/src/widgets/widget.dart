@@ -62,18 +62,26 @@ abstract class Node<T extends Widget> {
 }
 
 mixin ReassemblableNode<T extends Widget> on Node<T> {
+  final _reassemblyDebouncer = Debouncer();
+
   void reassemble();
+
+  void enqueueReassembly() {
+    _reassemblyDebouncer.enqueueTask(() {
+      if (_isActive) reassemble();
+    });
+  }
 
   @override
   void widgetDidUpdate(final T oldWidget) {
     super.widgetDidUpdate(oldWidget);
-    reassemble();
+    enqueueReassembly();
   }
 
   @override
   void dependenciesDidUpdate() {
     super.dependenciesDidUpdate();
-    reassemble();
+    enqueueReassembly();
   }
 }
 
@@ -126,12 +134,14 @@ abstract class MultiChildNode<T extends Widget> extends Node<T>
   void initialize() {
     super.initialize();
 
-    childNodes = [
-      for (final newChildWidget in newChildWidgets)
-        newChildWidget.createNode()
-          ..parentNode = this
-          ..initialize()
-    ];
+    childNodes =
+        newChildWidgets.map((final child) => child.createNode()).toList();
+
+    for (final childNode in childNodes) {
+      childNode
+        ..parentNode = this
+        ..initialize();
+    }
   }
 
   @override
