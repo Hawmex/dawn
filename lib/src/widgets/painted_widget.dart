@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:dawn/animation.dart';
@@ -5,33 +6,37 @@ import 'package:dawn/core.dart';
 
 import 'widget.dart';
 
+typedef EventSubscriptionCallback<T extends html.Event> = void Function(
+  T event,
+);
+
 abstract class PaintedWidget extends Widget {
   final Style? style;
   final Animation? animation;
 
-  final EventListener<html.MouseEvent>? onTap;
+  final EventSubscriptionCallback<html.MouseEvent>? onTap;
 
-  final EventListener<html.PointerEvent>? onPointerDown;
-  final EventListener<html.PointerEvent>? onPointerUp;
-  final EventListener<html.PointerEvent>? onPointerEnter;
-  final EventListener<html.PointerEvent>? onPointerLeave;
-  final EventListener<html.PointerEvent>? onPointerMove;
-  final EventListener<html.PointerEvent>? onPointerCancel;
-  final EventListener<html.PointerEvent>? onPointerOver;
-  final EventListener<html.PointerEvent>? onPointerOut;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerDown;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerUp;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerEnter;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerLeave;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerMove;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerCancel;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerOver;
+  final EventSubscriptionCallback<html.PointerEvent>? onPointerOut;
 
-  final EventListener<html.MouseEvent>? onMouseDown;
-  final EventListener<html.MouseEvent>? onMouseUp;
-  final EventListener<html.MouseEvent>? onMouseEnter;
-  final EventListener<html.MouseEvent>? onMouseLeave;
-  final EventListener<html.MouseEvent>? onMouseMove;
-  final EventListener<html.MouseEvent>? onMouseOver;
-  final EventListener<html.MouseEvent>? onMouseOut;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseDown;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseUp;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseEnter;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseLeave;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseMove;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseOver;
+  final EventSubscriptionCallback<html.MouseEvent>? onMouseOut;
 
-  final EventListener<html.TouchEvent>? onTouchStart;
-  final EventListener<html.TouchEvent>? onTouchEnd;
-  final EventListener<html.TouchEvent>? onTouchMove;
-  final EventListener<html.TouchEvent>? onTouchCancel;
+  final EventSubscriptionCallback<html.TouchEvent>? onTouchStart;
+  final EventSubscriptionCallback<html.TouchEvent>? onTouchEnd;
+  final EventSubscriptionCallback<html.TouchEvent>? onTouchMove;
+  final EventSubscriptionCallback<html.TouchEvent>? onTouchCancel;
 
   const PaintedWidget({
     this.style,
@@ -66,30 +71,144 @@ abstract class PaintedWidget extends Widget {
 mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
   U get element;
 
+  final _eventSubscriptions = <StreamSubscription<html.Event>>[];
+
   late html.Animation? _animation;
 
+  void addEventSubscription<V extends html.Event>({
+    required final html.EventTarget target,
+    required final String type,
+    required final EventSubscriptionCallback<V>? callback,
+  }) {
+    if (callback != null) {
+      _eventSubscriptions.add(
+        element.on[type].listen(
+          (final event) => callback(event as V),
+        ),
+      );
+    }
+  }
+
   void initializeElement() {
-    element
-      ..addTypedEventListener('click', widget.onTap)
-      ..addTypedEventListener('pointerdown', widget.onPointerDown)
-      ..addTypedEventListener('pointerup', widget.onPointerUp)
-      ..addTypedEventListener('pointerenter', widget.onPointerEnter)
-      ..addTypedEventListener('pointerleave', widget.onPointerLeave)
-      ..addTypedEventListener('pointermove', widget.onPointerMove)
-      ..addTypedEventListener('pointercancel', widget.onPointerCancel)
-      ..addTypedEventListener('pointerover', widget.onPointerOver)
-      ..addTypedEventListener('pointerout', widget.onPointerOut)
-      ..addTypedEventListener('mousedown', widget.onMouseDown)
-      ..addTypedEventListener('mouseup', widget.onMouseUp)
-      ..addTypedEventListener('mouseenter', widget.onMouseEnter)
-      ..addTypedEventListener('mouseleave', widget.onMouseLeave)
-      ..addTypedEventListener('mousemove', widget.onMouseMove)
-      ..addTypedEventListener('mouseover', widget.onMouseOver)
-      ..addTypedEventListener('mouseout', widget.onMouseOut)
-      ..addTypedEventListener('touchstart', widget.onTouchStart)
-      ..addTypedEventListener('touchend', widget.onTouchEnd)
-      ..addTypedEventListener('touchmove', widget.onTouchMove)
-      ..addTypedEventListener('touchcancel', widget.onTouchCancel);
+    addEventSubscription(
+      target: element,
+      type: 'click',
+      callback: widget.onTap,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointerdown',
+      callback: widget.onPointerDown,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointerup',
+      callback: widget.onPointerUp,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointerenter',
+      callback: widget.onPointerEnter,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointerleave',
+      callback: widget.onPointerLeave,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointermove',
+      callback: widget.onPointerMove,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointercancel',
+      callback: widget.onPointerCancel,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointerover',
+      callback: widget.onPointerOver,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'pointerout',
+      callback: widget.onPointerOut,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mousedown',
+      callback: widget.onMouseDown,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mouseup',
+      callback: widget.onMouseUp,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mouseenter',
+      callback: widget.onMouseEnter,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mouseleave',
+      callback: widget.onMouseLeave,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mousemove',
+      callback: widget.onMouseMove,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mouseover',
+      callback: widget.onMouseOver,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'mouseout',
+      callback: widget.onMouseOut,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'touchstart',
+      callback: widget.onTouchStart,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'touchend',
+      callback: widget.onTouchEnd,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'touchmove',
+      callback: widget.onTouchMove,
+    );
+
+    addEventSubscription(
+      target: element,
+      type: 'touchcancel',
+      callback: widget.onTouchCancel,
+    );
 
     if (widget.style == null) {
       element.removeAttribute('style');
@@ -99,27 +218,9 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
   }
 
   void disposeElement() {
-    element
-      ..removeTypedEventListener('click', widget.onTap)
-      ..removeTypedEventListener('pointerdown', widget.onPointerDown)
-      ..removeTypedEventListener('pointerup', widget.onPointerUp)
-      ..removeTypedEventListener('pointerenter', widget.onPointerEnter)
-      ..removeTypedEventListener('pointerleave', widget.onPointerLeave)
-      ..removeTypedEventListener('pointermove', widget.onPointerMove)
-      ..removeTypedEventListener('pointercancel', widget.onPointerCancel)
-      ..removeTypedEventListener('pointerover', widget.onPointerOver)
-      ..removeTypedEventListener('pointerout', widget.onPointerOut)
-      ..removeTypedEventListener('mousedown', widget.onMouseDown)
-      ..removeTypedEventListener('mouseup', widget.onMouseUp)
-      ..removeTypedEventListener('mouseenter', widget.onMouseEnter)
-      ..removeTypedEventListener('mouseleave', widget.onMouseLeave)
-      ..removeTypedEventListener('mousemove', widget.onMouseMove)
-      ..removeTypedEventListener('mouseover', widget.onMouseOver)
-      ..removeTypedEventListener('mouseout', widget.onMouseOut)
-      ..removeTypedEventListener('touchstart', widget.onTouchStart)
-      ..removeTypedEventListener('touchend', widget.onTouchEnd)
-      ..removeTypedEventListener('touchmove', widget.onTouchMove)
-      ..removeTypedEventListener('touchcancel', widget.onTouchCancel);
+    for (final eventSubscription in _eventSubscriptions) {
+      eventSubscription.cancel();
+    }
   }
 
   @override

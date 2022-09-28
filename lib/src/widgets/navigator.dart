@@ -52,6 +52,7 @@ class _NavigatorState extends State<Navigator> {
   _NavigationAction _lastNavigationAction = _NavigationAction.none;
   final _modalsStack = <void Function()>[];
   late final _routesStack = [widget.child];
+  late final StreamSubscription<html.Event> _browserHistoryPopSubscription;
 
   int get _browserHistoryState => html.window.history.state as int;
 
@@ -135,15 +136,16 @@ class _NavigatorState extends State<Navigator> {
   @override
   void initialize() {
     super.initialize();
+    html.window.history.replaceState(1, '', null);
 
-    html.window
-      ..history.replaceState(1, '', null)
-      ..addTypedEventListener('popstate', _browserHistoryPopHandler);
+    _browserHistoryPopSubscription = html.window.on['popstate'].listen(
+      (final event) => _browserHistoryPopHandler(event as html.PopStateEvent),
+    );
   }
 
   @override
   void dispose() {
-    html.window.removeTypedEventListener('popstate', _browserHistoryPopHandler);
+    _browserHistoryPopSubscription.cancel();
     super.dispose();
   }
 

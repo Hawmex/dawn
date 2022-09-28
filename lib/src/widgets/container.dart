@@ -1,14 +1,12 @@
 import 'dart:html' as html;
 
-import 'package:dawn/core.dart';
-
 import 'painted_widget.dart';
 import 'widget.dart';
 
 class Container extends PaintedWidget {
   final List<Widget> children;
 
-  final EventListener? onScroll;
+  final EventSubscriptionCallback? onScroll;
 
   const Container(
     this.children, {
@@ -51,12 +49,11 @@ class ContainerNode extends MultiChildPaintedNode<Container, html.DivElement> {
   @override
   void initializeElement() {
     super.initializeElement();
-    element.addTypedEventListener('scroll', widget.onScroll);
-  }
 
-  @override
-  void disposeElement() {
-    element.removeTypedEventListener('scroll', widget.onScroll);
-    super.disposeElement();
+    addEventSubscription(
+      target: element,
+      type: 'scroll',
+      callback: widget.onScroll,
+    );
   }
 }

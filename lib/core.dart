@@ -9,4 +9,3 @@ export 'src/core/case_transformable_string.dart';
 export 'src/core/debouncer.dart';
 export 'src/core/store.dart';
 export 'src/core/style.dart';
-export 'src/core/typed_event_target.dart';

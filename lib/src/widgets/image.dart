@@ -1,14 +1,12 @@
 import 'dart:html' as html;
 
-import 'package:dawn/core.dart';
-
 import 'painted_widget.dart';
 
 class Image extends PaintedWidget {
   final String source;
   final String? alternativeText;
 
-  final EventListener<html.ErrorEvent>? onError;
+  final EventSubscriptionCallback<html.ErrorEvent>? onError;
 
   const Image(
     this.source, {
@@ -50,15 +48,14 @@ class ImageNode extends ChildlessPaintedNode<Image, html.ImageElement> {
   void initializeElement() {
     super.initializeElement();
 
+    addEventSubscription(
+      target: element,
+      type: 'error',
+      callback: widget.onError,
+    );
+
     element
-      ..addTypedEventListener('error', widget.onError)
       ..src = widget.source
       ..alt = widget.alternativeText ?? '';
-  }
-
-  @override
-  void disposeElement() {
-    element.removeTypedEventListener('error', widget.onError);
-    super.disposeElement();
   }
 }
