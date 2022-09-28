@@ -1,16 +1,13 @@
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'stateful_widget.dart';
 import 'widget.dart';
 
-/// A widget that is rebuilt with the latest snapshot of a [Future].
 class FutureBuilder<T> extends StatefulWidget {
   final AsyncWidgetBuilder<T> builder;
   final Future<T>? future;
   final T? initialData;
 
-  /// Creates a new [FutureBuilder] that is rebuilt with the latest snapshot of
-  /// a [Future].
   const FutureBuilder(this.builder, {this.future, this.initialData, super.key});
 
   @override
@@ -72,8 +69,8 @@ class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
   }
 
   @override
-  void didWidgetUpdate(final FutureBuilder<T> oldWidget) {
-    super.didWidgetUpdate(oldWidget);
+  void widgetDidUpdate(final FutureBuilder<T> oldWidget) {
+    super.widgetDidUpdate(oldWidget);
 
     if (widget.future != oldWidget.future) {
       if (_activeCallbackIdentity != null) {

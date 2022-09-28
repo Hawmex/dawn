@@ -1,24 +1,19 @@
 import 'dart:async';
 
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'provider.dart';
 import 'stateful_widget.dart';
 import 'widget.dart';
 
-/// The type of builder function used in [ConsumerBuilder].
 typedef ConsumerWidgetBuilder<T extends Store> = Widget Function(
   BuildContext context,
   T store,
 );
 
-/// A widget that is rebuilt with the latest state of a [Store] provided by a
-/// [Provider].
 class ConsumerBuilder<T extends Store> extends StatefulWidget {
   final ConsumerWidgetBuilder<T> builder;
 
-  /// Creates a new [ConsumerBuilder] which is a widget that is rebuilt with the
-  /// latest state of a [Store] provided by a [Provider].
   const ConsumerBuilder(this.builder, {super.key});
 
   @override
@@ -37,8 +32,8 @@ class _ConsumerBuilderState<T extends Store> extends State<ConsumerBuilder<T>> {
   }
 
   @override
-  void didDependenciesUpdate() {
-    super.didDependenciesUpdate();
+  void dependenciesDidUpdate() {
+    super.dependenciesDidUpdate();
     _subscription.cancel();
     _store = context.dependOnProvidedStoreOfExactType<T>();
     _subscription = _store.listen(() => setState(() {}));

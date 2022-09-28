@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
-import '../foundation/cli_message_printer.dart';
-import '../foundation/process_runner.dart';
+import '../core/cli_message_printer.dart';
+import '../core/process_runner.dart';
 
 class CreateCommand extends Command<void> {
   @override

@@ -1,18 +1,15 @@
 import 'dart:async';
 
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'stateful_widget.dart';
 import 'widget.dart';
 
-/// A widget that is rebuilt with the latest snapshot of a [Stream].
 class StreamBuilder<T> extends StatefulWidget {
   final AsyncWidgetBuilder<T> builder;
   final Stream<T>? stream;
   final T? initialData;
 
-  /// Creates a new [StreamBuilder] that is rebuilt with the latest snapshot of
-  /// a [Stream].
   const StreamBuilder(this.builder, {this.stream, this.initialData, super.key});
 
   @override
@@ -70,8 +67,8 @@ class _StreamBuilderState<T> extends State<StreamBuilder<T>> {
   }
 
   @override
-  void didWidgetUpdate(final StreamBuilder<T> oldWidget) {
-    super.didWidgetUpdate(oldWidget);
+  void widgetDidUpdate(final StreamBuilder<T> oldWidget) {
+    super.widgetDidUpdate(oldWidget);
 
     if (widget.stream != oldWidget.stream) {
       if (_subscription != null) {

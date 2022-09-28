@@ -1,17 +1,15 @@
 import 'dart:html' as html;
 
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'painted_widget.dart';
 
-/// A widget that renders an [html.ImageElement].
 class Image extends PaintedWidget {
   final String source;
   final String? alternativeText;
 
   final EventListener<html.ErrorEvent>? onError;
 
-  /// Creates a new [Image] that renders an [html.ImageElement].
   const Image(
     this.source, {
     this.alternativeText,
@@ -45,7 +43,7 @@ class Image extends PaintedWidget {
   ImageNode createNode() => ImageNode(this);
 }
 
-class ImageNode extends PaintedNode<Image, html.ImageElement> {
+class ImageNode extends NoChildPaintedNode<Image, html.ImageElement> {
   ImageNode(super.widget) : super(element: html.ImageElement());
 
   @override
@@ -53,14 +51,14 @@ class ImageNode extends PaintedNode<Image, html.ImageElement> {
     super.initializeElement();
 
     element
-      ..addListener('error', widget.onError)
+      ..addTypedEventListener('error', widget.onError)
       ..src = widget.source
       ..alt = widget.alternativeText ?? '';
   }
 
   @override
   void disposeElement() {
-    element.removeListener('error', widget.onError);
+    element.removeTypedEventListener('error', widget.onError);
     super.disposeElement();
   }
 }

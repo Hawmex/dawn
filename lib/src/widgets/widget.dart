@@ -1,62 +1,44 @@
 import 'dart:async';
 
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'inherited_widget.dart';
 
-/// The base class for all of Dawn widgets.
-///
-/// **Notice:** Unlike Flutter, [key] is a [String] in Dawn.
 abstract class Widget {
   final String? key;
 
   const Widget({this.key});
 
-  /// Checks if two widgets match during a node tree update.
-  ///
-  /// - If the return value is `true`, the owner [Node] is updated.
-  ///
-  /// - If the return value is `false`, the owner [Node] is replaced by a new
-  /// one.
+  Node createNode();
+
   bool matches(final Widget otherWidget) =>
       runtimeType == otherWidget.runtimeType && key == otherWidget.key;
-
-  /// Returns instantiation of this [Widget] at a particular location in the
-  /// tree.
-  Node createNode();
 }
 
-/// An instantiation of a [Widget] at a particular location in the tree.
 abstract class Node<T extends Widget> {
-  T _widget;
   bool _isActive = false;
-  final _subtreeUpdateDebouncer = Debouncer();
+  T _widget;
+
   late final context = BuildContext(this);
   late final Node? parentNode;
 
   Node(this._widget);
 
+  List<Node> get parentNodes =>
+      parentNode == null ? [] : [parentNode!, ...parentNode!.parentNodes];
+
   T get widget => _widget;
 
-  /// If [widget] is updated while this [Node] is present in the tree,
-  /// [willWidgetUpdate] and [didWidgetUpdate] are called.
   set widget(final T newWidget) {
     final oldWidget = widget;
 
     if (newWidget != oldWidget) {
-      if (_isActive) willWidgetUpdate(newWidget);
+      if (_isActive) widgetWillUpdate(newWidget);
       _widget = newWidget;
-      if (_isActive) didWidgetUpdate(oldWidget);
+      if (_isActive) widgetDidUpdate(oldWidget);
     }
   }
 
-  List<Node> get parentNodes =>
-      parentNode == null ? [] : [parentNode!, ...parentNode!.parentNodes];
-
-  /// Returns the closest parent [InheritedWidget] with the `runtimeType` equal
-  /// to [U].
-  ///
-  /// Also, if [InheritedWidget] is updated, [didDependenciesUpdate] is called.
   U dependOnInheritedWidgetOfExactType<U extends InheritedWidget>() {
     final inheritedNode = parentNodes.firstWhere(
       (final parentNode) => parentNode.widget.runtimeType == U,
@@ -66,40 +48,155 @@ abstract class Node<T extends Widget> {
 
     subscription = inheritedNode.listen(() {
       subscription.cancel();
-      if (_isActive) didDependenciesUpdate();
+      if (_isActive) dependenciesDidUpdate();
     });
 
     return inheritedNode.widget as U;
   }
 
-  /// Debounces multiple calls to [updateSubtree].
-  void enqueueSubtreeUpdate() {
-    _subtreeUpdateDebouncer.enqueueTask(() {
-      if (_isActive) updateSubtree();
-    });
+  void initialize() => _isActive = true;
+  void widgetWillUpdate(final T newWidget) {}
+  void widgetDidUpdate(final T oldWidget) {}
+  void dependenciesDidUpdate() {}
+  void dispose() => _isActive = false;
+}
+
+mixin ReassemblableNode<T extends Widget> on Node<T> {
+  void reassemble();
+
+  @override
+  void widgetDidUpdate(final T oldWidget) {
+    super.widgetDidUpdate(oldWidget);
+    reassemble();
   }
 
-  /// Called every time the [widget] or a dependency is updated.
-  void updateSubtree();
+  @override
+  void dependenciesDidUpdate() {
+    super.dependenciesDidUpdate();
+    reassemble();
+  }
+}
 
-  /// Called after this [Node] is added to the tree.
-  ///
-  /// *Flowing downwards*
-  void initialize() => _isActive = true;
+abstract class SingleChildNode<T extends Widget> extends Node<T>
+    with ReassemblableNode<T> {
+  late Node childNode;
 
-  /// Called before the [widget] is updated. Use this to dispose the previous
-  /// [widget].
-  void willWidgetUpdate(final T newWidget) {}
+  SingleChildNode(super.widget);
 
-  /// Called after the [widget] is updated. Use this to initialize the new
-  /// [widget] (add event listeners for example).
-  void didWidgetUpdate(final T oldWidget) => enqueueSubtreeUpdate();
+  Widget get newChildWidget;
 
-  /// Called after the dependencies are updated.
-  void didDependenciesUpdate() => enqueueSubtreeUpdate();
+  @override
+  void initialize() {
+    super.initialize();
 
-  /// Called after this [Node] and all of its children are removed from the tree.
-  ///
-  /// *Flowing upwards*
-  void dispose() => _isActive = false;
+    childNode = newChildWidget.createNode()
+      ..parentNode = this
+      ..initialize();
+  }
+
+  @override
+  void reassemble() {
+    if (newChildWidget.matches(childNode.widget)) {
+      childNode.widget = newChildWidget;
+    } else {
+      childNode.dispose();
+
+      childNode = newChildWidget.createNode()
+        ..parentNode = this
+        ..initialize();
+    }
+  }
+
+  @override
+  void dispose() {
+    childNode.dispose();
+    super.dispose();
+  }
+}
+
+abstract class MultiChildNode<T extends Widget> extends Node<T>
+    with ReassemblableNode<T> {
+  late List<Node> childNodes;
+
+  MultiChildNode(super.widget);
+
+  List<Widget> get newChildWidgets;
+
+  @override
+  void initialize() {
+    super.initialize();
+
+    childNodes = [
+      for (final newChildWidget in newChildWidgets)
+        newChildWidget.createNode()
+          ..parentNode = this
+          ..initialize()
+    ];
+  }
+
+  @override
+  void reassemble() {
+    final oldChildNodes = childNodes;
+
+    final newChildNodes = newChildWidgets
+        .map((final newChildWidget) => newChildWidget.createNode())
+        .toList();
+
+    int exactWidgetsSearchStartIndex = 0;
+    int matchingWidgetsSearchStartIndex = 0;
+
+    for (final oldChildNode in oldChildNodes) {
+      final index = newChildNodes.indexWhere(
+        (final newChildNode) => newChildNode.widget == oldChildNode.widget,
+        exactWidgetsSearchStartIndex,
+      );
+
+      if (index > -1) {
+        newChildNodes[index] = oldChildNode;
+        exactWidgetsSearchStartIndex = index + 1;
+      }
+    }
+
+    for (final oldChildNode in oldChildNodes) {
+      if (!newChildNodes.contains(oldChildNode)) {
+        final index = newChildNodes.indexWhere(
+          (final newChildNode) =>
+              !oldChildNodes.contains(newChildNode) &&
+              newChildNode.widget.matches(oldChildNode.widget),
+          matchingWidgetsSearchStartIndex,
+        );
+
+        if (index > -1) {
+          final newChildNode = newChildNodes[index];
+
+          oldChildNode.widget = newChildNode.widget;
+          newChildNodes[index] = oldChildNode;
+          matchingWidgetsSearchStartIndex = index + 1;
+        }
+      }
+    }
+
+    for (final childNode in childNodes) {
+      if (!newChildNodes.contains(childNode)) childNode.dispose();
+    }
+
+    childNodes = newChildNodes;
+
+    for (final childNode in childNodes) {
+      if (!oldChildNodes.contains(childNode)) {
+        childNode
+          ..parentNode = this
+          ..initialize();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final childNode in childNodes) {
+      childNode.dispose();
+    }
+
+    super.dispose();
+  }
 }

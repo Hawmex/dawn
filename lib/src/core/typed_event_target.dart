@@ -2,7 +2,6 @@ import 'dart:html' as html;
 
 import 'package:js/js.dart';
 
-/// A helper for defining type-specific event listeners.
 typedef EventListener<T extends html.Event> = void Function(T event);
 
 @JS('__dawnAddEventListener__')
@@ -21,10 +20,8 @@ external final void Function(
   dynamic useCapture,
 ) _removeEventListener;
 
-/// An extension that provides [addListener] and [removeListener].
-extension TypedEventListeners on html.EventTarget {
-  /// Similar to [addEventListener], but has a type argument.
-  void addListener<T extends html.Event>(
+extension TypedEventTarget on html.EventTarget {
+  void addTypedEventListener<T extends html.Event>(
     final String type,
     final EventListener<T>? listener, {
     final bool? useCapture,
@@ -34,8 +31,7 @@ extension TypedEventListeners on html.EventTarget {
     }
   }
 
-  /// Similar to [removeEventListener], but has a type argument.
-  void removeListener<T extends html.Event>(
+  void removeTypedEventListener<T extends html.Event>(
     final String type,
     final EventListener<T>? listener, {
     final bool? useCapture,

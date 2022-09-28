@@ -1,49 +1,17 @@
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'widget.dart';
 
-/// A widget that does not require a mutable state.
 abstract class StatelessWidget extends Widget with Buildable {
-  /// Creates a new [StatelessWidget] that does not require a mutable state.
   const StatelessWidget({super.key});
 
   @override
   StatelessNode createNode() => StatelessNode(this);
 }
 
-class StatelessNode extends Node<StatelessWidget> {
-  /// The child of this [Node] in the tree.
-  late Node childNode;
-
+class StatelessNode<T extends StatelessWidget> extends SingleChildNode<T> {
   StatelessNode(super.widget);
 
   @override
-  void updateSubtree() {
-    final newChildWidget = widget.build(context);
-
-    if (newChildWidget.matches(childNode.widget)) {
-      childNode.widget = newChildWidget;
-    } else {
-      childNode.dispose();
-
-      childNode = newChildWidget.createNode()
-        ..parentNode = this
-        ..initialize();
-    }
-  }
-
-  @override
-  void initialize() {
-    super.initialize();
-
-    childNode = widget.build(context).createNode()
-      ..parentNode = this
-      ..initialize();
-  }
-
-  @override
-  void dispose() {
-    childNode.dispose();
-    super.dispose();
-  }
+  Widget get newChildWidget => widget.build(context);
 }

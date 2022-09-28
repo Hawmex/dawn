@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:dawn/animation.dart';
-import 'package:dawn/foundation.dart';
+import 'package:dawn/core.dart';
 
 import 'container.dart';
 import 'future_builder.dart';
@@ -12,51 +12,28 @@ import 'widget.dart';
 
 final _navigatorState = _NavigatorState();
 
-/// Navigation functions that are added to `context`.
 extension Navigation on BuildContext {
-  /// Pushes a new route synchronously.
   void pushRoute({required final StatelessWidgetBuilder builder}) =>
       _navigatorState._pushRoute(builder: builder);
 
-  /// Pushes a new route lazily. A placeholder widget is rendered while the
-  /// route is being loaded.
   void pushRouteLazily({
     required final Future<dynamic> Function() loader,
     required final StatelessWidgetBuilder builder,
   }) =>
       _navigatorState._pushRouteLazily(loader: loader, builder: builder);
 
-  /// Pushes a new modal to the navigation state.
   void pushModal({required final void Function() onPop}) =>
       _navigatorState._pushModal(onPop: onPop);
 
-  /// Pops the latest modal. If all modals are popped, the current route
-  /// is popped.
   void pop() => _navigatorState._pop();
 }
 
-/// A navigation outlet.
-///
-/// **Notice:** Only a single instance of [Navigator] should be created in an
-/// app.
 class Navigator extends StatefulWidget {
   final Widget child;
-
-  /// This widget is displayed while a route is being loaded through
-  /// [Navigation.pushRouteLazily]
   final Widget loading;
-
-  /// The animation that should be applied to the child after it's been pushed.
   final Animation? pushAnimation;
-
-  /// The animation that should be applied to the child after the previous one
-  /// was popped.
   final Animation? popAnimation;
 
-  /// Creates a new [Navigator] that is a navigation outlet.
-  ///
-  /// **Notice:** Only a single instance of [Navigator] should be created in an
-  /// app.
   const Navigator({
     required this.child,
     this.loading = const Container([]),
@@ -161,12 +138,12 @@ class _NavigatorState extends State<Navigator> {
 
     html.window
       ..history.replaceState(1, '', null)
-      ..addListener('popstate', _browserHistoryPopHandler);
+      ..addTypedEventListener('popstate', _browserHistoryPopHandler);
   }
 
   @override
   void dispose() {
-    html.window.removeListener('popstate', _browserHistoryPopHandler);
+    html.window.removeTypedEventListener('popstate', _browserHistoryPopHandler);
     super.dispose();
   }
 
