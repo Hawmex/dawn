@@ -35,7 +35,7 @@ class StatefulNode<T extends StatefulWidget> extends SingleChildNode<T> {
   StatefulNode(super.widget);
 
   @override
-  Widget get newChildWidget => _state.build(context);
+  Widget get childWidget => _state.build(context);
 
   @override
   void initialize() {

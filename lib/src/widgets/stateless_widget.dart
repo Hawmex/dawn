@@ -13,5 +13,5 @@ class StatelessNode<T extends StatelessWidget> extends SingleChildNode<T> {
   StatelessNode(super.widget);
 
   @override
-  Widget get newChildWidget => widget.build(context);
+  Widget get childWidget => widget.build(context);
 }

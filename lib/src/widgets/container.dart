@@ -44,16 +44,11 @@ class ContainerNode extends MultiChildPaintedNode<Container, html.DivElement> {
   ContainerNode(super.widget) : super(element: html.DivElement());
 
   @override
-  List<Widget> get newChildWidgets => widget.children;
+  List<Widget> get childWidgets => widget.children;
 
   @override
   void initializeElement() {
     super.initializeElement();
-
-    addEventSubscription(
-      target: element,
-      type: 'scroll',
-      callback: widget.onScroll,
-    );
+    addEventSubscription('scroll', widget.onScroll);
   }
 }

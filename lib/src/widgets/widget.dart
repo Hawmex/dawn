@@ -91,25 +91,25 @@ abstract class SingleChildNode<T extends Widget> extends Node<T>
 
   SingleChildNode(super.widget);
 
-  Widget get newChildWidget;
+  Widget get childWidget;
 
   @override
   void initialize() {
     super.initialize();
 
-    childNode = newChildWidget.createNode()
+    childNode = childWidget.createNode()
       ..parentNode = this
       ..initialize();
   }
 
   @override
   void reassemble() {
-    if (newChildWidget.matches(childNode.widget)) {
-      childNode.widget = newChildWidget;
+    if (childWidget.matches(childNode.widget)) {
+      childNode.widget = childWidget;
     } else {
       childNode.dispose();
 
-      childNode = newChildWidget.createNode()
+      childNode = childWidget.createNode()
         ..parentNode = this
         ..initialize();
     }
@@ -128,14 +128,15 @@ abstract class MultiChildNode<T extends Widget> extends Node<T>
 
   MultiChildNode(super.widget);
 
-  List<Widget> get newChildWidgets;
+  List<Widget> get childWidgets;
 
   @override
   void initialize() {
     super.initialize();
 
-    childNodes =
-        newChildWidgets.map((final child) => child.createNode()).toList();
+    childNodes = childWidgets
+        .map((final childWidget) => childWidget.createNode())
+        .toList();
 
     for (final childNode in childNodes) {
       childNode
@@ -148,8 +149,8 @@ abstract class MultiChildNode<T extends Widget> extends Node<T>
   void reassemble() {
     final oldChildNodes = childNodes;
 
-    final newChildNodes = newChildWidgets
-        .map((final newChildWidget) => newChildWidget.createNode())
+    final newChildNodes = childWidgets
+        .map((final childWidget) => childWidget.createNode())
         .toList();
 
     int exactWidgetsSearchStartIndex = 0;

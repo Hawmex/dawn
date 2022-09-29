@@ -48,11 +48,7 @@ class ImageNode extends ChildlessPaintedNode<Image, html.ImageElement> {
   void initializeElement() {
     super.initializeElement();
 
-    addEventSubscription(
-      target: element,
-      type: 'error',
-      callback: widget.onError,
-    );
+    addEventSubscription('error', widget.onError);
 
     element
       ..src = widget.source

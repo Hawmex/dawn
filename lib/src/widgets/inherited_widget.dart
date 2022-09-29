@@ -19,7 +19,7 @@ class InheritedNode<T extends InheritedWidget> extends SingleChildNode<T> {
   InheritedNode(super.widget);
 
   @override
-  Widget get newChildWidget => widget.child;
+  Widget get childWidget => widget.child;
 
   StreamSubscription<void> listen(final void Function() onUpdate) =>
       _updateStreamController.stream.listen((final event) => onUpdate());

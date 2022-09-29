@@ -26,7 +26,6 @@ class Animation {
     this.iterations = 1,
   });
 
-  /// Applies this [Animation] to the given [element].
   html.Animation runOnElement(final html.Element element) {
     return element.animate(
       keyframes.map((final keyframe) => keyframe.toMap()),
