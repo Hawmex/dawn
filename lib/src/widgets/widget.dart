@@ -19,6 +19,7 @@ abstract class Node<T extends Widget> {
   bool _isActive = false;
   T _widget;
 
+  late final _dependencySubscriptions = <StreamSubscription<void>>{};
   late final context = BuildContext(this);
   late final Node? parentNode;
 
@@ -33,9 +34,9 @@ abstract class Node<T extends Widget> {
     final oldWidget = widget;
 
     if (newWidget != oldWidget) {
-      if (_isActive) widgetWillUpdate(newWidget);
+      widgetWillUpdate(newWidget);
       _widget = newWidget;
-      if (_isActive) widgetDidUpdate(oldWidget);
+      widgetDidUpdate(oldWidget);
     }
   }
 
@@ -48,8 +49,10 @@ abstract class Node<T extends Widget> {
 
     subscription = inheritedNode.listen(() {
       subscription.cancel();
-      if (_isActive) dependenciesDidUpdate();
+      dependenciesDidUpdate();
     });
+
+    _dependencySubscriptions.add(subscription);
 
     return inheritedNode.widget as U;
   }
@@ -58,7 +61,15 @@ abstract class Node<T extends Widget> {
   void widgetWillUpdate(final T newWidget) {}
   void widgetDidUpdate(final T oldWidget) {}
   void dependenciesDidUpdate() {}
-  void dispose() => _isActive = false;
+  void dispose() {
+    _isActive = false;
+
+    for (final dependencySubscription in _dependencySubscriptions) {
+      dependencySubscription.cancel();
+    }
+
+    _dependencySubscriptions.clear();
+  }
 }
 
 mixin ReassemblableNode<T extends Widget> on Node<T> {

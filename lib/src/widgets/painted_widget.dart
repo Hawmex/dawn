@@ -71,7 +71,7 @@ abstract class PaintedWidget extends Widget {
 mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
   U get element;
 
-  final _eventSubscriptions = <StreamSubscription<html.Event>>[];
+  final _eventSubscriptions = <StreamSubscription<html.Event>>{};
 
   late html.Animation? _animation;
 
@@ -121,6 +121,8 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
     for (final eventSubscription in _eventSubscriptions) {
       eventSubscription.cancel();
     }
+
+    _eventSubscriptions.clear();
   }
 
   @override

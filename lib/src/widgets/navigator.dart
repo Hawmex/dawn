@@ -136,6 +136,7 @@ class _NavigatorState extends State<Navigator> {
   @override
   void initialize() {
     super.initialize();
+
     html.window.history.replaceState(1, '', null);
 
     _browserHistoryPopSubscription = html.window.on['popstate'].listen(
