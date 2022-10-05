@@ -5,11 +5,13 @@ import 'package:dawn/core.dart';
 import 'stateful_widget.dart';
 import 'widget.dart';
 
+/// A [Widget] that is rebuilt with the latest snapshot of a [Stream].
 class StreamBuilder<T> extends StatefulWidget {
   final AsyncWidgetBuilder<T> builder;
   final Stream<T>? stream;
   final T? initialData;
 
+  /// Creates a new instance of [StreamBuilder].
   const StreamBuilder(this.builder, {this.stream, this.initialData, super.key});
 
   @override

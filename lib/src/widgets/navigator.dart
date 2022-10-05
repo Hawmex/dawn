@@ -12,28 +12,47 @@ import 'widget.dart';
 
 final _navigatorState = _NavigatorState();
 
+/// The navigation functions that are added to [BuildContext].
 extension Navigation on BuildContext {
+  /// Pushes a new route synchronously.
   void pushRoute({required final StatelessWidgetBuilder builder}) =>
       _navigatorState._pushRoute(builder: builder);
 
+  /// Pushes a new route lazily. [Navigator.loading] is rendered while the route
+  /// is being loaded.
   void pushRouteLazily({
     required final Future<dynamic> Function() loader,
     required final StatelessWidgetBuilder builder,
   }) =>
       _navigatorState._pushRouteLazily(loader: loader, builder: builder);
 
+  /// Pushes a new modal to the navigation state.
   void pushModal({required final void Function() onPop}) =>
       _navigatorState._pushModal(onPop: onPop);
 
+  /// Pops the latest modal. If all modals are popped, the current route
+  /// is popped.
   void pop() => _navigatorState._pop();
 }
 
+/// A navigation outlet.
+///
+/// **Notice:** Only a single instance of [Navigator] should be created in an
+/// app.
 class Navigator extends StatefulWidget {
   final Widget child;
+
+  /// The widget that should be displayed when a lazy route is being loaded.
   final Widget loading;
+
+  /// The animation that should be applied to the child after it's been pushed.
   final Animation? pushAnimation;
+
+  /// The animation that should be applied to the child after the previous one
+  /// was popped.
   final Animation? popAnimation;
 
+  /// Creates a new instance of [Navigator].
   const Navigator({
     required this.child,
     this.loading = const Container([]),

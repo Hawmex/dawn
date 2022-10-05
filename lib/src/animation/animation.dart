@@ -1,10 +1,13 @@
 import 'dart:html' as html;
 
+import 'package:dawn/widgets.dart';
+
 import 'animation_direction.dart';
 import 'animation_fill_mode.dart';
 import 'easing.dart';
 import 'keyframe.dart';
 
+/// This class can be used to add animations to [PaintedWidget]'s instances.
 class Animation {
   final List<Keyframe> keyframes;
   final Duration duration;
@@ -15,6 +18,7 @@ class Animation {
   final AnimationFillMode fillMode;
   final double iterations;
 
+  /// Creates a new [Animation] instance.
   const Animation({
     required this.keyframes,
     this.duration = Duration.zero,
@@ -26,6 +30,7 @@ class Animation {
     this.iterations = 1,
   });
 
+  /// Runs this animation on the provided [element].
   html.Animation runOnElement(final html.Element element) {
     return element.animate(
       keyframes.map((final keyframe) => keyframe.toMap()),

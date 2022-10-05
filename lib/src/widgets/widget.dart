@@ -4,17 +4,29 @@ import 'package:dawn/core.dart';
 
 import 'inherited_widget.dart';
 
+/// The base class for all of Dawn's widgets.
+///
+/// **Notice:** Unlike Flutter, [key] is a [String] in Dawn.
 abstract class Widget {
   final String? key;
 
   const Widget({this.key});
 
+  /// Returns a [Node] corresponding to this [Widget] at a particular location
+  /// in the [Node] tree.
   Node createNode();
 
+  /// Checks if two widgets match during a [ReassemblableNode] reassembly.
+  ///
+  /// - If the return value is `true`, the child [Node] is updated.
+  ///
+  /// - If the return value is `false`, the child [Node] is replaced by a new
+  ///   one.
   bool matches(final Widget otherWidget) =>
       runtimeType == otherWidget.runtimeType && key == otherWidget.key;
 }
 
+/// An instantiation of a [Widget] at a particular location in the [Node] tree.
 abstract class Node<T extends Widget> {
   bool _isActive = false;
   T _widget;
@@ -30,6 +42,8 @@ abstract class Node<T extends Widget> {
 
   T get widget => _widget;
 
+  /// If [widget] is updated while this [Node] is present in the [Node] tree,
+  /// [widgetWillUpdate] and [widgetDidUpdate] are called.
   set widget(final T newWidget) {
     final oldWidget = widget;
 
@@ -40,6 +54,9 @@ abstract class Node<T extends Widget> {
     }
   }
 
+  /// Returns the nearest parent [InheritedWidget] with the exact type [U].
+  ///
+  /// Also, if [U] is updated, [dependenciesDidUpdate] is called.
   U dependOnInheritedWidgetOfExactType<U extends InheritedWidget>() {
     final inheritedNode = parentNodes.firstWhere(
       (final parentNode) => parentNode.widget.runtimeType == U,
@@ -57,10 +74,25 @@ abstract class Node<T extends Widget> {
     return inheritedNode.widget as U;
   }
 
+  /// Called after this [Node] is added to the [Node] tree.
+  ///
+  /// *Flowing downwards*
   void initialize() => _isActive = true;
+
+  /// Called before the [widget] is updated. Use this to remove references to
+  /// the previous widget.
   void widgetWillUpdate(final T newWidget) {}
+
+  /// Called after the [widget] is updated. Use this to initialize the new
+  /// [widget].
   void widgetDidUpdate(final T oldWidget) {}
+
+  /// Called after the dependencies are updated.
   void dependenciesDidUpdate() {}
+
+  /// Called after this [Node] is completely removed from the [Node] tree.
+  ///
+  /// *Flowing upwards*
   void dispose() {
     _isActive = false;
 
@@ -72,11 +104,14 @@ abstract class Node<T extends Widget> {
   }
 }
 
+/// A [Node] with a child or multiple children in the [Node] tree.
 mixin ReassemblableNode<T extends Widget> on Node<T> {
   final _reassemblyDebouncer = Debouncer();
 
+  /// Updates or replaces this [ReassemblableNode]'s children.
   void reassemble();
 
+  /// Debounces multiple calls to [reassemble].
   void enqueueReassembly() {
     _reassemblyDebouncer.enqueueTask(() {
       if (_isActive) reassemble();
@@ -96,6 +131,7 @@ mixin ReassemblableNode<T extends Widget> on Node<T> {
   }
 }
 
+/// A [ReassemblableNode] with only one child in the [Node] tree.
 abstract class SingleChildNode<T extends Widget> extends Node<T>
     with ReassemblableNode<T> {
   late Node childNode;
@@ -133,6 +169,7 @@ abstract class SingleChildNode<T extends Widget> extends Node<T>
   }
 }
 
+/// A [ReassemblableNode] with multiple children in the [Node] tree.
 abstract class MultiChildNode<T extends Widget> extends Node<T>
     with ReassemblableNode<T> {
   late List<Node> childNodes;

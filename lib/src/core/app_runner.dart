@@ -4,6 +4,7 @@ import 'package:js/js.dart';
 @JS('__dawnAppNode__')
 external Node? _appNode;
 
+/// Attaches the given [app] to the document's body by initializing it.
 void runApp(final Widget app) {
   print(r'''
    _____     __          ___   _ 

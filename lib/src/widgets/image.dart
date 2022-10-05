@@ -1,13 +1,16 @@
 import 'dart:html' as html;
 
 import 'painted_widget.dart';
+import 'widget.dart';
 
+/// A [Widget] that paints an [html.ImageElement].
 class Image extends PaintedWidget {
   final String source;
   final String? alternativeText;
 
   final EventSubscriptionCallback<html.ErrorEvent>? onError;
 
+  /// Creates a new instance of [Image].
   const Image(
     this.source, {
     this.alternativeText,
@@ -41,7 +44,9 @@ class Image extends PaintedWidget {
   ImageNode createNode() => ImageNode(this);
 }
 
+/// A [Node] corresponding to [Image].
 class ImageNode extends ChildlessPaintedNode<Image, html.ImageElement> {
+  /// Creates a new instance of [ImageNode].
   ImageNode(super.widget) : super(element: html.ImageElement());
 
   @override

@@ -11,7 +11,7 @@ tl;dr keep the following guidelines in mind.
   kit packages by either using the essential ones in the build function or
   extending any of the available `Node` classes. For example, `Button` can be
   created by adding an event listener to `Text`, while you can create `Video`
-  with `VideoNode` that extends the `PaintedNode`. I made this decision due to
+  with `VideoNode` that uses the `PaintedNode`. I made this decision due to
   these reasons:
   1. Each design system can have an implementation of `Video`, for example,
      according to its guidelines.

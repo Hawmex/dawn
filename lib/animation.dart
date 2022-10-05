@@ -1,3 +1,4 @@
+/// This library provides Dawn's animation system and its APIs.
 library dawn.animation;
 
 export 'src/animation/animation.dart';

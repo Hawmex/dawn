@@ -3,6 +3,7 @@ import 'dart:html' as html;
 import 'painted_widget.dart';
 import 'widget.dart';
 
+/// A [Widget] that paints an [html.DivElement].
 class Container extends PaintedWidget {
   final List<Widget> children;
 
@@ -40,7 +41,9 @@ class Container extends PaintedWidget {
   ContainerNode createNode() => ContainerNode(this);
 }
 
+/// A [Node] corresponding to [Container].
 class ContainerNode extends MultiChildPaintedNode<Container, html.DivElement> {
+  /// Creates a new instance of [ContainerNode].
   ContainerNode(super.widget) : super(element: html.DivElement());
 
   @override

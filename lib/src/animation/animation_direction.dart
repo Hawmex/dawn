@@ -1,3 +1,4 @@
+/// Similar to CSS and JS animations' `animation-direction`.
 enum AnimationDirection {
   normal('normal'),
   reverse('reverse'),

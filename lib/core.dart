@@ -1,3 +1,4 @@
+/// This library provides Dawn's core functionalities.
 library dawn.core;
 
 export 'src/core/app_runner.dart';

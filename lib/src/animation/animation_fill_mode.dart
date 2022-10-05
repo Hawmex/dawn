@@ -1,3 +1,4 @@
+/// Similar to CSS and JS animations' `animation-fill-mode`.
 enum AnimationFillMode {
   forwards('forwards'),
   backwards('backwards'),

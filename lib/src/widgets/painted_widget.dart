@@ -10,6 +10,7 @@ typedef EventSubscriptionCallback<T extends html.Event> = void Function(
   T event,
 );
 
+/// The base class for widgets that paint an [html.Element].
 abstract class PaintedWidget extends Widget {
   final Style? style;
   final Animation? animation;
@@ -68,7 +69,9 @@ abstract class PaintedWidget extends Widget {
   PaintedNode createNode();
 }
 
+/// A [Node] corresponding to [PaintedWidget].
 mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
+  /// The corresponding [html.Element] to this [PaintedNode].
   U get element;
 
   final _eventSubscriptions = <StreamSubscription<html.Event>>{};
@@ -88,6 +91,8 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
     }
   }
 
+  /// Called when this [Node] is added to the tree or after the [widget] is
+  /// updated.
   void initializeElement() {
     addEventSubscription('click', widget.onTap);
     addEventSubscription('pointerdown', widget.onPointerDown);
@@ -117,6 +122,8 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
     }
   }
 
+  /// Called before the [widget] is updated or when this [Node] is removed from
+  /// the tree.
   void disposeElement() {
     for (final eventSubscription in _eventSubscriptions) {
       eventSubscription.cancel();
@@ -183,6 +190,7 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
   }
 }
 
+/// A [PaintedNode] with no children.
 abstract class ChildlessPaintedNode<T extends PaintedWidget,
     U extends html.Element> extends Node<T> with PaintedNode<T, U> {
   @override
@@ -191,6 +199,7 @@ abstract class ChildlessPaintedNode<T extends PaintedWidget,
   ChildlessPaintedNode(super.widget, {required this.element});
 }
 
+/// A [PaintedNode] with one child.
 abstract class SingleChildPaintedNode<T extends PaintedWidget,
     U extends html.Element> extends SingleChildNode<T> with PaintedNode<T, U> {
   @override
@@ -199,6 +208,7 @@ abstract class SingleChildPaintedNode<T extends PaintedWidget,
   SingleChildPaintedNode(super.widget, {required this.element});
 }
 
+/// A [PaintedNode] with multiple children.
 abstract class MultiChildPaintedNode<T extends PaintedWidget,
     U extends html.Element> extends MultiChildNode<T> with PaintedNode<T, U> {
   @override
