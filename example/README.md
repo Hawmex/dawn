@@ -17,5 +17,5 @@ A Dawn App.
 webdev serve
 ```
 
-[ [Read more →](https://dawn-dev.netlify.app/get-started) ]
+[ [Read more →](https://dawn-dev.netlify.app) ]
 
