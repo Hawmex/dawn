@@ -1,3 +1,7 @@
+## 6.0.2
+
+- Add a warning when JS is disabled ([#17](https://github.com/Hawmex/dawn/issues/17)).
+
 ## 6.0.1
 
 - Fixed broken link in `dawn create` command's `README.md` output file content.

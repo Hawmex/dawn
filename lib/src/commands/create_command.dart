@@ -171,7 +171,9 @@ include: package:dawn_lints/dawn_lints.yaml
     <script src="/main.dart.js" defer></script>
   </head>
 
-  <body></body>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+  </body>
 </html>
 ''';
 
