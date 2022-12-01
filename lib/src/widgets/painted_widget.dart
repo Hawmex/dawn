@@ -76,7 +76,7 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
 
   final _eventSubscriptions = <StreamSubscription<html.Event>>{};
 
-  late html.Animation? _animation;
+  late final html.Animation? _animation;
 
   void addEventSubscription<V extends html.Event>(
     final String type,

@@ -1,3 +1,7 @@
+## 6.0.3
+
+- Slight internal improvements (Added `final` to `PaintedNode._animation`).
+
 ## 6.0.2
 
 - Add a warning when JS is disabled ([#17](https://github.com/Hawmex/dawn/issues/17)).
