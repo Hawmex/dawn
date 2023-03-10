@@ -1,3 +1,9 @@
+## 6.1.0
+
+- Added `--version` flag to CLI.
+- Other CLI improvements.
+- Minimum required version of Dart SDK is set to 2.19.4.
+
 ## 6.0.3
 
 - Slight internal improvements (Added `final` to `PaintedNode._animation`).

@@ -5,13 +5,12 @@ import 'package:args/command_runner.dart';
 import '../core/cli_message_printer.dart';
 import '../core/process_runner.dart';
 
-class CreateCommand extends Command<void> {
+class CreateCommand extends Command<int> {
   @override
   String get name => 'create';
 
   @override
-  String get description =>
-      'Sets up a new Dawn application in the current directory.';
+  String get description => 'Set up a new Dawn project.';
 
   @override
   String get invocation => 'dawn create <app_name>';
@@ -19,33 +18,42 @@ class CreateCommand extends Command<void> {
   String get _appName => argResults!.rest.first;
 
   @override
-  void run() {
+  int? run() {
     if (argResults!.rest.isEmpty) {
-      usageException('Specify your application\'s name.\n');
+      usageException('Please specify <app_name>.\n');
     }
 
     final directory = Directory('./$_appName');
 
     if (directory.existsSync()) {
-      usageException('Directory $_appName already exists.\n');
+      usageException('Directory "$_appName" already exists.\n');
     }
 
     Directory.current = directory..createSync();
 
+    printCliMessage('Setting up $_appName...');
+
     _createFiles();
     _installDependencies();
 
-    printCliMessage('Enjoy Coding!', type: CliMessageType.success);
+    printCliMessage(
+      '\nSuccessfully set up $_appName.',
+      type: CliMessageType.success,
+    );
+
+    printCliMessage('\nEnjoy coding!');
 
     printCliMessage(
-      'Run the following commands:\n'
+      '\nRun the following commands:\n'
       '  cd $_appName\n'
       '  webdev serve',
     );
+
+    return 0;
   }
 
   void _createFiles() {
-    printCliMessage('Creating Files...');
+    printCliMessage('\nCreating files...');
 
     _createFile(path: './.gitignore', body: _gitIgnore);
     _createFile(path: './README.md', body: _readmeDotMd);
@@ -75,9 +83,12 @@ class CreateCommand extends Command<void> {
   }
 
   void _installDependencies() {
-    printCliMessage('Installing dependencies...');
+    printCliMessage('\nInstalling dependencies...');
 
     _installDependency('dawn');
+
+    printCliMessage('\nInstalling dev dependencies...');
+
     _installDependency('dawn_lints', dev: true);
     _installDependency('build_runner', dev: true);
     _installDependency('build_web_compilers', dev: true);
@@ -89,12 +100,12 @@ class CreateCommand extends Command<void> {
       ['pub', 'add', if (dev) '-d', name],
       throwOnError: false,
       onSuccess: () => printCliMessage(
-        'Installed $name.',
+        'Successfully installed $name.',
         listItem: true,
         type: CliMessageType.success,
       ),
       onError: () => printCliMessage(
-        'Couldn\'t install $name.',
+        'Failed to install $name.',
         listItem: true,
         type: CliMessageType.error,
       ),
@@ -139,7 +150,7 @@ name: $_appName
 description: A Dawn app
 publish_to: none
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.19.4 <3.0.0"
 ''';
 
   String get _analysisOptionsDotYaml => '''

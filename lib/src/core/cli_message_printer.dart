@@ -43,6 +43,6 @@ void printCliMessage(
   if (listItem) {
     print('  $color$prefix $normal$message');
   } else {
-    print('\n$color$prefix$message');
+    print('$color$prefix$message');
   }
 }

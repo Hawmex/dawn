@@ -1,22 +1,3 @@
-import 'dart:io';
+import 'package:dawn/src/commands/dawn_command_runner.dart';
 
-import 'package:args/command_runner.dart';
-import 'package:dawn/src/commands/create_command.dart';
-
-void main(final List<String> args) async {
-  final runner = CommandRunner<void>(
-    'dawn',
-    'The command-line interface of Dawn.',
-  )..addCommand(CreateCommand());
-
-  try {
-    await runner.run(args);
-    exit(0);
-  } on UsageException catch (e) {
-    print('${e.message}\n${e.usage}');
-    exit(1);
-  } catch (e, st) {
-    print('$e\n$st');
-    exit(1);
-  }
-}
+Future<int?> main(final List<String> args) => DawnCommandRunner().run(args);
