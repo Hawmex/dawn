@@ -5,7 +5,7 @@ import 'package:dawn/src/core/cli_message_printer.dart';
 import 'package:dawn/src/core/package_version.dart';
 
 class DawnCommandRunner extends CommandRunner<int> {
-  DawnCommandRunner() : super('dawn', 'Manage your Dawn app development') {
+  DawnCommandRunner() : super('dawn', 'Manage your Dawn app development.') {
     argParser.addFlag('version', help: 'Print Dawn version.', negatable: false);
 
     addCommand(CreateCommand());

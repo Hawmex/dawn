@@ -1,3 +1,7 @@
+## 6.1.1
+
+- Fixed a typo in CLI.
+
 ## 6.1.0
 
 - Added `--version` flag to CLI.
