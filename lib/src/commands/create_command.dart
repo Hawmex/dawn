@@ -55,25 +55,30 @@ class CreateCommand extends Command<int> {
   void _createFiles() {
     printCliMessage('\nCreating files...');
 
-    _createFile(path: './.gitignore', body: _gitIgnore);
-    _createFile(path: './README.md', body: _readmeDotMd);
-    _createFile(path: './pubspec.yaml', body: _pubspecDotYaml);
-    _createFile(path: './analysis_options.yaml', body: _analysisOptionsDotYaml);
-    _createFile(path: './web/index.html', body: _indexDotHtml);
-    _createFile(path: './web/main.dart', body: _mainDotDart);
-    _createFile(path: './web/assets/logo.svg', body: _logoDotSvg);
-    _createFile(path: './web/assets/icon.svg', body: _iconDotSvg);
-    _createFile(path: './web/assets/title.svg', body: _titleDotSvg);
-    _createFile(path: './web/assets/banner.svg', body: _bannerDotSvg);
+    _createFile(path: './.gitignore', contents: _gitIgnore);
+    _createFile(path: './README.md', contents: _readmeDotMd);
+    _createFile(path: './pubspec.yaml', contents: _pubspecDotYaml);
+
+    _createFile(
+      path: './analysis_options.yaml',
+      contents: _analysisOptionsDotYaml,
+    );
+
+    _createFile(path: './web/index.html', contents: _indexDotHtml);
+    _createFile(path: './web/main.dart', contents: _mainDotDart);
+    _createFile(path: './web/assets/logo.svg', contents: _logoDotSvg);
+    _createFile(path: './web/assets/icon.svg', contents: _iconDotSvg);
+    _createFile(path: './web/assets/title.svg', contents: _titleDotSvg);
+    _createFile(path: './web/assets/banner.svg', contents: _bannerDotSvg);
   }
 
   void _createFile({
     required final String path,
-    required final String body,
+    required final String contents,
   }) {
     File(path)
       ..createSync(recursive: true)
-      ..writeAsStringSync(body);
+      ..writeAsStringSync(contents);
 
     printCliMessage(
       'Created $path.',
@@ -105,7 +110,7 @@ class CreateCommand extends Command<int> {
         type: CliMessageType.success,
       ),
       onError: () => printCliMessage(
-        'Failed to install $name.',
+        'Failed to install $name.\nRun "pub get" after the setup.',
         listItem: true,
         type: CliMessageType.error,
       ),
@@ -194,7 +199,7 @@ import 'package:dawn/dawn.dart';
 void main() => runApp(const App());
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({super.key, super.ref});
 
   @override
   Widget build(final BuildContext context) {

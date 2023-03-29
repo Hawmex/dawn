@@ -1,3 +1,11 @@
+## 7.0.0
+
+- Added refs.
+- Improved CLI.
+- Rewrote the event handling API.
+- Added `ConsumerWidget`.
+- Added a check for duplicate keys.
+
 ## 6.1.1
 
 - Fixed a typo in CLI.

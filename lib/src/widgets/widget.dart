@@ -1,16 +1,20 @@
 import 'dart:async';
+import 'dart:html' as html;
 
 import 'package:dawn/core.dart';
 
 import 'inherited_widget.dart';
+import 'painted_widget.dart';
+import 'stateful_widget.dart';
 
 /// The base class for all of Dawn's widgets.
 ///
 /// **Notice:** Unlike Flutter, [key] is a [String] in Dawn.
 abstract class Widget {
   final String? key;
+  final Ref? ref;
 
-  const Widget({this.key});
+  const Widget({this.key, this.ref});
 
   /// Returns a [Node] corresponding to this [Widget] at a particular location
   /// in the [Node] tree.
@@ -24,6 +28,37 @@ abstract class Widget {
   ///   one.
   bool matches(final Widget otherWidget) =>
       runtimeType == otherWidget.runtimeType && key == otherWidget.key;
+}
+
+/// Similar to ref in React and GlobalKey in Flutter.
+class Ref {
+  Node? _currentNode;
+
+  Ref();
+
+  /// The widget in the tree that has this ref.
+  Widget? get currentWidget => _currentNode?.widget;
+
+  /// The state of the widget in the tree that has this ref.
+  State? get currentState {
+    if (_currentNode is StatefulNode) {
+      return (_currentNode as StatefulNode).state;
+    } else {
+      return null;
+    }
+  }
+
+  /// The element of the widget in the tree that has this ref.
+  html.Element? get currentElement {
+    if (_currentNode is PaintedNode) {
+      return (_currentNode as PaintedNode).element;
+    } else {
+      return null;
+    }
+  }
+
+  /// The context of the widget in the tree that has this ref.
+  BuildContext? get currentContext => _currentNode?.context;
 }
 
 /// An instantiation of a [Widget] at a particular location in the [Node] tree.
@@ -77,15 +112,23 @@ abstract class Node<T extends Widget> {
   /// Called after this [Node] is added to the [Node] tree.
   ///
   /// *Flowing downwards*
-  void initialize() => _isActive = true;
+  void initialize() {
+    widget.ref?._currentNode = this;
+
+    _isActive = true;
+  }
 
   /// Called before the [widget] is updated. Use this to remove references to
   /// the previous widget.
-  void widgetWillUpdate(final T newWidget) {}
+  void widgetWillUpdate(final T newWidget) {
+    widget.ref?._currentNode = null;
+  }
 
   /// Called after the [widget] is updated. Use this to initialize the new
   /// [widget].
-  void widgetDidUpdate(final T oldWidget) {}
+  void widgetDidUpdate(final T oldWidget) {
+    widget.ref?._currentNode = this;
+  }
 
   /// Called after the dependencies are updated.
   void dependenciesDidUpdate() {}
@@ -95,6 +138,8 @@ abstract class Node<T extends Widget> {
   /// *Flowing upwards*
   void dispose() {
     _isActive = false;
+
+    widget.ref?._currentNode = null;
 
     for (final dependencySubscription in _dependencySubscriptions) {
       dependencySubscription.cancel();
@@ -178,11 +223,28 @@ abstract class MultiChildNode<T extends Widget> extends Node<T>
 
   List<Widget> get childWidgets;
 
+  List<Widget> get _sanitizedChildWidgets {
+    final explicitKeys = childWidgets
+        .map((final childWidget) => childWidget.key)
+        .toList()
+      ..removeWhere((final key) => key == null);
+
+    final uniqueExplicitKeys = explicitKeys.toSet();
+
+    if (explicitKeys.length != uniqueExplicitKeys.length) {
+      throw StateError(
+        "Unique explicit keys must be provided to each MultiChildNode",
+      );
+    } else {
+      return childWidgets;
+    }
+  }
+
   @override
   void initialize() {
     super.initialize();
 
-    childNodes = childWidgets
+    childNodes = _sanitizedChildWidgets
         .map((final childWidget) => childWidget.createNode())
         .toList();
 
@@ -197,7 +259,7 @@ abstract class MultiChildNode<T extends Widget> extends Node<T>
   void reassemble() {
     final oldChildNodes = childNodes;
 
-    final newChildNodes = childWidgets
+    final newChildNodes = _sanitizedChildWidgets
         .map((final childWidget) => childWidget.createNode())
         .toList();
 

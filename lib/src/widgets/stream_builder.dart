@@ -12,7 +12,13 @@ class StreamBuilder<T> extends StatefulWidget {
   final T? initialData;
 
   /// Creates a new instance of [StreamBuilder].
-  const StreamBuilder(this.builder, {this.stream, this.initialData, super.key});
+  const StreamBuilder(
+    this.builder, {
+    this.stream,
+    this.initialData,
+    super.key,
+    super.ref,
+  });
 
   @override
   State createState() => _StreamBuilderState<T>();

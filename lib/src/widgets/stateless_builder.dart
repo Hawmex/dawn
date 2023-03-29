@@ -12,7 +12,7 @@ class StatelessBuilder extends StatelessWidget {
   final StatelessWidgetBuilder builder;
 
   /// Creates a new [StatelessBuilder] instance.
-  const StatelessBuilder(this.builder, {super.key});
+  const StatelessBuilder(this.builder, {super.key, super.ref});
 
   @override
   Widget build(final BuildContext context) => builder(context);

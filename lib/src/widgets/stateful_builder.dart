@@ -18,7 +18,7 @@ class StatefulBuilder extends StatefulWidget {
   final StatefulWidgetBuilder builder;
 
   /// Creates a new instance of [StatefulBuilder].
-  const StatefulBuilder(this.builder, {super.key});
+  const StatefulBuilder(this.builder, {super.key, super.ref});
 
   @override
   State createState() => _StatefulBuilderState();

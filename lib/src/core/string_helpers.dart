@@ -1,5 +1,5 @@
 /// Adds some utilities to transform strings.
-extension CaseTransformableString on String {
+extension StringHelpers on String {
   /// Capitalizes the first letter of this string and returns a new one.
   String toCapitalized() =>
       substring(0, 1).toUpperCase() + substring(1).toLowerCase();

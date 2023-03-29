@@ -4,7 +4,7 @@ import 'widget.dart';
 
 /// A [Widget] that does not have a mutable state.
 abstract class StatelessWidget extends Widget with Buildable {
-  const StatelessWidget({super.key});
+  const StatelessWidget({super.key, super.ref});
 
   @override
   StatelessNode createNode() => StatelessNode(this);

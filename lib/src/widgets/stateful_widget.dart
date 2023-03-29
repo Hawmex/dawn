@@ -6,7 +6,7 @@ import 'widget.dart';
 
 /// A [Widget] that has a mutable state.
 abstract class StatefulWidget extends Widget {
-  const StatefulWidget({super.key});
+  const StatefulWidget({super.key, super.ref});
 
   /// Creates the mutable state for this widget.
   State createState();
@@ -49,46 +49,46 @@ abstract class State<T extends StatefulWidget> extends Store with Buildable {
 
 /// A [Node] corresponding to [StatefulWidget].
 class StatefulNode<T extends StatefulWidget> extends SingleChildNode<T> {
-  late final State<T> _state;
+  late final State<T> state;
   late final StreamSubscription<void> _updateStreamSubscription;
 
   /// Creates a new instance of [StatefulNode].
   StatefulNode(super.widget);
 
   @override
-  Widget get childWidget => _state.build(context);
+  Widget get childWidget => state.build(context);
 
   @override
   void initialize() {
-    _state = widget.createState() as State<T>
+    state = widget.createState() as State<T>
       .._widget = widget
       .._context = context
       ..initialize();
 
     super.initialize();
 
-    _updateStreamSubscription = _state.listen(enqueueReassembly);
-    _state.didMount();
+    _updateStreamSubscription = state.listen(enqueueReassembly);
+    state.didMount();
   }
 
   @override
   void widgetDidUpdate(final T oldWidget) {
-    _state._widget = widget;
+    state._widget = widget;
     super.widgetDidUpdate(oldWidget);
-    _state.widgetDidUpdate(oldWidget);
+    state.widgetDidUpdate(oldWidget);
   }
 
   @override
   void dependenciesDidUpdate() {
     super.dependenciesDidUpdate();
-    _state.dependenciesDidUpdate();
+    state.dependenciesDidUpdate();
   }
 
   @override
   void dispose() {
-    _state.willUnmount();
+    state.willUnmount();
     _updateStreamSubscription.cancel();
     super.dispose();
-    _state.dispose();
+    state.dispose();
   }
 }

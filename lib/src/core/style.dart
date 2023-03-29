@@ -1,6 +1,6 @@
 import 'package:dawn/widgets.dart';
 
-import 'case_transformable_string.dart';
+import 'string_helpers.dart';
 
 /// Describes how a [PaintedWidget] should look on the screens.
 class Style {

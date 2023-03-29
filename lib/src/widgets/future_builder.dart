@@ -10,7 +10,13 @@ class FutureBuilder<T> extends StatefulWidget {
   final T? initialData;
 
   /// Creates a new instance of [FutureBuilder].
-  const FutureBuilder(this.builder, {this.future, this.initialData, super.key});
+  const FutureBuilder(
+    this.builder, {
+    this.future,
+    this.initialData,
+    super.key,
+    super.ref,
+  });
 
   @override
   State createState() => _FutureBuilderState<T>();

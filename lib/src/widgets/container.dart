@@ -1,5 +1,7 @@
 import 'dart:html' as html;
 
+import 'package:dawn/core.dart';
+
 import 'painted_widget.dart';
 import 'widget.dart';
 
@@ -7,7 +9,7 @@ import 'widget.dart';
 class Container extends PaintedWidget {
   final List<Widget> children;
 
-  final EventSubscriptionCallback? onScroll;
+  final EventCallback? onScroll;
 
   const Container(
     this.children, {
@@ -22,19 +24,9 @@ class Container extends PaintedWidget {
     super.onPointerCancel,
     super.onPointerOver,
     super.onPointerOut,
-    super.onMouseDown,
-    super.onMouseUp,
-    super.onMouseEnter,
-    super.onMouseLeave,
-    super.onMouseMove,
-    super.onMouseOver,
-    super.onMouseOut,
-    super.onTouchStart,
-    super.onTouchEnd,
-    super.onTouchMove,
-    super.onTouchCancel,
     this.onScroll,
     super.key,
+    super.ref,
   });
 
   @override
@@ -52,6 +44,12 @@ class ContainerNode extends MultiChildPaintedNode<Container, html.DivElement> {
   @override
   void initializeElement() {
     super.initializeElement();
-    addEventSubscription('scroll', widget.onScroll);
+
+    addEventSubscription(
+      type: 'scroll',
+      callback: widget.onScroll,
+      eventTransformer: (final html.Event event) =>
+          EventDetails(event, targetNode: this),
+    );
   }
 }

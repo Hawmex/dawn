@@ -15,29 +15,16 @@ abstract class PaintedWidget extends Widget {
   final Style? style;
   final Animation? animation;
 
-  final EventSubscriptionCallback<html.MouseEvent>? onTap;
+  final EventCallback? onTap;
 
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerDown;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerUp;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerEnter;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerLeave;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerMove;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerCancel;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerOver;
-  final EventSubscriptionCallback<html.PointerEvent>? onPointerOut;
-
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseDown;
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseUp;
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseEnter;
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseLeave;
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseMove;
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseOver;
-  final EventSubscriptionCallback<html.MouseEvent>? onMouseOut;
-
-  final EventSubscriptionCallback<html.TouchEvent>? onTouchStart;
-  final EventSubscriptionCallback<html.TouchEvent>? onTouchEnd;
-  final EventSubscriptionCallback<html.TouchEvent>? onTouchMove;
-  final EventSubscriptionCallback<html.TouchEvent>? onTouchCancel;
+  final PointerEventCallback? onPointerDown;
+  final PointerEventCallback? onPointerUp;
+  final PointerEventCallback? onPointerEnter;
+  final PointerEventCallback? onPointerLeave;
+  final PointerEventCallback? onPointerMove;
+  final PointerEventCallback? onPointerCancel;
+  final PointerEventCallback? onPointerOver;
+  final PointerEventCallback? onPointerOut;
 
   const PaintedWidget({
     this.style,
@@ -51,18 +38,8 @@ abstract class PaintedWidget extends Widget {
     this.onPointerCancel,
     this.onPointerOver,
     this.onPointerOut,
-    this.onMouseDown,
-    this.onMouseUp,
-    this.onMouseEnter,
-    this.onMouseLeave,
-    this.onMouseMove,
-    this.onMouseOver,
-    this.onMouseOut,
-    this.onTouchStart,
-    this.onTouchEnd,
-    this.onTouchMove,
-    this.onTouchCancel,
     super.key,
+    super.ref,
   });
 
   @override
@@ -78,14 +55,15 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
 
   late final html.Animation? _animation;
 
-  void addEventSubscription<V extends html.Event>(
-    final String type,
-    final EventSubscriptionCallback<V>? callback,
-  ) {
+  void addEventSubscription<V extends html.Event, W extends EventDetails<V>>({
+    required final String type,
+    required final EventCallback<W>? callback,
+    required final W Function(V event) eventTransformer,
+  }) {
     if (callback != null) {
       _eventSubscriptions.add(
         element.on[type].listen(
-          (final event) => callback(event as V),
+          (final event) => callback(eventTransformer(event as V)),
         ),
       );
     }
@@ -94,26 +72,86 @@ mixin PaintedNode<T extends PaintedWidget, U extends html.Element> on Node<T> {
   /// Called when this [Node] is added to the tree or after the [widget] is
   /// updated.
   void initializeElement() {
-    addEventSubscription('click', widget.onTap);
-    addEventSubscription('pointerdown', widget.onPointerDown);
-    addEventSubscription('pointerup', widget.onPointerUp);
-    addEventSubscription('pointerenter', widget.onPointerEnter);
-    addEventSubscription('pointerleave', widget.onPointerLeave);
-    addEventSubscription('pointermove', widget.onPointerMove);
-    addEventSubscription('pointercancel', widget.onPointerCancel);
-    addEventSubscription('pointerover', widget.onPointerOver);
-    addEventSubscription('pointerout', widget.onPointerOut);
-    addEventSubscription('mousedown', widget.onMouseDown);
-    addEventSubscription('mouseup', widget.onMouseUp);
-    addEventSubscription('mouseenter', widget.onMouseEnter);
-    addEventSubscription('mouseleave', widget.onMouseLeave);
-    addEventSubscription('mousemove', widget.onMouseMove);
-    addEventSubscription('mouseover', widget.onMouseOver);
-    addEventSubscription('mouseout', widget.onMouseOut);
-    addEventSubscription('touchstart', widget.onTouchStart);
-    addEventSubscription('touchend', widget.onTouchEnd);
-    addEventSubscription('touchmove', widget.onTouchMove);
-    addEventSubscription('touchcancel', widget.onTouchCancel);
+    addEventSubscription(
+      type: 'click',
+      callback: widget.onTap,
+      eventTransformer: (final html.Event event) => EventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointerdown',
+      callback: widget.onPointerDown,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointerup',
+      callback: widget.onPointerUp,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointerenter',
+      callback: widget.onPointerEnter,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointerleave',
+      callback: widget.onPointerLeave,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointermove',
+      callback: widget.onPointerMove,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointercancel',
+      callback: widget.onPointerCancel,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointerover',
+      callback: widget.onPointerOver,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
+
+    addEventSubscription(
+      type: 'pointerout',
+      callback: widget.onPointerOut,
+      eventTransformer: (final html.PointerEvent event) => PointerEventDetails(
+        event,
+        targetNode: this,
+      ),
+    );
 
     if (widget.style == null) {
       element.removeAttribute('style');

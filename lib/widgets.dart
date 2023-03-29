@@ -3,6 +3,7 @@
 library dawn.widgets;
 
 export 'src/widgets/consumer_builder.dart';
+export 'src/widgets/consumer_widget.dart';
 export 'src/widgets/container.dart';
 export 'src/widgets/future_builder.dart';
 export 'src/widgets/image.dart';

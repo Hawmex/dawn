@@ -23,7 +23,12 @@ class Provider extends InheritedWidget {
   final List<Store> stores;
 
   /// Creates a new instance of [Provider].
-  const Provider({required this.stores, required super.child, super.key});
+  const Provider({
+    required this.stores,
+    required super.child,
+    super.key,
+    super.ref,
+  });
 
   static Provider of(final BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<Provider>();

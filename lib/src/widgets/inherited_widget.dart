@@ -7,7 +7,7 @@ import 'widget.dart';
 abstract class InheritedWidget extends Widget {
   final Widget child;
 
-  const InheritedWidget({required this.child, super.key});
+  const InheritedWidget({required this.child, super.key, super.ref});
 
   @override
   InheritedNode createNode() => InheritedNode(this);

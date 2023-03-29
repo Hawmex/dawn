@@ -1,5 +1,7 @@
 import 'dart:html' as html;
 
+import 'package:dawn/core.dart';
+
 import 'painted_widget.dart';
 import 'widget.dart';
 
@@ -8,7 +10,7 @@ class Image extends PaintedWidget {
   final String source;
   final String? alternativeText;
 
-  final EventSubscriptionCallback<html.ErrorEvent>? onError;
+  final EventCallback? onError;
 
   /// Creates a new instance of [Image].
   const Image(
@@ -26,18 +28,8 @@ class Image extends PaintedWidget {
     super.onPointerCancel,
     super.onPointerOver,
     super.onPointerOut,
-    super.onMouseDown,
-    super.onMouseUp,
-    super.onMouseEnter,
-    super.onMouseLeave,
-    super.onMouseMove,
-    super.onMouseOver,
-    super.onMouseOut,
-    super.onTouchStart,
-    super.onTouchEnd,
-    super.onTouchMove,
-    super.onTouchCancel,
     super.key,
+    super.ref,
   });
 
   @override
@@ -53,7 +45,12 @@ class ImageNode extends ChildlessPaintedNode<Image, html.ImageElement> {
   void initializeElement() {
     super.initializeElement();
 
-    addEventSubscription('error', widget.onError);
+    addEventSubscription(
+      type: 'error',
+      callback: widget.onError,
+      eventTransformer: (final html.Event event) =>
+          EventDetails(event, targetNode: this),
+    );
 
     element
       ..src = widget.source

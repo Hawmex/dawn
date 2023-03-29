@@ -10,13 +10,13 @@ import 'stateful_widget.dart';
 import 'stateless_builder.dart';
 import 'widget.dart';
 
-final _navigatorState = _NavigatorState();
+_NavigatorState? _navigatorState;
 
 /// The navigation functions that are added to [BuildContext].
 extension Navigation on BuildContext {
   /// Pushes a new route synchronously.
   void pushRoute({required final StatelessWidgetBuilder builder}) =>
-      _navigatorState._pushRoute(builder: builder);
+      _navigatorState!._pushRoute(builder: builder);
 
   /// Pushes a new route lazily. [Navigator.loading] is rendered while the route
   /// is being loaded.
@@ -24,15 +24,15 @@ extension Navigation on BuildContext {
     required final Future<dynamic> Function() loader,
     required final StatelessWidgetBuilder builder,
   }) =>
-      _navigatorState._pushRouteLazily(loader: loader, builder: builder);
+      _navigatorState!._pushRouteLazily(loader: loader, builder: builder);
 
   /// Pushes a new modal to the navigation state.
   void pushModal({required final void Function() onPop}) =>
-      _navigatorState._pushModal(onPop: onPop);
+      _navigatorState!._pushModal(onPop: onPop);
 
   /// Pops the latest modal. If all modals are popped, the current route
   /// is popped.
-  void pop() => _navigatorState._pop();
+  void pop() => _navigatorState!._pop();
 }
 
 /// A navigation outlet.
@@ -43,7 +43,7 @@ class Navigator extends StatefulWidget {
   final Widget child;
 
   /// The widget that should be displayed when a lazy route is being loaded.
-  final Widget loading;
+  final Widget fallback;
 
   /// The animation that should be applied to the child after it's been pushed.
   final Animation? pushAnimation;
@@ -55,14 +55,15 @@ class Navigator extends StatefulWidget {
   /// Creates a new instance of [Navigator].
   const Navigator({
     required this.child,
-    this.loading = const Container([]),
+    this.fallback = const Container([]),
     this.pushAnimation,
     this.popAnimation,
     super.key,
+    super.ref,
   });
 
   @override
-  State createState() => _navigatorState;
+  State createState() => _NavigatorState();
 }
 
 enum _NavigationAction { none, pop, push }
@@ -117,7 +118,7 @@ class _NavigatorState extends State<Navigator> {
     _pushRoute(
       builder: (final context) => FutureBuilder<Widget>(
         (final context, final snapshot) => snapshot.data!,
-        initialData: widget.loading,
+        initialData: widget.fallback,
         future: Future(() async {
           await loader();
           return builder(context);
@@ -156,6 +157,8 @@ class _NavigatorState extends State<Navigator> {
   void initialize() {
     super.initialize();
 
+    _navigatorState = this;
+
     html.window.history.replaceState(1, '', null);
 
     _browserHistoryPopSubscription = html.window.on['popstate'].listen(
@@ -166,6 +169,7 @@ class _NavigatorState extends State<Navigator> {
   @override
   void dispose() {
     _browserHistoryPopSubscription.cancel();
+    _navigatorState = null;
     super.dispose();
   }
 
