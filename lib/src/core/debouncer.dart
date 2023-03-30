@@ -1,17 +1,18 @@
-import 'dart:html' as html;
+import 'dart:async';
 
-/// Debounces multiple tasks by running only the last one using JavaScript's
-/// `requestAnimationFrame` API.
+/// Debounces multiple tasks by running only the last one using
+/// [scheduleMicrotask].
 class Debouncer {
-  int? _animationFrameId;
+  Object? _latestTaskIdentity;
 
   /// Adds the given [task] to the queue.
   void enqueueTask(final void Function() task) {
-    if (_animationFrameId != null) {
-      html.window.cancelAnimationFrame(_animationFrameId!);
-    }
+    final currentTaskIdentity = Object();
 
-    _animationFrameId =
-        html.window.requestAnimationFrame((final highResTime) => task());
+    _latestTaskIdentity = currentTaskIdentity;
+
+    scheduleMicrotask(() {
+      if (_latestTaskIdentity == currentTaskIdentity) task();
+    });
   }
 }

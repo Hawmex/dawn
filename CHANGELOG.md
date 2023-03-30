@@ -1,3 +1,7 @@
+## 7.0.1
+
+- Fixed `Debouncer`.
+
 ## 7.0.0
 
 - Added refs.
