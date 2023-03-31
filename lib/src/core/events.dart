@@ -42,6 +42,10 @@ class EventDetails<T extends html.Event> {
 
   /// The [BuildContext] of the [Widget] in the tree that fired this event.
   BuildContext get targetContext => _targetNode.context;
+
+  void stopPropagation() => _event.stopPropagation();
+  void stopImmediatePropagation() => _event.stopImmediatePropagation();
+  void preventDefault() => _event.preventDefault();
 }
 
 /// Types of pointers.

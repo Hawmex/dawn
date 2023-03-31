@@ -1,3 +1,9 @@
+## 7.1.0
+
+- Added `EventDetails.stopPropagation`,
+  `EventDetails.StopImmediatePropagation`,
+  and `EventDetails.preventDefault`.
+
 ## 7.0.2
 
 - Improved docs.
