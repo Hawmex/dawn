@@ -2,8 +2,8 @@ import 'package:dawn/core.dart';
 
 import 'inherited_widget.dart';
 
-/// Provides the utility needed to depend on a [Store].
-extension DependOnStore on BuildContext {
+/// [Provider] utilities that are added to [BuildContext].
+extension ProviderHelpers on BuildContext {
   /// Returns the first [Store] with the exact type [T] provided by the
   /// nearest parent [Provider].
   ///

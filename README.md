@@ -13,7 +13,7 @@
 
 ---
 
-# Dawn 7.0.1
+# Dawn 7.0.2
 
 Dawn is a Dart web framework that lets developers create UIs with a widget
 model similar to Flutter. Dawn apps are compiled into JS and painted with HTML

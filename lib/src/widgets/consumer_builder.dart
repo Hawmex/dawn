@@ -1,6 +1,7 @@
 import 'package:dawn/core.dart';
 
 import 'consumer_widget.dart';
+import 'provider.dart';
 import 'widget.dart';
 
 /// The type of the builder function used in a [ConsumerBuilder].

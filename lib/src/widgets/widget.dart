@@ -34,12 +34,13 @@ abstract class Widget {
 class Ref {
   Node? _currentNode;
 
+  /// Creates a new instance of [Ref].
   Ref();
 
-  /// The widget in the tree that has this ref.
+  /// The [Widget] in the tree that has this [Ref].
   Widget? get currentWidget => _currentNode?.widget;
 
-  /// The state of the widget in the tree that has this ref.
+  /// The [State] of the [Widget] in the tree that has this [Ref].
   State? get currentState {
     if (_currentNode is StatefulNode) {
       return (_currentNode as StatefulNode).state;
@@ -48,7 +49,7 @@ class Ref {
     }
   }
 
-  /// The element of the widget in the tree that has this ref.
+  /// The [html.Element] of the [Widget] in the tree that has this [Ref].
   html.Element? get currentElement {
     if (_currentNode is PaintedNode) {
       return (_currentNode as PaintedNode).element;
@@ -57,7 +58,7 @@ class Ref {
     }
   }
 
-  /// The context of the widget in the tree that has this ref.
+  /// The [BuildContext] of the [Widget] in the tree that has this [Ref].
   BuildContext? get currentContext => _currentNode?.context;
 }
 

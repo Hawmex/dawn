@@ -10,36 +10,33 @@ import 'stateful_widget.dart';
 import 'stateless_builder.dart';
 import 'widget.dart';
 
-_NavigatorState? _navigatorState;
+/// A navigation outlet.
+///
+/// **Notice:** Only a single instance of [Navigator] should be present in an
+/// app.
+class Navigator extends StatefulWidget {
+  static _NavigatorState? _state;
 
-/// The navigation functions that are added to [BuildContext].
-extension Navigation on BuildContext {
   /// Pushes a new route synchronously.
-  void pushRoute({required final StatelessWidgetBuilder builder}) =>
-      _navigatorState!._pushRoute(builder: builder);
+  static void pushRoute({required final StatelessWidgetBuilder builder}) =>
+      _state!._pushRoute(builder: builder);
 
-  /// Pushes a new route lazily. [Navigator.loading] is rendered while the route
-  /// is being loaded.
-  void pushRouteLazily({
+  /// Pushes a new route lazily. [Navigator.fallback] is rendered while the
+  /// route is being loaded.
+  static void pushRouteLazily({
     required final Future<dynamic> Function() loader,
     required final StatelessWidgetBuilder builder,
   }) =>
-      _navigatorState!._pushRouteLazily(loader: loader, builder: builder);
+      _state!._pushRouteLazily(loader: loader, builder: builder);
 
   /// Pushes a new modal to the navigation state.
-  void pushModal({required final void Function() onPop}) =>
-      _navigatorState!._pushModal(onPop: onPop);
+  static void pushModal({required final void Function() onPop}) =>
+      _state!._pushModal(onPop: onPop);
 
   /// Pops the latest modal. If all modals are popped, the current route
   /// is popped.
-  void pop() => _navigatorState!._pop();
-}
+  static void pop() => _state!._pop();
 
-/// A navigation outlet.
-///
-/// **Notice:** Only a single instance of [Navigator] should be created in an
-/// app.
-class Navigator extends StatefulWidget {
   final Widget child;
 
   /// The widget that should be displayed when a lazy route is being loaded.
@@ -157,7 +154,7 @@ class _NavigatorState extends State<Navigator> {
   void initialize() {
     super.initialize();
 
-    _navigatorState = this;
+    Navigator._state = this;
 
     html.window.history.replaceState(1, '', null);
 
@@ -169,7 +166,7 @@ class _NavigatorState extends State<Navigator> {
   @override
   void dispose() {
     _browserHistoryPopSubscription.cancel();
-    _navigatorState = null;
+    Navigator._state = null;
     super.dispose();
   }
 

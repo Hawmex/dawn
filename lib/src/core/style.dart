@@ -21,8 +21,11 @@ class Style {
   }
 
   /// Concatenates two styles.
-  Style include(final Style? otherStyle) =>
+  Style operator +(final Style? otherStyle) =>
       Style({..._rules, if (otherStyle != null) ...otherStyle._rules});
+
+  /// Concatenates two styles.
+  Style addAll(final Style? otherStyle) => this + otherStyle;
 
   @override
   String toString() => _rules.isEmpty

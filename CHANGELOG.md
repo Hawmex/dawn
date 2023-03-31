@@ -1,3 +1,10 @@
+## 7.0.2
+
+- Improved docs.
+- Fixed `Navigator`.
+- Fixed `Provider`.
+- Fixed `Style`.
+
 ## 7.0.1
 
 - Fixed `Debouncer`.

@@ -5,21 +5,24 @@ import 'package:dawn/widgets.dart';
 
 import 'build_context.dart';
 
+/// The callback function of events.
 typedef EventCallback<T extends EventDetails> = void Function(
   T details,
 );
 
+/// The details of the fired event.
 class EventDetails<T extends html.Event> {
   final Node _targetNode;
   final T _event;
 
+  /// Creates a new instance of [EventDetails].
   const EventDetails(this._event, {required final Node targetNode})
       : _targetNode = targetNode;
 
-  /// The widget in the tree that fired this ref.
+  /// The [Widget] in the tree that fired this event.
   Widget get targetWidget => _targetNode.widget;
 
-  /// The state of the widget in the tree that fired this event.
+  /// The [State] of the [Widget] in the tree that fired this event.
   State? get targetState {
     if (_targetNode is StatefulNode) {
       return (_targetNode as StatefulNode).state;
@@ -28,7 +31,7 @@ class EventDetails<T extends html.Event> {
     }
   }
 
-  /// The element of the widget in the tree that fired this event.
+  /// The [html.Element] of the [Widget] in the tree that fired this event.
   html.Element? get targetElement {
     if (_targetNode is PaintedNode) {
       return (_targetNode as PaintedNode).element;
@@ -37,16 +40,20 @@ class EventDetails<T extends html.Event> {
     }
   }
 
-  /// The context of the widget in the tree that fired this event.
+  /// The [BuildContext] of the [Widget] in the tree that fired this event.
   BuildContext get targetContext => _targetNode.context;
 }
 
+/// Types of pointers.
 enum PointerType { mouse, pen, touch }
 
+/// The callback function of pointer events.
 typedef PointerEventCallback<T extends PointerEventDetails> = EventCallback<T>;
 
+/// The details of the fired pointer event.
 class PointerEventDetails extends EventDetails<html.PointerEvent> {
-  PointerEventDetails(super._event, {required super.targetNode});
+  /// Creates a new instance of [PointerEventDetails].
+  const PointerEventDetails(super._event, {required super.targetNode});
 
   int get pointerId => _event.pointerId!;
 
