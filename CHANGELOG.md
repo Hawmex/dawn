@@ -1,3 +1,7 @@
+## 7.1.1
+
+- Internal improvements.
+
 ## 7.1.0
 
 - Added `EventDetails.stopPropagation`,

@@ -6,10 +6,6 @@ import 'package:dawn/core.dart';
 
 import 'widget.dart';
 
-typedef EventSubscriptionCallback<T extends html.Event> = void Function(
-  T event,
-);
-
 /// The base class for widgets that paint an [html.Element].
 abstract class PaintedWidget extends Widget {
   final Style? style;
